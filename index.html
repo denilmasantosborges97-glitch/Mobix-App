@@ -376,6 +376,47 @@
         .factory {
              filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
         }
+        
+        /* --- ESTILOS RESPONSIVOS PARA CELULAR --- */
+        @media (max-width: 640px) {
+            .flex-wrap {
+                justify-content: center;
+                gap: 1rem;
+            }
+            .shop-item span {
+                font-size: 0.9rem;
+            }
+            .shop-item.w-32 {
+                width: 120px;
+            }
+            .shop-item.w-36 {
+                width: 140px;
+            }
+            .shop-item.w-24 {
+                width: 90px;
+            }
+            .shop-item.w-16 {
+                width: 60px;
+            }
+            .progress-bar-fill {
+                height: 8px;
+            }
+            .toast-notification {
+                font-size: 0.8rem;
+            }
+            #planet {
+                 width: 300px;
+                 height: 300px;
+            }
+            .modal-content {
+                width: 90%;
+            }
+            .bonus-btn .badge {
+                 width: 18px;
+                 height: 18px;
+                 font-size: 10px;
+            }
+        }
     </style>
 </head>
 <body class="bg-sky-200 text-gray-800 overflow-hidden select-none">
@@ -480,7 +521,7 @@
                         </button>
                         <button id="buy-squirrel" class="shop-item flex items-center p-2 rounded-lg bg-orange-500 hover:bg-orange-400 transition disabled:opacity-50 w-32 h-12 justify-center" disabled>
                             <span>Esquilo (<span id="squirrel-cost">1000</span>✨)</span>
-                            <div class="custom-tooltip">Acha 💧 bônus!<br><span id="squirrel-hint">🔒 Atraia abelhas!</span></div>
+                            <div class="custom-tooltip">Acha 💧 bónus!<br><span id="squirrel-hint">🔒 Atraia abelhas!</span></div>
                         </button>
                      </div>
                 </div>
