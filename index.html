@@ -1,1686 +1,428 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco-Planeta Mágico</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Corrida Cósmica: O Confronto Final</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            touch-action: manipulation;
-            transition: background-color 3s linear;
-        }
-        h1, h2, h3 {
-            font-family: 'Fredoka One', cursive;
-        }
-        /* --- ESTILOS DO MENU INICIAL --- */
-        @keyframes float-menu-item {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        .menu-floater {
-            position: absolute;
-            animation: float-menu-item 6s ease-in-out infinite;
-            opacity: 0.8;
-            pointer-events: none;
-        }
-        .menu-floater:nth-child(2) { animation-delay: -2s; animation-duration: 7s; }
-        .menu-floater:nth-child(3) { animation-delay: -4s; animation-duration: 5s; }
-        .menu-floater:nth-child(4) { animation-delay: -1s; animation-duration: 8s; }
-        .menu-floater:nth-child(5) { animation-delay: -3s; animation-duration: 6.5s; }
-
-        @keyframes title-glow {
-            0%, 100% { text-shadow: 4px 4px 0px rgba(0,0,0,0.2), 0 0 10px #fff; }
-            50% { text-shadow: 4px 4px 0px rgba(0,0,0,0.2), 0 0 20px #fef08a; }
-        }
-        #main-menu h1 {
-            animation: title-glow 4s infinite ease-in-out;
-        }
-        
-        @keyframes start-button-pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 15px 5px #fde047; }
-            50% { transform: scale(1.05); box-shadow: 0 0 30px 10px #fde047; }
-        }
-        #start-game-btn {
-            animation: start-button-pulse 2s infinite;
-        }
-        
-        @keyframes fade-out-menu {
-            from { opacity: 1; transform: scale(1); }
-            to { opacity: 0; transform: scale(1.1); pointer-events: none; }
-        }
-        .menu-hiding {
-            animation: fade-out-menu 0.7s ease-out forwards;
-        }
-        /* --- FIM DOS ESTILOS DO MENU --- */
-        .celestial-body {
-            position: absolute;
-            z-index: -1;
-            transition: opacity 3s linear; 
-        }
-        .sun-glow {
-            box-shadow: 0 0 20px 10px #fef08a, 0 0 40px 20px #fde047;
-        }
-        .moon-glow {
-            box-shadow: 0 0 25px 10px #e2e8f0, 0 0 50px 20px #cbd5e1;
-        }
-        .planet-item {
-            position: absolute;
-            transform-origin: bottom center;
-            transition: transform 0.2s ease-in-out, opacity 0.5s ease-in-out;
-            z-index: 10;
-        }
-        .planet-item:hover {
-            transform: scale(1.1);
-        }
-        .clickable {
-            cursor: grab;
-            transition: transform 0.1s ease-out;
-        }
-        .clickable:active {
-            transform: scale(0.95);
-            cursor: grabbing;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-100px); opacity: 1; }
-            100% { transform: translateY(0); opacity: 0; }
-        }
-        .falling-drop {
-            position: absolute;
-            animation: fall 1s linear;
-            pointer-events: none;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-        .floating-text {
-            animation: float-up 1.5s ease-out forwards;
-            position: absolute;
-            pointer-events: none;
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-        @keyframes float-up {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-50px); opacity: 0; }
-        }
-        .energy-particle {
-            position: absolute;
-            z-index: 20;
-            pointer-events: none;
-            animation: float-up-particle 2s ease-out forwards;
-            color: #fde047;
-            text-shadow: 0 0 5px #fff;
-            font-size: 1rem;
-        }
-        @keyframes float-up-particle {
-            0% { transform: translateY(0) scale(0.5); opacity: 1; }
-            100% { transform: translateY(-40px) scale(1); opacity: 0; }
-        }
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        @keyframes buzz {
-            0%   { transform: translate(0, 0); }
-            20%  { transform: translate(-2px, 2px) rotate(-5deg); }
-            40%  { transform: translate(2px, -2px) rotate(5deg); }
-            60%  { transform: translate(-2px, -2px) rotate(-5deg); }
-            80%  { transform: translate(2px, 2px) rotate(5deg); }
-            100% { transform: translate(0, 0); }
-        }
-        @keyframes hop {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .planet-item[data-item-type="sapling"] span,
-        .planet-item[data-item-type="flower"] span,
-        .planet-item[data-item-type="adultTree"] span,
-        .planet-item[data-item-type="cosmicFlower"] span,
-        .planet-item[data-item-type="mushroom"] span {
-            display: inline-block;
-            animation: breathe 5s infinite ease-in-out;
-        }
-        .planet-item[data-item-type="bee"] span {
-            display: inline-block;
-            animation: buzz 0.3s infinite linear;
-        }
-        .planet-item[data-item-type="squirrel"] span {
-            display: inline-block;
-            animation: hop 1.5s infinite ease-in-out;
-        }
-         .planet-item[data-item-type="firefly"] span {
-            display: inline-block;
-            animation: twinkle 3s infinite;
-        }
-        .planet-item[data-item-type="frog"] span {
-            display: inline-block;
-            animation: hop 2s infinite ease-in-out;
-        }
-        .planet-item[data-item-type="songbird"] span {
-             display: inline-block;
-            animation: breathe 4s infinite ease-in-out;
-        }
-        .planet-item:nth-child(odd) span {
-            animation-delay: -1.5s;
-        }
-        .shop-item {
-            position: relative;
-        }
-        .custom-tooltip {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            bottom: 110%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #2d3748;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px;
-            z-index: 10;
-            width: max-content;
-            transition: opacity 0.2s ease-in-out;
-            pointer-events: none;
-            font-size: 0.75rem;
-        }
-        .shop-item:hover .custom-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 2s infinite alternate;
-        }
-        @keyframes twinkle {
-            from { opacity: 0.5; }
-            to { opacity: 1; }
-        }
-        @keyframes slide-in-down {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes fade-out-up {
-             0% { transform: translateY(0); opacity: 1; }
-            80% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-100%); opacity: 0; }
-        }
-        .toast-notification {
-            animation: slide-in-down 0.5s ease-out forwards, fade-out-up 0.5s ease-in 4.5s forwards;
-        }
-        .pollution-cloud {
-            animation: pulse 3s infinite;
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
-        }
-        .encyclopedia-entry.locked {
-            filter: grayscale(1) brightness(0.5);
-        }
-        .rain-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #000411;
+            color: #E0E0E0;
             overflow: hidden;
-            z-index: 25;
-        }
-        @keyframes fall-rain {
-            from { transform: translateY(-10vh); }
-            to { transform: translateY(110vh); }
-        }
-        .raindrop {
-            position: absolute;
-            animation-name: fall-rain;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-            color: #60a5fa;
-        }
-        #planet {
-            overflow: hidden;
-        }
-        #planet-features {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        #planet-features svg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            transition: opacity 2s ease-in-out, fill 2s ease-in-out;
-            opacity: 0;
-        }
-        #event-elements-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 20;
-        }
-        @keyframes spawn-in {
-            0% { transform: scale(0.5); opacity: 0; }
-            70% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .spawn-animation {
-            animation: spawn-in 0.3s ease-out forwards;
-        }
-        .bonus-btn .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ef4444;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
+            margin: 0;
+            padding: 0;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+            touch-action: none;
         }
-        .progress-bar {
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            height: 10px;
+        #gameContainer {
             width: 100%;
-        }
-        .progress-bar-fill {
-            background-color: #4caf50;
             height: 100%;
-            border-radius: 10px;
-            transition: width 0.3s ease-in-out;
+            max-width: 450px;
+            max-height: 800px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            border: 2px solid #00ffff;
+            background-color: #000411;
+            overflow: hidden; /* Garante que o tremor de tela não saia do container */
         }
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 5px 2px #fde047; }
-            50% { box-shadow: 0 0 15px 5px #fde047; }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDA0MTEiPjwvcmVjdD48L3N2Zz4=');
+            cursor: none;
         }
-        .reward-ready {
-            animation: glow 2s infinite;
-        }
-        
-        @keyframes shooting-star-path {
-            0% { transform: translate(-100px, -100px) scale(0.5); opacity: 1; }
-            100% { transform: translate(100vw, 100vh) scale(1); opacity: 0; }
-        }
-        #shooting-star {
+        .ui-overlay {
             position: absolute;
-            z-index: 50;
-            pointer-events: auto;
-            cursor: pointer;
-            animation: shooting-star-path 4s linear forwards;
-            color: white;
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fef08a;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: rgba(0, 4, 17, 0.8);
+            backdrop-filter: blur(5px);
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            z-index: 100;
         }
-        @keyframes comet-path {
-            from { transform: translate(-100px, 150px) rotate(-30deg); }
-            to { transform: translate(110vw, -50px) rotate(-30deg); }
+        .hidden { display: none; }
+        .button {
+            background: linear-gradient(145deg, #00ffff, #00b8b8);
+            border: none; padding: 15px 30px; margin-top: 20px; font-size: 1.5rem; color: #000411;
+            font-family: 'Orbitron', sans-serif; cursor: pointer; border-radius: 10px;
+            box-shadow: 0 0 15px #00ffff, inset 0 0 5px rgba(255,255,255,0.5);
+            transition: all 0.2s ease-in-out;
         }
-        #comet {
-            position: absolute;
-            z-index: 50;
-            pointer-events: auto;
-            cursor: pointer;
-            animation: comet-path 10s linear;
-            color: #bfdbfe;
-            text-shadow: 0 0 15px #60a5fa;
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #00ffff, inset 0 0 10px rgba(255,255,255,0.7);
         }
-        @keyframes star-seed-pulse {
-             0%, 100% { transform: scale(1); box-shadow: 0 0 15px 5px #a78bfa; }
-            50% { transform: scale(1.1); box-shadow: 0 0 30px 10px #a78bfa; }
+        .button:disabled, .button:disabled:hover {
+            background: linear-gradient(145deg, #5a6b6b, #495c5c); color: #999; cursor: not-allowed;
+            box-shadow: none; transform: none;
         }
-        #star-seed-button {
-             animation: star-seed-pulse 2s infinite;
+        h1 { font-size: 3rem; margin-bottom: 10px; }
+        p { font-size: 1.2rem; max-width: 80%; }
+        #top-bar {
+            position: absolute; top: 15px; right: 15px; z-index: 50;
+            display: flex; gap: 10px;
         }
-        @keyframes move-cloud {
-            from { transform: translateX(-150px); }
-            to { transform: translateX(110vw); }
+        .icon-button {
+            background: none; border: 2px solid #00ffff; color: #00ffff;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
-        .sky-cloud {
-            position: absolute;
-            top: 10%;
-            font-size: 3rem;
-            opacity: 0.3;
-            animation-name: move-cloud;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
+        #mission-container {
+            position: absolute; top: 80px; left: 10px; z-index: 40;
+            display: flex; flex-direction: column; gap: 5px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 5px;
+            font-size: 0.7rem; max-width: 150px;
         }
-        @keyframes smoke-puff {
-            0% { transform: translateY(0) scale(0.5); opacity: 0.5;}
-            100% { transform: translateY(-40px) scale(1.5); opacity: 0;}
+        .mission-item { color: #f0f0f0; }
+        .mission-progress-bar { height: 4px; background-color: #555; border-radius: 2px; overflow: hidden; margin-top: 2px; }
+        .mission-progress { height: 100%; background-color: #00ffff; width: 0%; }
+        #boss-health-container {
+            position: absolute; top: 120px; left: 5%; width: 90%; z-index: 40;
         }
-        .smoke {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 10px;
-            background: #a1a1aa;
-            border-radius: 50%;
-            animation: smoke-puff 3s linear infinite;
-        }
-        .factory {
-             filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.5));
-        }
-        
-        /* --- ESTILOS RESPONSIVOS PARA CELULAR --- */
-        @media (max-width: 640px) {
-            .flex-wrap {
-                justify-content: center;
-                gap: 1rem;
-            }
-            .shop-item span {
-                font-size: 0.9rem;
-            }
-            .shop-item.w-32 {
-                width: 120px;
-            }
-            .shop-item.w-36 {
-                width: 140px;
-            }
-            .shop-item.w-24 {
-                width: 90px;
-            }
-            .shop-item.w-16 {
-                width: 60px;
-            }
-            .progress-bar-fill {
-                height: 8px;
-            }
-            .toast-notification {
-                font-size: 0.8rem;
-            }
-            #planet {
-                 width: 300px;
-                 height: 300px;
-            }
-            .modal-content {
-                width: 90%;
-            }
-            .bonus-btn .badge {
-                 width: 18px;
-                 height: 18px;
-                 font-size: 10px;
-            }
+        #boss-health-bar {
+             height: 15px; background-color: #ff3366; width: 100%; border: 2px solid #fff; border-radius: 10px;
+             transition: width 0.2s;
         }
     </style>
 </head>
-<body class="bg-sky-200 text-gray-800 overflow-hidden select-none">
-    
-    <div id="main-menu" class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-sky-400 to-emerald-400 flex flex-col items-center justify-center z-50">
-        <h1 class="text-6xl sm:text-8xl text-white font-bold mb-4 text-center" style="text-shadow: 4px 4px 0px rgba(0,0,0,0.2);">Eco-Planeta Mágico</h1>
-        <p class="text-white text-xl sm:text-2xl mb-8">Ajude a dar vida a um novo mundo!</p>
-        <button id="start-game-btn" class="text-3xl bg-yellow-400 text-white font-bold py-4 px-8 rounded-full shadow-lg hover:bg-yellow-500 transition transform hover:scale-105">
-            Jogar!
-        </button>
-        <div class="menu-floater" style="font-size: 4rem; top: 15%; left: 10%;">🌍</div>
-        <div class="menu-floater" style="font-size: 3rem; top: 70%; left: 20%;">🌱</div>
-        <div class="menu-floater" style="font-size: 2.5rem; top: 25%; left: 85%;">✨</div>
-        <div class="menu-floater" style="font-size: 3.5rem; top: 80%; left: 90%;">🌳</div>
-        <div class="menu-floater" style="font-size: 2rem; top: 50%; left: 5%;">💧</div>
-    </div>
+<body>
+    <audio id="backgroundMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/11/22/audio_72092193b2.mp3" type="audio/mpeg">
+    </audio>
 
-
-    <div id="game-container" class="relative w-screen h-screen flex flex-col items-center justify-center">
-        
-        <div id="sky-elements-container" class="absolute top-0 left-0 w-full h-full pointer-events-none z-[-2]"></div>
-        
-        <div id="sun" class="celestial-body sun-glow top-1/2 -left-24 w-24 h-24 bg-yellow-300 rounded-full"></div>
-        <div id="moon" class="celestial-body moon-glow top-1/2 -left-16 w-16 h-16 bg-gray-200 rounded-full shadow-lg opacity-0"></div>
-        <div id="stars-container" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
-
-        <div id="notification-area" class="absolute top-[28%] sm:top-[25%] left-1/2 -translate-x-1/2 w-full max-w-xs flex flex-col items-center gap-3 z-30 pointer-events-none">
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <!-- HUD -->
+        <div id="hud" class="hidden absolute top-0 left-0 right-0 p-3 flex flex-col gap-2" style="pointer-events: none;">
+            <div class="flex justify-between items-center text-lg text-cyan-400" style="font-size: 1.5rem; text-shadow: 0 0 5px #00ffff;">
+                <div class="flex items-center gap-4">
+                    <span id="score">SCORE: 0</span>
+                    <div id="lives-container" class="flex items-center gap-1"></div>
+                </div>
+                <div title="Boost" class="w-24 h-6 bg-gray-900 border-2 border-cyan-400 rounded-full overflow-hidden" style="pointer-events: auto;">
+                    <div id="boost-bar" class="h-full bg-cyan-400" style="width: 100%;"></div>
+                </div>
+                <span id="dust">DUST: 0</span>
             </div>
-
-        <div id="special-events-container" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
-
-        <div class="absolute top-4 right-4 flex flex-col items-end gap-2 text-white bg-black/20 p-4 rounded-xl shadow-lg z-10">
-            <div id="star-seed-display" class="hidden items-center gap-2">
-                 <span id="star-seed-count" class="text-2xl font-bold">0</span> ✨
-            </div>
-            <div class="flex items-center gap-2">
-                <span id="water-count" class="text-2xl font-bold">0</span> 💧
-            </div>
-            <div class="flex items-center gap-2">
-                <span id="energy-count" class="text-2xl font-bold">0</span> ✨ (<span id="energy-per-second" class="text-lg">0</span>/s)
+            <div id="xp-bar-container" class="w-full h-3 bg-gray-900/50 border border-purple-500 rounded-full">
+                <div id="xp-bar" class="h-full bg-purple-500 rounded-full transition-all duration-300" style="width: 0%;"></div>
             </div>
         </div>
-
-        <div id="planet" class="relative w-[350px] h-[350px] sm:w-[450px] sm:h-[450px] rounded-full flex items-center justify-center shadow-2xl">
-            <div id="planet-features">
-                 <svg id="ground-layer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="opacity: 1;">
-                    <defs>
-                        <radialGradient id="groundGradient">
-                            <stop offset="70%" stop-color="#5c4033" />
-                            <stop offset="100%" stop-color="#4a2e23" />
-                        </radialGradient>
-                    </defs>
-                    <circle cx="50" cy="50" r="50" fill="url(#groundGradient)" />
-                </svg>
-                <svg id="grass-layer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="50" fill="#228B22" />
-                </svg>
-                <svg id="river-layer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 20,0 C 30,30 10,70 40,100" stroke="#3b82f6" stroke-width="6" fill="none" stroke-linecap="round"/>
-                    <path d="M 70,0 C 80,40 50,80 80,100" stroke="#3b82f6" stroke-width="4" fill="none" stroke-linecap="round"/>
-                </svg>
-                 <svg id="mountain-layer" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <polygon points="50,15 65,45 35,45" fill="#a0aec0"/>
-                    <polygon points="60,25 78,50 42,50" fill="#718096"/>
-                </svg>
-            </div>
-            <div id="event-elements-container"></div>
+        <!-- Botões do Topo -->
+        <div id="top-bar">
+            <button id="pauseButton" class="icon-button hidden">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
+            </button>
+            <button id="muteButton" class="icon-button">
+                <svg id="soundOnIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path></svg>
+                <svg id="soundOffIcon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"></path></svg>
+            </button>
+        </div>
+        <!-- UI Elementos -->
+        <div id="mission-container" class="hidden"></div>
+        <div id="boss-health-container" class="hidden">
+            <div id="boss-health-bar"></div>
         </div>
         
-        <div id="cloud" class="absolute top-[15%] sm:top-[10%] w-48 h-24 bg-white rounded-full clickable shadow-xl flex items-center justify-center -mt-12 z-10">
-            <h2 class="text-blue-400">Pegar Água</h2>
+        <!-- Menus Overlay -->
+        <div id="startMenu" class="ui-overlay">
+            <h1>Corrida Cósmica</h1>
+            <p>Toque para mover, desvie dos perigos e deslize para cima para usar o impulso!</p>
+            <button id="startButton" class="button">INICIAR</button>
+            <button id="shopButton" class="button" style="font-size: 1.2rem; padding: 10px 20px;">LOJA</button>
         </div>
-
-        <div class="absolute bottom-0 w-full bg-black/20 p-2 text-white z-10">
-            <div class="flex justify-center gap-2 md:gap-4 max-w-6xl mx-auto flex-wrap">
-                <div class="flex flex-col items-center bg-green-800/80 p-3 rounded-lg shadow-md">
-                    <h3 class="text-lg mb-2">Plantar</h3>
-                    <div class="flex gap-2">
-                        <button id="buy-sapling" class="shop-item pulse-animation flex items-center p-2 rounded-lg bg-green-600 hover:bg-green-500 transition w-32 h-12 justify-center">
-                            <span>Muda (<span id="sapling-cost">10</span>💧)</span>
-                            <div class="custom-tooltip">Gera: +1 ✨/s</div>
-                        </button>
-                        <button id="buy-flower" class="shop-item flex items-center p-2 rounded-lg bg-green-600 hover:bg-green-500 transition disabled:opacity-50 w-32 h-12 justify-center" disabled>
-                            <span>Flor (<span id="flower-cost">50</span>💧)</span>
-                            <div class="custom-tooltip">Gera: +5 ✨/s<br><span id="flower-hint">🔒 Requer 10 ✨/s</span></div>
-                        </button>
-                    </div>
-                </div>
-                <div class="flex flex-col items-center bg-gray-700/80 p-3 rounded-lg shadow-md">
-                    <h3 class="text-lg mb-2">Limpeza</h3>
-                     <button id="cleanup-button" class="shop-item flex items-center p-2 rounded-lg bg-gray-500 hover:bg-gray-400 transition disabled:opacity-50 w-32 h-12 justify-center" disabled>
-                        <span>Limpar (<span id="cleanup-cost">100</span>✨)</span>
-                         <div class="custom-tooltip"><span id="cleanup-hint">🔒 Requer 20 ✨/s</span></div>
-                    </button>
-                </div>
-                <div id="animal-shop" class="hidden flex-col items-center bg-orange-700/80 p-3 rounded-lg shadow-md">
-                    <h3 class="text-lg mb-2">Animais</h3>
-                     <div class="flex gap-2">
-                         <button id="buy-bee" class="shop-item flex items-center p-2 rounded-lg bg-orange-500 hover:bg-orange-400 transition disabled:opacity-50 w-32 h-12 justify-center" disabled>
-                            <span>Abelha (<span id="bee-cost">500</span>✨)</span>
-                            <div class="custom-tooltip">Gera: +10 ✨/s<br><span id="bee-hint">🔒 Limpe mais!</span></div>
-                        </button>
-                        <button id="buy-squirrel" class="shop-item flex items-center p-2 rounded-lg bg-orange-500 hover:bg-orange-400 transition disabled:opacity-50 w-32 h-12 justify-center" disabled>
-                            <span>Esquilo (<span id="squirrel-cost">1000</span>✨)</span>
-                            <div class="custom-tooltip">Acha 💧 bónus!<br><span id="squirrel-hint">🔒 Atraia abelhas!</span></div>
-                        </button>
-                     </div>
-                </div>
-                <div class="flex flex-col items-center bg-blue-800/80 p-3 rounded-lg shadow-md">
-                    <h3 class="text-lg mb-2">Melhorias</h3>
-                    <div class="flex gap-2">
-                        <button id="upgrade-click" class="shop-item flex items-center p-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition w-36 h-12 justify-center text-center">
-                           <span>Nuvem Maior (<span id="click-upgrade-cost">25</span>💧)</span>
-                           <div class="custom-tooltip">Bónus: +<span id="click-upgrade-bonus">1</span>💧/clique</div>
-                        </button>
-                         <button id="upgrade-auto" class="shop-item flex items-center p-2 rounded-lg bg-blue-600 hover:bg-blue-500 transition disabled:opacity-50 w-32 h-12 justify-center" disabled>
-                           <span>Pássaro (<span id="auto-upgrade-cost">200</span>✨)</span>
-                           <div class="custom-tooltip">Gera: +<span id="auto-upgrade-bonus">1</span>💧/s<br><span id="auto-hint">🔒 Limpe o planeta!</span></div>
-                        </button>
-                    </div>
-                </div>
-                 <div id="bonus-section" class="flex-col items-center bg-purple-800/80 p-3 rounded-lg shadow-md hidden">
-                    <h3 class="text-lg mb-2">Bónus</h3>
-                    <div class="flex gap-2">
-                        <button id="autoclick-bonus-btn" class="shop-item bonus-btn relative flex items-center justify-center p-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition disabled:opacity-50 w-16 h-12 text-2xl" disabled>
-                            <span>👆</span>
-                            <div class="badge hidden">0</div>
-                            <div class="custom-tooltip">Cliques Automáticos (30s)</div>
-                        </button>
-                        <button id="energy-bonus-btn" class="shop-item bonus-btn relative flex items-center justify-center p-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition disabled:opacity-50 w-16 h-12 text-2xl" disabled>
-                            <span>⚡️</span>
-                            <div class="badge hidden">0</div>
-                            <div class="custom-tooltip">Explosão de Energia</div>
-                        </button>
-                         <button id="growth-bonus-btn" class="shop-item bonus-btn relative flex items-center justify-center p-2 rounded-lg bg-purple-600 hover:bg-purple-500 transition disabled:opacity-50 w-16 h-12 text-2xl" disabled>
-                            <span>🌱</span>
-                            <div class="badge hidden">0</div>
-                            <div class="custom-tooltip">Super Crescimento (60s)</div>
-                        </button>
-                    </div>
-                </div>
-                <div class="flex flex-col items-center bg-gray-600/80 p-3 rounded-lg shadow-md">
-                    <h3 class="text-lg mb-2">Opções</h3>
-                    <div class="flex gap-2">
-                         <button id="missions-button" class="shop-item flex items-center justify-center p-2 rounded-lg bg-yellow-800 hover:bg-yellow-700 transition w-16 h-12 text-2xl">
-                            <span>📜</span>
-                            <div class="custom-tooltip">Missões</div>
-                        </button>
-                         <button id="how-to-play-button" class="shop-item flex items-center justify-center p-2 rounded-lg bg-gray-500 hover:bg-gray-400 transition w-16 h-12 text-2xl">
-                            <span>❓</span>
-                            <div class="custom-tooltip">Como Jogar</div>
-                        </button>
-                        <button id="tips-button" class="shop-item flex items-center justify-center p-2 rounded-lg bg-teal-600 hover:bg-teal-500 transition w-16 h-12 text-2xl">
-                            <span>💡</span>
-                            <div class="custom-tooltip">Dicas</div>
-                        </button>
-                        <button id="encyclopedia-button" class="shop-item flex items-center justify-center p-2 rounded-lg bg-yellow-600 hover:bg-yellow-500 transition w-16 h-12 text-2xl">
-                            <span>📖</span>
-                            <div class="custom-tooltip">Enciclopédia</div>
-                        </button>
-                        <button id="save-button" class="shop-item flex items-center justify-center p-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 transition w-24 h-12">
-                            <span>Salvar Jogo</span>
-                        </button>
-                        <button id="reset-button" class="shop-item flex items-center justify-center p-2 rounded-lg bg-red-700 hover:bg-red-600 transition w-24 h-12">
-                            <span>Reiniciar</span>
-                        </button>
-                    </div>
-                </div>
+        <div id="pauseMenu" class="ui-overlay hidden">
+            <h1>PAUSADO</h1>
+            <button id="resumeButton" class="button">CONTINUAR</button>
+            <button id="quitButton" class="button" style="background: linear-gradient(145deg, #c44, #a22); font-size: 1.2rem; padding: 10px 20px;">SAIR</button>
+        </div>
+        <div id="gameOverMenu" class="ui-overlay hidden">
+            <div id="finalStats">
+                <h1>FIM DE JOGO</h1>
+                <p>Pontuação Final: <span id="finalScore">0</span></p>
+                <p>Poeira Coletada: <span id="finalDust">0</span></p>
             </div>
-        </div>
-
-        <div id="tutorial-message" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 p-6 rounded-xl shadow-lg text-center max-w-sm z-40">
-            <h2 class="text-2xl mb-2">Bem-vindo ao Eco-Planeta!</h2>
-            <p class="mb-4">Seu trabalho é trazer vida a este lugar. Comece clicando na nuvem para conseguir gotas de água!</p>
-            <button id="close-tutorial" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Entendi!</button>
-        </div>
-        
-        <div id="how-to-play-modal" class="hidden absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-white/90 p-6 rounded-xl shadow-lg text-gray-800 max-w-lg">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-3xl">Como Jogar</h2>
-                    <button id="close-how-to-play-btn" class="text-3xl hover:text-red-600">&times;</button>
-                </div>
-                <div class="space-y-4 text-left">
-                    <p><strong>1. Colete Água (💧):</strong> Clique na nuvem branca no topo para juntar gotas de água. Este é o seu recurso principal!</p>
-                    <p><strong>2. Plante Vidas (🌳):</strong> Use a água para comprar "Mudas" e outras plantas na loja. Cada planta gera automaticamente Energia Vital (✨).</p>
-                    <p><strong>3. Limpe o Planeta (🌍):</strong> Use a energia para "Limpar a Poluição". Isto não só torna o seu planeta mais bonito, mas também desbloqueia novas melhorias e animais.</p>
-                    <p><strong>4. Evolua e Prospere:</strong> Compre melhorias, atraia animais, complete missões e descubra todos os segredos do seu Eco-Planeta Mágico!</p>
-                    <p><strong>Dica Extra:</strong> Fique atento a eventos especiais como Estrelas Cadentes e Chuvas Mágicas para ganhar bónus incríveis!</p>
-                </div>
+            <div id="extraLifeContainer" class="hidden">
+                 <h1>UMA CHANCE EXTRA?</h1>
+                 <p>Assista a um anúncio para ganhar +1 vida e continuar sua corrida!</p>
+                 <button id="watchAdButton" class="button">Assistir Anúncio (+1 Vida)</button>
+                 <button id="noThanksButton" class="button" style="font-size: 1rem; padding: 8px 16px; background: linear-gradient(145deg, #5a6b6b, #495c5c);">Não, obrigado</button>
             </div>
+            <button id="restartButton" class="button">JOGAR NOVAMENTE</button>
         </div>
-        
-        <div id="star-seed-modal" class="hidden absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center z-50">
-            <div class="bg-purple-100 p-8 rounded-2xl shadow-2xl text-center text-gray-800 border-8 border-purple-600 flex flex-col items-center max-w-md">
-                <h2 class="text-3xl mb-4">Semente Estelar Encontrada!</h2>
-                <p class="mb-4">O seu planeta atingiu o auge da sua beleza! Um cometa mágico deixou para trás uma Semente Estelar. Plantá-la irá reiniciar o seu planeta, mas dar-lhe-á um bónus permanente de +10% a toda a produção de energia, para sempre!</p>
-                <p class="mb-6 font-bold">Você tem <span id="star-seed-modal-count">1</span> Semente(s) Estelar(es).</p>
-                <div class="flex gap-4">
-                    <button id="plant-star-seed-btn" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700">Plantar e Recomeçar!</button>
-                    <button id="close-star-seed-btn" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500">Ainda não</button>
-                </div>
-            </div>
+        <div id="shopMenu" class="ui-overlay hidden" style="justify-content: flex-start; padding-top: 20px;">
+            <h1 style="font-size: 2.5rem;">LOJA DE NAVES</h1>
+            <p class="mb-4">Total de Poeira: <span id="totalDustDisplay">0</span></p>
+            <div id="ship-grid" class="grid grid-cols-2 gap-4 overflow-y-auto p-4 w-full h-3/4"></div>
+            <button id="backButton" class="button" style="font-size: 1.2rem; padding: 10px 20px;">VOLTAR</button>
         </div>
-
-
-        <div id="tips-modal" class="hidden absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-white/90 p-6 rounded-xl shadow-lg text-center max-w-sm text-gray-800">
-                <h2 class="text-2xl mb-2">💡 Dica Mágica 💡</h2>
-                <p id="tip-text" class="mb-4 min-h-[60px]"></p>
-                <div class="flex justify-center gap-4">
-                     <button id="next-tip-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Outra Dica</button>
-                    <button id="close-tips-btn" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500">Fechar</button>
-                </div>
-            </div>
+        <div id="levelUpMenu" class="ui-overlay hidden">
+             <h1>LEVEL UP!</h1>
+             <p>Escolha um aprimoramento:</p>
+             <div id="upgrade-options" class="flex flex-col mt-4 space-y-3"></div>
         </div>
-
-        <div id="offline-progress-modal" class="hidden absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-white/90 p-6 rounded-xl shadow-lg text-center max-w-sm text-gray-800">
-                <h2 class="text-2xl mb-2">Bem-vindo de volta!</h2>
-                <p class="mb-4">O seu planeta continuou a prosperar enquanto você esteve fora. Você ganhou:</p>
-                <div class="space-y-2 text-left mb-6 mx-auto w-fit">
-                    <p class="text-lg"><span id="offline-water" class="font-bold">0</span> 💧 Água</p>
-                    <p class="text-lg"><span id="offline-energy" class="font-bold">0</span> ✨ Energia</p>
-                </div>
-                <button id="collect-offline-btn" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600">Coletar!</button>
-            </div>
-        </div>
-
-        <div id="reset-confirmation-modal" class="hidden absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-white/90 p-6 rounded-xl shadow-lg text-center max-w-sm text-gray-800">
-                <h2 class="text-2xl mb-2">Tem certeza?</h2>
-                <p class="mb-4">Todo o seu progresso será perdido para sempre. Deseja reiniciar o jogo?</p>
-                <div class="flex justify-center gap-4">
-                    <button id="confirm-reset-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Confirmar</button>
-                    <button id="cancel-reset-btn" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500">Cancelar</button>
-                </div>
-            </div>
-        </div>
-
-         <div id="encyclopedia-modal" class="hidden absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-40">
-            <div class="bg-yellow-50/95 p-6 rounded-xl shadow-2xl max-w-3xl w-full text-gray-800 border-4 border-yellow-600">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-3xl">Enciclopédia Mágica</h2>
-                    <button id="close-encyclopedia-btn" class="text-3xl hover:text-red-600">&times;</button>
-                </div>
-                <div id="encyclopedia-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 max-h-[60vh] overflow-y-auto pr-2">
-                    </div>
-            </div>
-        </div>
-
-         <div id="missions-modal" class="hidden absolute top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-yellow-50/95 p-6 rounded-xl shadow-2xl max-w-lg w-full text-gray-800 border-4 border-yellow-800">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-3xl">Livro de Missões</h2>
-                    <button id="close-missions-btn" class="text-3xl hover:text-red-600">&times;</button>
-                </div>
-                <div id="missions-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
-                    </div>
-            </div>
+         <div id="creditsMenu" class="ui-overlay hidden">
+            <h1 style="font-size: 2.5rem;">VITÓRIA!</h1>
+            <p>Você derrotou a frota inimiga! Parabéns!</p>
+            <p style="font-size: 1.5rem; margin-top: 40px;">CRÉDITOS</p>
+            <p style="font-size: 1.2rem;">Criador: Weslley Fernando Barros Santos</p>
+            <p style="font-size: 1rem; margin-bottom: 20px;">Meu primeiro jogo criado</p>
+            <button id="mainMenuButton" class="button">MENU PRINCIPAL</button>
         </div>
     </div>
 
     <script>
-        // --- Elementos da DOM ---
-        const mainMenuEl = document.getElementById('main-menu');
-        const startGameBtn = document.getElementById('start-game-btn');
-        const gameContainerEl = document.getElementById('game-container');
-        const waterCountEl = document.getElementById('water-count');
-        const energyCountEl = document.getElementById('energy-count');
-        const energyPerSecondEl = document.getElementById('energy-per-second');
-        const cloudEl = document.getElementById('cloud');
-        const planetEl = document.getElementById('planet');
-        
-        const buySaplingBtn = document.getElementById('buy-sapling');
-        const buyFlowerBtn = document.getElementById('buy-flower');
-        const cleanupBtn = document.getElementById('cleanup-button');
-        const upgradeClickBtn = document.getElementById('upgrade-click');
-        const upgradeAutoBtn = document.getElementById('upgrade-auto');
-        const animalShopEl = document.getElementById('animal-shop');
-        const buyBeeBtn = document.getElementById('buy-bee');
-        const buySquirrelBtn = document.getElementById('buy-squirrel');
-        const saveBtn = document.getElementById('save-button');
-        const resetBtn = document.getElementById('reset-button');
+        // --- Configurações Iniciais ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameContainer = document.getElementById('gameContainer');
+        const hud = document.getElementById('hud');
+        const scoreDisplay = document.getElementById('score');
+        const dustDisplay = document.getElementById('dust');
+        const startMenu = document.getElementById('startMenu');
+        const gameOverMenu = document.getElementById('gameOverMenu');
+        const finalStats = document.getElementById('finalStats');
+        const extraLifeContainer = document.getElementById('extraLifeContainer');
+        const watchAdButton = document.getElementById('watchAdButton');
+        const noThanksButton = document.getElementById('noThanksButton');
+        const startButton = document.getElementById('startButton');
+        const restartButton = document.getElementById('restartButton');
+        const finalScoreDisplay = document.getElementById('finalScore');
+        const finalDustDisplay = document.getElementById('finalDust');
+        const shopButton = document.getElementById('shopButton');
+        const shopMenu = document.getElementById('shopMenu');
+        const backButton = document.getElementById('backButton');
+        const totalDustDisplay = document.getElementById('totalDustDisplay');
+        const shipGrid = document.getElementById('ship-grid');
+        const levelUpMenu = document.getElementById('levelUpMenu');
+        const upgradeOptionsContainer = document.getElementById('upgrade-options');
+        const livesContainer = document.getElementById('lives-container');
+        const muteButton = document.getElementById('muteButton');
+        const soundOnIcon = document.getElementById('soundOnIcon');
+        const soundOffIcon = document.getElementById('soundOffIcon');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const pauseButton = document.getElementById('pauseButton');
+        const pauseMenu = document.getElementById('pauseMenu');
+        const resumeButton = document.getElementById('resumeButton');
+        const quitButton = document.getElementById('quitButton');
+        const missionContainer = document.getElementById('mission-container');
+        const bossHealthContainer = document.getElementById('boss-health-container');
+        const bossHealthBar = document.getElementById('boss-health-bar');
+        const mainMenuButton = document.getElementById('mainMenuButton');
 
-        const saplingCostEl = document.getElementById('sapling-cost');
-        const flowerCostEl = document.getElementById('flower-cost');
-        const cleanupCostEl = document.getElementById('cleanup-cost');
-        const clickUpgradeCostEl = document.getElementById('click-upgrade-cost');
-        const autoUpgradeCostEl = document.getElementById('auto-upgrade-cost');
-        const clickUpgradeBonusEl = document.getElementById('click-upgrade-bonus');
-        const autoUpgradeBonusEl = document.getElementById('auto-upgrade-bonus');
-        const beeCostEl = document.getElementById('bee-cost');
-        const squirrelCostEl = document.getElementById('squirrel-cost');
-        
-        const flowerHintEl = document.getElementById('flower-hint');
-        const cleanupHintEl = document.getElementById('cleanup-hint');
-        const beeHintEl = document.getElementById('bee-hint');
-        const squirrelHintEl = document.getElementById('squirrel-hint');
-        const autoHintEl = document.getElementById('auto-hint');
+        let canvasWidth, canvasHeight;
+        let gameState = 'menu';
+        let player, obstacles, starDusts, gravityWells, stars, particles, powerUps, projectiles, xpOrbs, explosions, enemyProjectiles, boss;
+        let score, dust, scoreInterval;
+        let animationFrameId;
+        let difficultyMultiplier;
+        let worldSpeedMultiplier;
+        let screenFlash = { alpha: 0 };
+        let screenShake = { duration: 0, magnitude: 0 };
+        let hasUsedExtraLife = false;
+        let totalDust = 0;
+        let unlockedShips = ['default'];
+        let selectedShip = 'default';
+        let bossesDefeated = 0;
+        const BOSS_SCORES = [5000, 12000, 20000, 30000, 45000];
+        let nextBossScore;
+        const BOOST_MAX_ENERGY = 100;
+        const BOOST_COST = 40;
+        const BOOST_RECHARGE_RATE = 0.4;
+        const BOOST_SPEED_MULTIPLIER = 3;
+        let isBoosting = false;
+        let boostTimer = 0;
 
-        const tutorialMessage = document.getElementById('tutorial-message');
-        const closeTutorialBtn = document.getElementById('close-tutorial');
-        const resetModal = document.getElementById('reset-confirmation-modal');
-        const confirmResetBtn = document.getElementById('confirm-reset-btn');
-        const cancelResetBtn = document.getElementById('cancel-reset-btn');
-        
-        const sunEl = document.getElementById('sun');
-        const moonEl = document.getElementById('moon');
-        const starsContainerEl = document.getElementById('stars-container');
-
-        const notificationAreaEl = document.getElementById('notification-area');
-        const eventElementsContainerEl = document.getElementById('event-elements-container');
-
-        const encyclopediaBtn = document.getElementById('encyclopedia-button');
-        const encyclopediaModal = document.getElementById('encyclopedia-modal');
-        const closeEncyclopediaBtn = document.getElementById('close-encyclopedia-btn');
-        const encyclopediaGridEl = document.getElementById('encyclopedia-grid');
-
-        const tipsBtn = document.getElementById('tips-button');
-        const howToPlayBtn = document.getElementById('how-to-play-button');
-        const howToPlayModal = document.getElementById('how-to-play-modal');
-        const closeHowToPlayBtn = document.getElementById('close-how-to-play-btn');
-
-        const tipsModal = document.getElementById('tips-modal');
-        const tipTextEl = document.getElementById('tip-text');
-        const nextTipBtn = document.getElementById('next-tip-btn');
-        const closeTipsBtn = document.getElementById('close-tips-btn');
-        
-        const bonusSection = document.getElementById('bonus-section');
-        const autoclickBonusBtn = document.getElementById('autoclick-bonus-btn');
-        const energyBonusBtn = document.getElementById('energy-bonus-btn');
-        const growthBonusBtn = document.getElementById('growth-bonus-btn');
-
-        const missionsBtn = document.getElementById('missions-button');
-        const missionsModal = document.getElementById('missions-modal');
-        const closeMissionsBtn = document.getElementById('close-missions-btn');
-        const missionsListEl = document.getElementById('missions-list');
-        
-        const specialEventsContainer = document.getElementById('special-events-container');
-        
-        const starSeedDisplay = document.getElementById('star-seed-display');
-        const starSeedCountEl = document.getElementById('star-seed-count');
-        const starSeedModal = document.getElementById('star-seed-modal');
-        const plantStarSeedBtn = document.getElementById('plant-star-seed-btn');
-        const closeStarSeedBtn = document.getElementById('close-star-seed-btn');
-        const starSeedModalCountEl = document.getElementById('star-seed-modal-count');
-
-        // --- Estado do Jogo ---
-        let gameState = {
-            water: 0, energy: 0, clickPower: 1, autoWaterPerSecond: 0, energyPerSecond: 0,
-            plants: [], animals: [], pollutionCleaned: 0,
-            costs: { sapling: 10, flower: 50, cleanup: 100, clickUpgrade: 25, autoUpgrade: 200, bee: 500, squirrel: 1000 },
-            upgrades: { click: 0, auto: 0 },
-            bonuses: { autoClickers: 0, energyBursts: 0, superGrowths: 0, ecoFrenzies: 0 },
-            activeBonuses: { 
-                autoClicker: { active: false, timeLeft: 0 },
-                superGrowth: { active: false, timeLeft: 0 },
-                ecoFrenzy: { active: false, timeLeft: 0}
+        // --- Gerenciador de Som ---
+        const soundManager = {
+            isMuted: false, sounds: {},
+            loadSounds: function() {
+                this.sounds.shoot = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_1082306385.mp3');
+                this.sounds.explosion = new Audio('https://cdn.pixabay.com/download/audio/2021/08/04/audio_12b0c347f3.mp3');
+                this.sounds.damage = new Audio('https://cdn.pixabay.com/download/audio/2022/03/23/audio_3c7f07275d.mp3');
+                this.sounds.powerup = new Audio('https://cdn.pixabay.com/download/audio/2022/01/21/audio_ea20392812.mp3');
+                this.sounds.levelUp = new Audio('https://cdn.pixabay.com/download/audio/2022/05/26/audio_adfdef4c24.mp3');
+                this.sounds.gameOver = new Audio('https://cdn.pixabay.com/download/audio/2023/04/23/audio_409139294e.mp3');
+                this.sounds.missionComplete = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_29170a7532.mp3');
+                this.sounds.bossSpawn = new Audio('https://cdn.pixabay.com/download/audio/2022/08/25/audio_511915a769.mp3');
+                Object.values(this.sounds).forEach(s => s.volume = 0.5);
+                this.sounds.shoot.volume = 0.3;
             },
-            activeEvent: null,
-            weatherEvent: null,
-            lastSaveTime: null,
-            completedMissions: [],
-            gameTime: 0,
-            starSeeds: 0,
-            cometOffered: false,
-            unlockedEntries: { sapling: false, adultTree: false, flower: false, cosmicFlower: false, cleanup: false, bee: false, squirrel: false, pollutionEvent: false, rainEvent: false, grass: false, river: false, mountains: false }
-        };
-
-        // --- Dados da Enciclopédia ---
-        const encyclopediaData = {
-            sapling: { name: 'Muda', icon: '🌳', text: 'As árvores são os pulmões do planeta! Elas limpam o ar que respiramos, absorvendo dióxido de carbono e libertando oxigénio.' },
-            adultTree: { name: 'Árvore Adulta', icon: '🌲', text: 'Uma árvore adulta dá sombra, é a casa de muitos animais e produz muito mais oxigénio do que uma muda pequena. A paciência é recompensada!' },
-            flower: { name: 'Flor', icon: '🌻', text: 'As flores não são apenas bonitas, elas alimentam muitos animais, como as abelhas e os pássaros, com o seu néctar doce.' },
-            cosmicFlower: { name: 'Flor Cósmica', icon: '🌠', text: 'Nascida da poeira estelar, esta flor rara gera uma quantidade imensa de energia pura, um verdadeiro tesouro para qualquer ecossistema.' },
-            cleanup: { name: 'Planeta Limpo', icon: '🌍', text: 'Cuidar do nosso planeta, limpando-o e não o poluindo, ajuda a manter as plantas, os animais e a nós mesmos saudáveis e felizes.' },
-            bee: { name: 'Abelha', icon: '🐝', text: 'As abelhas são essenciais! Ao visitarem as flores, elas fazem a polinização, que ajuda as plantas a produzir frutos e sementes.' },
-            squirrel: { name: 'Esquilo', icon: '🐿️', text: 'Os esquilos são ótimos jardineiros! Eles enterram nozes e sementes para comer mais tarde, mas muitas vezes esquecem-se, e novas árvores crescem nesses locais.' },
-            pollutionEvent: { name: 'Nuvem de Poluição', icon: '☁️', text: 'A poluição do ar pode prejudicar a nossa saúde e a das plantas. É por isso que é importante manter o ar limpo, usando menos carros e mais bicicletas!' },
-            rainEvent: { name: 'Chuva Mágica', icon: '🌧️', text: 'A chuva é essencial para a vida! Ela rega as plantas, enche os rios e lagos, e garante que todos os seres vivos tenham água para beber.' },
-            grass: { name: 'Pradaria Verdejante', icon: '🌱', text: 'A relva ajuda a prevenir a erosão do solo, mantém o planeta fresco e é a casa de muitos pequenos insetos!' },
-            river: { name: 'Rio da Vida', icon: '🏞️', text: 'Os rios são como as veias do planeta, levando água fresca e nutrientes para todas as plantas e animais ao seu redor.' },
-            mountains: { name: 'Montanhas Majestosas', icon: '⛰️', text: 'As montanhas influenciam o clima e criam habitats únicos. A neve no seu topo derrete e fornece água vital durante as estações mais secas.' }
+            play: function(soundName) {
+                if (this.isMuted || !this.sounds[soundName]) return;
+                const sound = this.sounds[soundName].cloneNode();
+                sound.volume = this.sounds[soundName].volume;
+                sound.play().catch(error => {});
+            },
+            toggleMute: function() {
+                this.isMuted = !this.isMuted; backgroundMusic.muted = this.isMuted;
+                if (!this.isMuted && (gameState === 'playing' || gameState === 'paused')) { backgroundMusic.play().catch(e => {}); } else { backgroundMusic.pause(); }
+                soundOnIcon.classList.toggle('hidden', this.isMuted); soundOffIcon.classList.toggle('hidden', !this.isMuted);
+            }
         };
         
-        const tips = [
-            "Plantar mais mudas é a forma mais rápida de aumentar a sua energia no início!",
-            "Não se esqueça de melhorar a sua Nuvem para coletar água mais rapidamente.",
-            "Limpar o planeta desbloqueia novas melhorias e atrai animais!",
-            "Os esquilos podem encontrar tesouros de água bónus. Vale a pena o investimento!",
-            "Fique de olho em eventos inesperados! Resolvê-los rapidamente pode salvar os seus recursos.",
-            "Cada nova descoberta adiciona uma página à sua Enciclopédia. Tente completar todas!"
-        ];
-        let currentTipIndex = 0;
-
-        // --- Ciclo Dia/Noite ---
-        let fineGameTime = 0; // Milissegundos, para animações suaves
-        const DAY_DURATION_SECONDS = 180; // 3 minutos
-        const NIGHT_DURATION_SECONDS = 180; // 3 minutos
-        let isNight = false;
-
-        // --- Drag and Drop State ---
-        let draggedItem = {
-            element: null, type: null, index: -1, newAngle: 0, newDistance: 0
+        // --- Missões ---
+        const allMissions = [ { id: 'destroy_asteroids', description: 'Destrua 25 asteroides', target: 25, type: 'destroy_asteroid' }, { id: 'destroy_ships', description: 'Destrua 10 naves inimigas', target: 10, type: 'destroy_ship' }, { id: 'collect_dust', description: 'Colete 200 de poeira', target: 200, type: 'collect_dust' }, { id: 'survive_score', description: 'Alcance 3000 pontos', target: 3000, type: 'reach_score' }, { id: 'use_boost', description: 'Use o impulso 5 vezes', target: 5, type: 'use_boost' } ];
+        let activeMissions = []; let completedMissions = [];
+        const missionsManager = {
+            init: function() { const available = allMissions.filter(m => !completedMissions.includes(m.id)); activeMissions = []; for (let i = 0; i < 3 && available.length > 0; i++) { const missionIndex = Math.floor(Math.random() * available.length); const mission = { ...available.splice(missionIndex, 1)[0], progress: 0 }; activeMissions.push(mission); } this.updateDisplay(); },
+            updateProgress: function(type, amount = 1) { activeMissions.forEach(mission => { if (mission.type === type && mission.progress < mission.target) { mission.progress = Math.min(mission.target, mission.progress + amount); if (mission.progress >= mission.target) this.completeMission(mission); } else if (mission.type === 'reach_score') { mission.progress = Math.min(mission.target, score); if (mission.progress >= mission.target) this.completeMission(mission); } }); this.updateDisplay(); },
+            completeMission: function(mission) { if (completedMissions.includes(mission.id)) return; soundManager.play('missionComplete'); const reward = 100 + Math.floor(mission.target * 2.5); dust += reward; totalDust += reward; completedMissions.push(mission.id); saveGameData(); },
+            updateDisplay: function() { missionContainer.innerHTML = ''; activeMissions.forEach(mission => { const isComplete = mission.progress >= mission.target; const item = document.createElement('div'); item.className = 'mission-item'; item.innerHTML = `<span>${mission.description} ${isComplete ? '✓' : ''}</span><div class="mission-progress-bar"><div class="mission-progress" style="width: ${Math.min(100, (mission.progress / mission.target) * 100)}%;"></div></div>`; if (isComplete) item.style.color = '#00ffaa'; missionContainer.appendChild(item); }); }
         };
 
-        // --- Funções Principais do Jogo ---
-        function loadGame() {
-            const savedState = localStorage.getItem('ecoPlanetaSave');
-            if (savedState) {
-                const loadedState = JSON.parse(savedState);
-                const preservedStarSeeds = loadedState.starSeeds || 0;
-                const preservedMissions = loadedState.completedMissions || [];
+        const SHIPS = { 'default': { name: 'Padrão', price: 0, draw: function(ctx, x, y, width, height, color) { const w2 = width / 2; ctx.beginPath(); ctx.moveTo(x + w2, y); ctx.lineTo(x, y + height * 0.85); ctx.lineTo(x + w2, y + height); ctx.lineTo(x + width, y + height * 0.85); ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.beginPath(); ctx.arc(x + w2, y + height * 0.3, width * 0.15, 0, Math.PI * 2); ctx.fillStyle = '#222'; ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 1; ctx.stroke(); ctx.fillStyle = `rgba(255, 255, 100, ${0.7 + Math.random() * 0.3})`; ctx.beginPath(); ctx.moveTo(x + w2 - 5, y + height); ctx.lineTo(x + w2, y + height + 15); ctx.lineTo(x + w2 + 5, y + height); ctx.closePath(); ctx.fill(); }}, 'interceptor': { name: 'Interceptor', price: 500, draw: function(ctx, x, y, width, height, color) { const w2 = width / 2; ctx.beginPath(); ctx.moveTo(x + w2, y); ctx.lineTo(x + w2 - width * 0.15, y + height); ctx.lineTo(x + w2 + width * 0.15, y + height); ctx.closePath(); ctx.fillStyle = color; ctx.fill(); ctx.beginPath(); ctx.moveTo(x, y + height * 0.6); ctx.lineTo(x + width, y + height * 0.6); ctx.lineTo(x + w2, y + height * 0.5); ctx.closePath(); ctx.fillStyle = '#00cc00'; ctx.fill(); ctx.fillStyle = `rgba(150, 255, 150, ${0.7 + Math.random() * 0.3})`; ctx.beginPath(); ctx.moveTo(x + w2 - 3, y + height); ctx.lineTo(x + w2, y + height + 20); ctx.lineTo(x + w2 + 3, y + height); ctx.closePath(); ctx.fill(); }}, 'bomber': { name: 'Bombardeiro', price: 1200, draw: function(ctx, x, y, width, height, color) { ctx.beginPath(); ctx.rect(x + width * 0.1, y + height * 0.1, width * 0.8, height * 0.9); ctx.fillStyle = color; ctx.fill(); ctx.beginPath(); ctx.rect(x, y + height * 0.4, width, height * 0.3); ctx.fillStyle = '#cc6600'; ctx.fill(); ctx.beginPath(); ctx.rect(x + width * 0.3, y, width * 0.4, height * 0.2); ctx.fillStyle = '#ffcc88'; ctx.fill(); ctx.fillStyle = `rgba(255, 150, 50, ${0.7 + Math.random() * 0.3})`; ctx.fillRect(x + width * 0.1, y + height, width * 0.2, 10); ctx.fillRect(x + width * 0.7, y + height, width * 0.2, 10); }}, 'scout': { name: 'Batedor', price: 2500, draw: function(ctx, x, y, width, height, color) { const w2 = width / 2; ctx.beginPath(); ctx.moveTo(x, y + height * 0.2); ctx.lineTo(x + width, y + height); ctx.moveTo(x + width, y + height * 0.2); ctx.lineTo(x, y + height); ctx.strokeStyle = color; ctx.lineWidth = width * 0.2; ctx.stroke(); ctx.beginPath(); ctx.ellipse(x + w2, y + height * 0.6, width * 0.2, height * 0.5, 0, 0, Math.PI * 2); ctx.fillStyle = '#cccc00'; ctx.fill(); ctx.fillStyle = `rgba(255, 255, 150, ${0.7 + Math.random() * 0.3})`; ctx.beginPath(); ctx.moveTo(x + w2 - 4, y + height); ctx.lineTo(x + w2, y + height + 12); ctx.lineTo(x + w2 + 4, y + height); ctx.closePath(); ctx.fill(); }} };
+        const UPGRADES = { 'fireRate': { name: 'Cadência +20%', apply: (player) => player.weapon.fireRate *= 0.8 }, 'projectileSpeed': { name: 'Velocidade Projétil +25%', apply: (player) => player.weapon.projectileSpeed *= 1.25 }, 'multiShot': { name: 'Tiro Múltiplo', maxLevel: 10, isUnique: false, apply: (player) => player.weapon.multiShotLevel++ }, 'homingMissile': { name: 'Míssil Teleguiado', maxLevel: 5, isUnique: false, apply: (player) => player.weapon.homingLevel++ }, 'grenadeLauncher': { name: 'Lança-Granadas', maxLevel: 5, isUnique: false, apply: (player) => player.weapon.grenadeLevel++ }, 'sideCannons': { name: 'Canhões Laterais', maxLevel: 5, isUnique: false, apply: (player) => player.weapon.sideCannonLevel++ }, 'laserBeam': { name: 'Raio Laser', isUnique: true, apply: (player) => player.weapon.hasLaser = true }, 'boostRecharge': { name: 'Recarga Impulso +30%', apply: (player) => player.boostRechargeRate *= 1.3 }, 'healthUp': { name: 'Vida Extra', isUnique: true, apply: (player) => { player.lives++; updateLivesDisplay(); } }, 'xpGain': { name: 'Ganho de XP +25%', apply: (player) => player.xpMultiplier *= 1.25 }, 'dustGain': { name: 'Coleta de Poeira +20%', apply: (player) => player.dustMultiplier *= 1.2 }, 'piercingShot': { name: 'Tiro Perfurante', maxLevel: 5, isUnique: false, apply: (player) => player.weapon.pierceLevel++ }, 'orbitalDrone': { name: 'Drone Orbital', maxLevel: 3, isUnique: false, apply: (player) => player.addDrone() } };
+        let availableUpgrades = [];
 
-                gameState = {...gameState, ...loadedState, activeEvent: null, weatherEvent: null, activeBonuses: { autoClicker: { active: false, timeLeft: 0 }, superGrowth: { active: false, timeLeft: 0}, ecoFrenzy: {active: false, timeLeft: 0} } };
-                gameState.starSeeds = preservedStarSeeds;
-                gameState.completedMissions = preservedMissions;
+        // --- Classes do Jogo ---
+        class Player { constructor() { this.width = 30; this.height = 45; this.x = canvasWidth / 2 - this.width / 2; this.y = canvasHeight - this.height - 20; this.speed = 7; this.dx = 0; this.color = '#00ffff'; this.shipDesign = SHIPS[selectedShip]; this.weapon = { fireRate: 30, projectileSpeed: 7, multiShotLevel: 1, homingLevel: 0, grenadeLevel: 0, sideCannonLevel: 0, grenadeCooldown: 0, sideCannonCooldown: 0, hasLaser: false, laserCooldown: 0, pierceLevel: 0 }; this.fireCooldown = 0; this.homingFireCounter = 0; this.lives = 3; this.isInvincible = false; this.invincibilityTimer = 0; this.level = 1; this.xp = 0; this.xpToNextLevel = 100; this.boostRechargeRate = BOOST_RECHARGE_RATE; this.isShielded = false; this.shieldTimer = 0; this.isMagnetActive = false; this.magnetTimer = 0; this.boostEnergy = BOOST_MAX_ENERGY; this.xpMultiplier = 1; this.dustMultiplier = 1; this.drones = []; } addDrone() { this.drones.push(new Drone(this, this.drones.length)); } draw() { if (this.isInvincible && Math.floor(Date.now() / 100) % 2 === 0) return; this.drones.forEach(d => d.draw()); ctx.fillStyle = this.color; ctx.shadowBlur = 15; ctx.shadowColor = this.color; this.shipDesign.draw(ctx, this.x, this.y, this.width, this.height, this.color); if (this.isShielded) { ctx.beginPath(); ctx.arc(this.x + this.width / 2, this.y + this.height / 2, this.width * 0.8, 0, Math.PI * 2); ctx.strokeStyle = `rgba(0, 255, 255, ${0.5 + Math.random() * 0.5})`; ctx.lineWidth = 3; ctx.stroke(); } ctx.shadowBlur = 0; } update(targetX) { this.dx = (targetX - (this.x + this.width / 2)) * 0.15; this.x += this.dx; if (this.x < 0) this.x = 0; if (this.x + this.width > canvasWidth) this.x = canvasWidth - this.width; if (this.y < 0) this.y = 0; if (this.y + this.height > canvasHeight) this.y = canvasHeight - this.height; if (this.isInvincible) { this.invincibilityTimer--; if (this.invincibilityTimer <= 0) this.isInvincible = false; } if (this.isShielded) { this.shieldTimer--; if (this.shieldTimer <= 0) this.isShielded = false; } if (this.isMagnetActive) { this.magnetTimer--; if (this.magnetTimer <= 0) this.isMagnetActive = false; } if (this.boostEnergy < BOOST_MAX_ENERGY) this.boostEnergy += this.boostRechargeRate; if (this.weapon.grenadeCooldown > 0) this.weapon.grenadeCooldown--; if (this.weapon.sideCannonCooldown > 0) this.weapon.sideCannonCooldown--; if (this.weapon.laserCooldown > 0) this.weapon.laserCooldown--; if (this.weapon.grenadeLevel > 0 && this.weapon.grenadeCooldown <= 0) this.launchGrenades(); if (this.weapon.sideCannonLevel > 0 && this.weapon.sideCannonCooldown <= 0) this.fireSideCannons(); this.fireCooldown--; if (this.fireCooldown <= 0) { this.shoot(); this.fireCooldown = this.weapon.fireRate; } updateBoostBar(); this.drones.forEach(d => d.update()); } shoot() { const projX = this.x + this.width / 2; const projY = this.y; if (this.weapon.hasLaser && this.weapon.laserCooldown <= 0) { projectiles.push(new LaserBeam(projX, 0, 0, '#ff1111')); this.weapon.laserCooldown = 240; soundManager.play('shoot'); } if (this.weapon.homingLevel > 0) { this.homingFireCounter++; if (this.homingFireCounter >= 120 - (this.weapon.homingLevel * 10)) { for (let i = 0; i < this.weapon.homingLevel; i++) { projectiles.push(new HomingProjectile(projX, projY, this.weapon.projectileSpeed * 0.8, '#ff69b4')); } soundManager.play('shoot'); this.homingFireCounter = 0; } } const count = this.weapon.multiShotLevel; const spacing = 12; for (let i = 0; i < count; i++) { const startX = projX - (spacing * (count - 1) / 2); projectiles.push(new Projectile(startX + i * spacing, projY, this.weapon.projectileSpeed, '#00ffff')); } soundManager.play('shoot'); } fireSideCannons() { const projY = this.y + this.height / 2; projectiles.push(new SideProjectile(this.x, projY, -this.weapon.projectileSpeed)); projectiles.push(new SideProjectile(this.x + this.width, projY, this.weapon.projectileSpeed)); soundManager.play('shoot'); this.weapon.sideCannonCooldown = Math.max(20, 100 - (this.weapon.sideCannonLevel * 15)); } launchGrenades() { const numGrenades = 8; for (let i = 0; i < numGrenades; i++) { const angle = (i / numGrenades) * Math.PI * 2; projectiles.push(new Grenade(this.x + this.width / 2, this.y + this.height / 2, angle)); } soundManager.play('shoot'); const baseCooldown = 600; const maxReduction = 300; this.weapon.grenadeCooldown = baseCooldown - (maxReduction * ((this.weapon.grenadeLevel - 1) / 9)); } takeDamage() { if (this.isInvincible || this.isShielded) return; this.lives--; updateLivesDisplay(); soundManager.play('damage'); triggerScreenShake(15, 5); if (this.lives <= 0) { gameOver(); } else { this.isInvincible = true; this.invincibilityTimer = 120; createParticles(this.x + this.width / 2, this.y + this.height / 2, '#ff4f4f', 30); } } activateShield(duration) { this.isShielded = true; this.shieldTimer = duration; } activateMagnet(duration) { this.isMagnetActive = true; this.magnetTimer = duration; } useBoost() { if (this.boostEnergy >= BOOST_COST) { this.boostEnergy -= BOOST_COST; missionsManager.updateProgress('use_boost'); return true; } return false; } }
+        class Drone { constructor(player, index) { this.player = player; this.angle = (index / 3) * Math.PI * 2; this.radius = 6; this.orbitRadius = 50; this.x = 0; this.y = 0; this.fireCooldown = 90; } update() { this.angle += 0.03; this.x = this.player.x + this.player.width / 2 + Math.cos(this.angle) * this.orbitRadius; this.y = this.player.y + this.player.height / 2 + Math.sin(this.angle) * this.orbitRadius; this.fireCooldown--; if (this.fireCooldown <= 0) { projectiles.push(new Projectile(this.x, this.y, 5, '#aaffaa')); this.fireCooldown = 90; } } draw() { ctx.fillStyle = '#aaffaa'; ctx.shadowBlur = 8; ctx.shadowColor = '#aaffaa'; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; } }
+        class Projectile { constructor(x, y, speed, color) { this.x = x; this.y = y; this.width = 4; this.height = 15; this.speed = speed; this.color = color; this.pierce = 1 + (player ? player.weapon.pierceLevel : 0); } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 5; ctx.shadowColor = this.color; ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height); ctx.shadowBlur = 0; } update() { this.y -= this.speed; } }
+        class EnemyProjectile extends Projectile { constructor(x, y, speed, color) { super(x, y, speed, color); } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 8; ctx.shadowColor = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; } update() { this.y += this.speed * worldSpeedMultiplier; } }
+        class AngledEnemyProjectile extends EnemyProjectile { constructor(x, y, vx, vy, color) { super(x, y, 0, color); this.vx = vx; this.vy = vy; } update() { this.x += this.vx; this.y += this.vy * worldSpeedMultiplier; } }
+        class HomingEnemyProjectile extends EnemyProjectile { constructor(x, y, speed, color) { super(x, y, speed, color); this.turnSpeed = 0.04; this.angle = Math.PI/2; } update() { if(player) { const targetAngle = Math.atan2(player.y + player.height/2 - this.y, player.x + player.width/2 - this.x); let angleDiff = targetAngle - this.angle; while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI; while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI; if (Math.abs(angleDiff) > this.turnSpeed) { this.angle += this.turnSpeed * Math.sign(angleDiff); } else { this.angle = targetAngle; } } this.x += Math.cos(this.angle) * this.speed; this.y += Math.sin(this.angle) * this.speed * worldSpeedMultiplier; } }
+        class BossLaser extends EnemyProjectile { constructor(y) { super(canvasWidth/2, y, 0, 'rgba(255, 50, 50, 0.7)'); this.width = canvasWidth; this.height = 20; this.life = 30; this.radius = 1000; } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 20; ctx.shadowColor = '#ff0000'; ctx.fillRect(0, this.y - this.height/2, this.width, this.height); ctx.shadowBlur=0;} update() { this.life--; } }
+        class SideProjectile extends Projectile { constructor(x, y, speed) { super(x, y, 0, '#f0ad4e'); this.vx = speed; this.width = 15; this.height = 4; } update() { this.x += this.vx; } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 5; ctx.shadowColor = this.color; ctx.fillRect(this.x, this.y - this.height / 2, this.width, this.height); ctx.shadowBlur = 0; } }
+        class HomingProjectile extends Projectile { constructor(x, y, speed, color) { super(x, y, speed, color); this.target = null; this.turnSpeed = 0.08; this.height = 15; this.width = 8; this.angle = -Math.PI / 2; } findTarget() { let closestDist = Infinity; let closestObstacle = null; const combinedTargets = [...obstacles, boss].filter(Boolean); for (const obstacle of combinedTargets) { if (obstacle.y > 0 && obstacle.y < canvasHeight) { let centerX = obstacle.x + (obstacle.width || 0) / 2; let centerY = obstacle.y + (obstacle.height || 0) / 2; const dist = Math.hypot(this.x - centerX, this.y - centerY); if (dist < closestDist) { closestDist = dist; closestObstacle = obstacle; } } } this.target = closestObstacle; } update() { if (!this.target || this.target.y > canvasHeight + (this.target.radius || 0) || this.target.health <= 0) { this.findTarget(); } if (this.target) { let targetX = this.target.x + (this.target.width || 0) / 2; let targetY = this.target.y + (this.target.height || 0) / 2; const targetAngle = Math.atan2(targetY - this.y, targetX - this.x); let angleDiff = targetAngle - this.angle; while (angleDiff > Math.PI) angleDiff -= 2 * Math.PI; while (angleDiff < -Math.PI) angleDiff += 2 * Math.PI; if (Math.abs(angleDiff) > this.turnSpeed) { this.angle += this.turnSpeed * Math.sign(angleDiff); } else { this.angle = targetAngle; } } this.x += Math.cos(this.angle) * this.speed; this.y += Math.sin(this.angle) * this.speed; } draw() { ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle + Math.PI / 2); ctx.fillStyle = `rgba(255, 105, 180, 0.5)`; ctx.beginPath(); ctx.moveTo(0, this.height / 2); ctx.lineTo(-this.width / 2, this.height / 2 + 10); ctx.lineTo(this.width / 2, this.height / 2 + 10); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#ff69b4'; ctx.shadowBlur = 12; ctx.shadowColor = '#ff69b4'; ctx.beginPath(); ctx.moveTo(0, -this.height / 2); ctx.lineTo(-this.width / 2, this.height / 2); ctx.lineTo(this.width / 2, this.height / 2); ctx.closePath(); ctx.fill(); ctx.restore(); } }
+        class LaserBeam extends Projectile { constructor(x, y, speed, color) { super(x, y, speed, color); this.width = 10; this.height = canvasHeight; this.life = 15; } draw() { ctx.save(); ctx.globalAlpha = Math.min(1, this.life / 5); ctx.fillStyle = this.color; ctx.shadowBlur = 15; ctx.shadowColor = this.color; ctx.fillRect(this.x - this.width / 2, this.y, this.width, this.height); ctx.restore(); } update() { this.y = 0; this.life--; } }
+        class Grenade extends Projectile { constructor(x, y, angle) { super(x, y, 4, '#33ff33'); this.vx = Math.cos(angle) * this.speed; this.vy = Math.sin(angle) * this.speed; this.life = 40; } update() { this.x += this.vx; this.y += this.vy; this.life--; if (this.life <= 0) { explosions.push(new Explosion(this.x, this.y, 80)); soundManager.play('explosion'); projectiles.splice(projectiles.indexOf(this), 1); } } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 8; ctx.shadowColor = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; } }
+        class Obstacle { constructor() { this.radius = Math.random() * 25 + 15; this.x = Math.random() * (canvasWidth - this.radius * 2) + this.radius; this.y = -this.radius * 2; this.speed = Math.min(10, (Math.random() * 1.5 + 1.5) * difficultyMultiplier); this.color = `rgb(${100+Math.random()*50}, ${80+Math.random()*40}, ${60+Math.random()*30})`; this.rotation = Math.random() * Math.PI * 2; this.rotationSpeed = (Math.random() - 0.5) * 0.02; this.shape = []; const sides = Math.floor(Math.random() * 5 + 7); for (let i = 0; i < sides; i++) { const angle = (i / sides) * Math.PI * 2; const radius = this.radius * (Math.random() * 0.4 + 0.8); this.shape.push({ x: Math.cos(angle) * radius, y: Math.sin(angle) * radius }); } } draw() { ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation); ctx.fillStyle = this.color; ctx.shadowBlur = 10; ctx.shadowColor = '#555'; ctx.beginPath(); ctx.moveTo(this.shape[0].x, this.shape[0].y); for (let i = 1; i < this.shape.length; i++) { ctx.lineTo(this.shape[i].x, this.shape[i].y); } ctx.closePath(); ctx.fill(); ctx.strokeStyle = '#444'; ctx.lineWidth = 2; ctx.stroke(); ctx.restore(); } update() { this.y += this.speed * worldSpeedMultiplier * (isBoosting ? BOOST_SPEED_MULTIPLIER : 1); this.rotation += this.rotationSpeed; } }
+        class EnemyShip { constructor() { this.width = 30; this.height = 30; this.x = Math.random() < 0.5 ? -this.width : canvasWidth; this.y = Math.random() * (canvasHeight / 2); this.speed = Math.min(12, (Math.random() * 2 + 3) * difficultyMultiplier); this.color = '#ff3366'; this.vx = (this.x < 0 ? this.speed / 3 : -this.speed / 3) * (0.5 + Math.random()); this.vy = this.speed / 2; this.radius = 15; this.type = 'ship'; } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 15; ctx.shadowColor = this.color; ctx.beginPath(); ctx.moveTo(this.x + this.width / 2, this.y); ctx.lineTo(this.x, this.y + this.height * 0.75); ctx.lineTo(this.x + this.width / 2, this.y + this.height); ctx.lineTo(this.x + this.width, this.y + this.height * 0.75); ctx.closePath(); ctx.fill(); ctx.shadowBlur = 0; } update() { this.x += this.vx; this.y += this.vy * worldSpeedMultiplier; } }
+        class EnemyShooter extends EnemyShip { constructor() { super(); this.color = '#f0ad4e'; this.vy = 1; this.fireCooldown = 120; } update() { super.update(); this.fireCooldown--; if (this.fireCooldown <= 0 && this.y > 0 && this.y < canvasHeight) { enemyProjectiles.push(new EnemyProjectile(this.x + this.width / 2, this.y + this.height, 4, '#ff8c00')); this.fireCooldown = 120 + Math.random() * 60; soundManager.play('shoot'); } } }
+        class EnemyScout extends EnemyShip { constructor() { super(); this.color = '#ffff00'; this.width = 25; this.height = 25; this.speed = Math.min(14, (Math.random() * 3 + 4) * difficultyMultiplier); this.vx = (this.x < 0 ? this.speed / 2 : -this.speed / 2); this.vy = this.speed / 2; this.waveAmplitude = Math.random() * 40 + 20; this.waveFrequency = Math.random() * 0.05 + 0.02; this.initialX = this.x; } update() { this.initialX += this.vx; this.x = this.initialX + Math.sin(this.y * this.waveFrequency) * this.waveAmplitude; this.y += this.vy * worldSpeedMultiplier; } }
+        class EnemyBrute extends EnemyShip { constructor() { super(); this.color = '#cccccc'; this.width = 50; this.height = 50; this.radius = 25; this.speed = Math.min(6, (Math.random() * 1 + 1) * difficultyMultiplier); this.vx = 0; this.vy = this.speed; this.health = 3; this.x = Math.random() * (canvasWidth - this.width); this.y = -this.height; } takeDamage() { this.health--; if (this.health <= 0) return true; this.color = '#ff9999'; setTimeout(() => this.color = '#cccccc', 100); return false; } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 10; ctx.shadowColor = this.color; ctx.fillRect(this.x, this.y, this.width, this.height); ctx.shadowBlur = 0; } }
+        class Boss { constructor() { this.level = bossesDefeated; this.width = 150 + this.level * 10; this.height = 100 + this.level * 5; this.x = canvasWidth / 2 - this.width / 2; this.y = -this.height; this.maxHealth = (500 + 350 * this.level) * (1 + (player.level / 5)); this.health = this.maxHealth; this.state = 'entering'; this.stateTimer = 0; this.color = '#ff1493'; this.radius = this.width/2; this.type = 'boss'; this.currentAttackPattern = 0; this.laserWarning = false; this.laserCharge = 0; } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 20; ctx.shadowColor = this.color; ctx.fillRect(this.x, this.y, this.width, this.height); ctx.fillStyle = '#fff'; ctx.fillRect(this.x + 20, this.y + 20, 20, 20); ctx.fillRect(this.x + this.width - 40, this.y + 20, 20, 20); if(this.laserWarning && this.laserCharge > 0) { ctx.fillStyle = `rgba(255, 0, 0, ${Math.sin(Date.now()/100)})`; ctx.fillRect(0, this.laserY - 2, canvasWidth, 4); } ctx.shadowBlur = 0; } update() { this.stateTimer--; switch (this.state) { case 'entering': this.y += 1; if (this.y >= 50) { this.state = 'firing'; this.stateTimer = 240; } break; case 'firing': this.attack(); if (this.stateTimer <= 0) { this.state = 'waiting'; this.stateTimer = Math.max(60, 120 - this.level * 10); } break; case 'waiting': if (this.stateTimer <= 0) { this.state = 'firing'; this.stateTimer = 240; } break; } } attack() { if (this.level === 4) { if (this.stateTimer % 90 === 0) { this.currentAttackPattern = Math.floor(Math.random() * 5); } this.executeAttack(this.currentAttackPattern); } else { this.executeAttack(this.level); } } executeAttack(pattern) { const scaledPlayerLevel = player ? player.level : 1; switch (pattern) { case 0: if (this.stateTimer % Math.max(10, 30 - this.level * 4 - scaledPlayerLevel) === 0) { const cannonX = this.x + (Math.random() * this.width); enemyProjectiles.push(new EnemyProjectile(cannonX, this.y + this.height, 5 + this.level, '#ff1493')); soundManager.play('shoot'); } break; case 1: if (this.stateTimer % Math.max(20, 60 - this.level * 8 - scaledPlayerLevel) === 0) { for (let i = -this.level -2; i <= this.level+2; i++) { if (i === 0) continue; const angle = i * 0.15; const speed = 4; const vy = Math.cos(angle) * speed; const vx = Math.sin(angle) * speed; enemyProjectiles.push(new AngledEnemyProjectile(this.x + this.width / 2, this.y + this.height, vx, vy, '#ff944d')); } soundManager.play('shoot'); } break; case 2: if (this.level > 1 && this.stateTimer % Math.max(40, 100 - this.level * 15 - scaledPlayerLevel) === 0) { enemyProjectiles.push(new HomingEnemyProjectile(this.x + this.width / 2, this.y + this.height, 3 + this.level*0.5, '#cc00cc')); soundManager.play('shoot'); } break; case 3: if (this.level > 2 && this.stateTimer % Math.max(80, 150 - this.level * 20 - scaledPlayerLevel) === 0) { obstacles.push(new EnemyShip()); obstacles.push(new EnemyShooter()); } break; case 4: if (!this.laserWarning) { this.laserWarning = true; this.laserY = player.y; this.laserCharge = 90; } if (this.laserCharge > 0) { this.laserCharge--; } else { enemyProjectiles.push(new BossLaser(this.laserY)); this.laserWarning = false; this.currentAttackPattern = Math.floor(Math.random() * 4); } break; } } takeDamage(amount) { this.health -= amount; bossHealthBar.style.width = `${(this.health / this.maxHealth) * 100}%`; if (this.health <= 0) this.die(); } die() { createParticles(this.x + this.width / 2, this.y + this.height / 2, this.color, 200); score += 1000 * (this.level + 1); dust += 250 * (this.level + 1); for (let i = 0; i < 10; i++) xpOrbs.push(new XpOrb(this.x + Math.random() * this.width, this.y + Math.random() * this.height)); bossesDefeated++; if (bossesDefeated >= BOSS_SCORES.length) { gameWon(); return; } nextBossScore = BOSS_SCORES[bossesDefeated]; boss = null; bossHealthContainer.classList.add('hidden'); soundManager.play('explosion'); } }
+        class StarDust { constructor() { this.radius = 5; this.x = Math.random() * canvasWidth; this.y = -this.radius; this.speed = Math.random() * 1.5 + 1; this.color = '#ffff00'; } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.shadowBlur = 10; ctx.shadowColor = this.color; ctx.fill(); ctx.shadowBlur = 0; } update() { this.y += this.speed * worldSpeedMultiplier * (isBoosting ? BOOST_SPEED_MULTIPLIER : 1); if (player && player.isMagnetActive) { const dist = Math.hypot(player.x + player.width / 2 - this.x, player.y + player.height / 2 - this.y); if (dist < canvasWidth / 2.5) { const angle = Math.atan2(player.y + player.height / 2 - this.y, player.x + player.width / 2 - this.x); this.x += Math.cos(angle) * 6; this.y += Math.sin(angle) * 6; } } } }
+        class GravityWell { constructor() { this.radius = Math.random() * 20 + 30; this.x = Math.random() * (canvasWidth - this.radius * 2) + this.radius; this.y = -this.radius; this.speed = 1.5; this.influenceRadius = this.radius * 5; this.strength = 3; this.color = 'rgba(150, 50, 255, 0.7)'; } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.shadowBlur = 20; ctx.shadowColor = '#9632ff'; ctx.fill(); ctx.beginPath(); ctx.arc(this.x, this.y, this.influenceRadius, 0, Math.PI * 2); ctx.strokeStyle = 'rgba(150, 50, 255, 0.2)'; ctx.lineWidth = 2; ctx.stroke(); ctx.shadowBlur = 0; } update() { this.y += this.speed * worldSpeedMultiplier * (isBoosting ? BOOST_SPEED_MULTIPLIER : 1); } }
+        class Star { constructor() { this.x = Math.random() * canvasWidth; this.y = Math.random() * canvasHeight; this.radius = Math.random() * 1.5; this.speed = Math.random() * 0.5 + 0.2; this.alpha = Math.random(); } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = `rgba(224, 224, 224, ${this.alpha})`; ctx.fill(); } update() { this.y += this.speed * worldSpeedMultiplier * (isBoosting ? BOOST_SPEED_MULTIPLIER : 1); if(this.y > canvasHeight) { this.y = 0; this.x = Math.random() * canvasWidth; } } }
+        class PowerUp { constructor() { this.radius = 15; this.x = Math.random() * (canvasWidth - this.radius * 2) + this.radius; this.y = -this.radius; this.speed = 2.5; const rand = Math.random(); if (rand < 0.08) { this.type = 'bomb'; } else if (rand < 0.54) { this.type = 'shield'; } else { this.type = 'magnet'; } } draw() { ctx.save(); ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); let color, bgColor, icon; if (this.type === 'shield') { color = '#00ffff'; bgColor = 'rgba(0, 255, 255, 0.5)'; icon = 'S'; } else if (this.type === 'magnet') { color = '#ff00ff'; bgColor = 'rgba(255, 0, 255, 0.5)'; icon = 'M'; } else { color = '#ff4f4f'; bgColor = 'rgba(255, 79, 79, 0.5)'; icon = 'B'; } ctx.fillStyle = bgColor; ctx.strokeStyle = color; ctx.shadowColor = color; ctx.fill(); ctx.lineWidth = 2; ctx.stroke(); ctx.shadowBlur = 15; ctx.fillStyle = color; ctx.font = 'bold 18px Orbitron'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(icon, this.x, this.y + 1); ctx.restore(); } update() { this.y += this.speed * worldSpeedMultiplier * (isBoosting ? BOOST_SPEED_MULTIPLIER : 1); } }
+        class Particle { constructor(x, y, color) { this.x = x; this.y = y; this.color = color; this.radius = Math.random() * 3 + 1; this.speed = Math.random() * 4 + 1; this.angle = Math.random() * Math.PI * 2; this.vx = Math.cos(this.angle) * this.speed; this.vy = Math.sin(this.angle) * this.speed; this.life = 50; this.alpha = 1; } draw() { ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); ctx.restore(); } update() { this.x += this.vx; this.y += this.vy; this.vy += 0.05; this.life--; this.alpha = this.life / 50; } }
+        class Explosion { constructor(x, y, maxRadius) { this.x = x; this.y = y; this.radius = 10; this.maxRadius = maxRadius; this.life = 20; } update() { this.radius += (this.maxRadius - this.radius) * 0.1; this.life--; } draw() { ctx.fillStyle = `rgba(255, 100, 0, ${this.life / 20 * 0.8})`; ctx.strokeStyle = `rgba(255, 255, 0, ${this.life / 20})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); } }
+        class XpOrb { constructor(x, y) { this.x = x; this.y = y; this.radius = 6; this.speed = 2; this.value = 20; this.color = '#9632ff'; } draw() { ctx.fillStyle = this.color; ctx.shadowBlur = 10; ctx.shadowColor = this.color; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; } update() { this.y += this.speed * worldSpeedMultiplier; if (player && player.isMagnetActive) { const dist = Math.hypot(player.x + player.width / 2 - this.x, player.y + player.height / 2 - this.y); if (dist < canvasWidth / 2.5) { const angle = Math.atan2(player.y + player.height / 2 - this.y, player.x + player.width / 2 - this.x); this.x += Math.cos(angle) * 6; this.y += Math.sin(angle) * 6; } } } }
 
-                gameState.costs = {...gameState.costs, ...(loadedState.costs || {})};
-                gameState.upgrades = {...gameState.upgrades, ...(loadedState.upgrades || {})};
-                gameState.bonuses = {...gameState.bonuses, ...(loadedState.bonuses || {})};
-                gameState.unlockedEntries = {...gameState.unlockedEntries, ...(loadedState.unlockedEntries || {})};
-                tutorialMessage.style.display = 'none';
-                fineGameTime = (loadedState.gameTime || 0) * 1000;
-                
-                const autoUpgrades = gameState.upgrades.auto || 0;
-                gameState.autoWaterPerSecond = (autoUpgrades * (autoUpgrades + 1)) / 2;
+        // --- Funções do Jogo ---
+        function triggerScreenShake(duration, magnitude) { screenShake = { duration, magnitude }; }
+        function createParticles(x, y, color, count = 20) { for (let i = 0; i < count; i++) { particles.push(new Particle(x, y, color)); } }
+        function activateDevastatorBomb() { screenFlash = { alpha: 0.8 }; soundManager.play('explosion'); obstacles.forEach(obs => { createParticles(obs.x, obs.y, obs.color, 15); score += 5; dust += 2; }); obstacles.length = 0; scoreDisplay.textContent = `SCORE: ${score}`; dustDisplay.textContent = `DUST: ${dust}`; }
+        function init() { const rect = gameContainer.getBoundingClientRect(); canvasWidth = canvas.width = rect.width; canvasHeight = canvas.height = rect.height; player = new Player(); obstacles = []; starDusts = []; gravityWells = []; particles = []; powerUps = []; projectiles = []; xpOrbs = []; stars = []; explosions = []; enemyProjectiles = []; boss = null; bossHealthContainer.classList.add('hidden'); difficultyMultiplier = 1; worldSpeedMultiplier = 1.0; hasUsedExtraLife = false; bossesDefeated = 0; nextBossScore = BOSS_SCORES[0]; for(let i = 0; i < 100; i++) stars.push(new Star()); score = 0; dust = 0; scoreDisplay.textContent = `SCORE: 0`; dustDisplay.textContent = `DUST: 0`; updateXpBar(); updateLivesDisplay(); targetPlayerX = canvasWidth / 2; missionsManager.init(); }
+        function startGame() { init(); gameState = 'playing'; startMenu.classList.add('hidden'); gameOverMenu.classList.add('hidden'); document.getElementById('creditsMenu').classList.add('hidden'); shopMenu.classList.add('hidden'); levelUpMenu.classList.add('hidden'); hud.classList.remove('hidden'); pauseButton.classList.remove('hidden'); missionContainer.classList.remove('hidden'); if (!soundManager.isMuted) { backgroundMusic.currentTime = 0; backgroundMusic.play().catch(e => {}); } availableUpgrades = Object.keys(UPGRADES); scoreInterval = setInterval(() => { if(gameState === 'playing') { score++; scoreDisplay.textContent = `SCORE: ${score}`; missionsManager.updateProgress('reach_score'); } }, 100); if (animationFrameId) cancelAnimationFrame(animationFrameId); gameLoop(); }
+        function showFinalGameOver() { finalStats.classList.remove('hidden'); extraLifeContainer.classList.add('hidden'); restartButton.classList.remove('hidden'); totalDust += dust; saveGameData(); finalScoreDisplay.textContent = score; finalDustDisplay.textContent = dust; soundManager.play('gameOver'); }
+        function gameOver() { gameState = 'gameOver'; isBoosting = false; clearInterval(scoreInterval); backgroundMusic.pause(); cancelAnimationFrame(animationFrameId); gameOverMenu.classList.remove('hidden'); hud.classList.add('hidden'); pauseButton.classList.add('hidden'); missionContainer.classList.add('hidden'); bossHealthContainer.classList.add('hidden'); if (hasUsedExtraLife) { showFinalGameOver(); } else { finalStats.classList.add('hidden'); extraLifeContainer.classList.remove('hidden'); restartButton.classList.add('hidden'); } }
+        function gameWon() { gameState = 'won'; isBoosting = false; clearInterval(scoreInterval); backgroundMusic.pause(); cancelAnimationFrame(animationFrameId); hud.classList.add('hidden'); document.getElementById('creditsMenu').classList.remove('hidden'); }
+        function togglePause() { if (gameState === 'paused') { gameState = 'playing'; pauseMenu.classList.add('hidden'); if (!soundManager.isMuted) backgroundMusic.play(); gameLoop(); } else if (gameState === 'playing') { gameState = 'paused'; backgroundMusic.pause(); pauseMenu.classList.remove('hidden'); } }
+        function handleSpawning() { if(boss) return; if (Math.random() < 0.04) obstacles.push(new Obstacle()); if (bossesDefeated >= 1 && Math.random() < 0.008 * difficultyMultiplier) { obstacles.push(new EnemyShip()); } if (bossesDefeated >= 2 && Math.random() < 0.005 * difficultyMultiplier) { obstacles.push(new EnemyShooter()); } if (bossesDefeated >= 3 && Math.random() < 0.006 * difficultyMultiplier) { obstacles.push(new EnemyScout()); } if (bossesDefeated >= 4 && Math.random() < 0.004 * difficultyMultiplier) { obstacles.push(new EnemyBrute()); } if (Math.random() < 0.05) starDusts.push(new StarDust()); if (Math.random() < 0.003) gravityWells.push(new GravityWell()); if (Math.random() < 0.006) powerUps.push(new PowerUp()); }
+        function handleCollisions() {
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                const projectile = projectiles[i]; if (!projectile) continue;
+                const combinedTargets = [...obstacles, boss].filter(Boolean); let hit = false;
+                for (let j = combinedTargets.length - 1; j >= 0; j--) {
+                    const target = combinedTargets[j];
+                    const dist = Math.hypot(projectile.x - (target.x + (target.width || 0) / 2), projectile.y - (target.y + (target.height || 0) / 2));
+                    if (dist < target.radius) {
+                        if (target.type === 'boss') { target.takeDamage(10); } 
+                        else {
+                            if (target instanceof EnemyBrute && !target.takeDamage()) { /* Brute was hit but not destroyed */ } 
+                            else {
+                                createParticles(target.x + (target.width || 0) / 2, target.y + (target.height || 0) / 2, target.color);
+                                if (Math.random() < 0.5) xpOrbs.push(new XpOrb(target.x, target.y));
+                                missionsManager.updateProgress(target.type === 'ship' ? 'destroy_ship' : 'destroy_asteroid');
+                                obstacles.splice(j, 1); score += 10; dust += 1;
+                            }
+                        }
+                        projectile.pierce--;
+                        if (projectile.pierce <= 0 && !(projectile instanceof LaserBeam)) { projectiles.splice(i, 1); hit = true; }
+                        soundManager.play('explosion'); break;
+                    }
+                }
+                if(hit) continue;
             }
-            calculateOfflineProgress();
-            renderAll();
-            checkMissions();
+            const allHazards = [...obstacles, ...enemyProjectiles, boss].filter(Boolean);
+            for (let i = allHazards.length - 1; i >= 0; i--) { const hazard = allHazards[i]; const dist = Math.hypot((player.x + player.width / 2) - (hazard.x + (hazard.width || 0) / 2), (player.y + player.height / 2) - (hazard.y + (hazard.height || 0) / 2)); if (dist < hazard.radius + player.width / 2.5) { player.takeDamage(); if (gameState !== 'gameOver') { if (hazard instanceof EnemyProjectile) { enemyProjectiles.splice(i, 1); } else if (hazard.type !== 'boss') { obstacles.splice(i, 1); } createParticles(hazard.x, hazard.y, hazard.color, 10); soundManager.play('explosion'); } } }
+            for (let i = starDusts.length - 1; i >= 0; i--) { const starDust = starDusts[i]; if (player.x < starDust.x + starDust.radius && player.x + player.width > starDust.x - starDust.radius && player.y < starDust.y + starDust.radius && player.y + player.height > starDust.y - starDust.radius) { const dustGained = Math.floor(5 * player.dustMultiplier); dust += dustGained; missionsManager.updateProgress('collect_dust', dustGained); createParticles(starDust.x, starDust.y, '#ffff00', 5); starDusts.splice(i, 1); soundManager.play('powerup'); } }
+            for (let i = powerUps.length - 1; i >= 0; i--) { const powerUp = powerUps[i]; const dist = Math.hypot(player.x + player.width / 2 - powerUp.x, player.y + player.height / 2 - powerUp.y); if (dist < player.width / 2 + powerUp.radius) { soundManager.play('powerup'); if (powerUp.type === 'shield') { player.activateShield(300); createParticles(powerUp.x, powerUp.y, '#00ffff'); } else if (powerUp.type === 'magnet') { player.activateMagnet(480); createParticles(powerUp.x, powerUp.y, '#ff00ff'); } else if (powerUp.type === 'bomb') { activateDevastatorBomb(); createParticles(powerUp.x, powerUp.y, '#ff4f4f');} powerUps.splice(i, 1); } }
+            for (let i = xpOrbs.length - 1; i >= 0; i--) { const orb = xpOrbs[i]; const dist = Math.hypot(player.x + player.width / 2 - orb.x, player.y + player.height / 2 - orb.y); if (dist < player.width / 2 + orb.radius) { gainXp(orb.value); createParticles(orb.x, orb.y, orb.color, 3); xpOrbs.splice(i, 1); soundManager.play('powerup'); } }
+            for (let i = explosions.length - 1; i >= 0; i--) { const explosion = explosions[i]; for (let j = obstacles.length - 1; j >= 0; j--) { const obstacle = obstacles[j]; const dist = Math.hypot(explosion.x - obstacle.x, explosion.y - obstacle.y); if (dist < explosion.radius + obstacle.radius) { createParticles(obstacle.x, obstacle.y, obstacle.color); missionsManager.updateProgress(obstacle.type === 'ship' ? 'destroy_ship' : 'destroy_asteroid'); obstacles.splice(j, 1); score += 10; dust += 1; } } }
+            scoreDisplay.textContent = `SCORE: ${score}`; dustDisplay.textContent = `DUST: ${dust}`;
         }
-
-        function saveGame() {
-            gameState.lastSaveTime = Date.now();
-            gameState.gameTime = Math.floor(fineGameTime / 1000);
-            localStorage.setItem('ecoPlanetaSave', JSON.stringify(gameState));
+        function update() {
+            difficultyMultiplier = 1 + (score / 10000) + ((player.level - 1) * 0.08);
+            player.update(targetPlayerX);
+            if(boss) boss.update();
+            else if(score >= nextBossScore && bossesDefeated < BOSS_SCORES.length) { boss = new Boss(); bossHealthContainer.classList.remove('hidden'); bossHealthBar.style.width = '100%'; soundManager.play('bossSpawn'); triggerScreenShake(30, 8); }
+            stars.forEach(s => s.update());
+            particles.forEach((p, index) => { p.update(); if (p.life <= 0) particles.splice(index, 1); });
+            [projectiles, enemyProjectiles].forEach(arr => arr.forEach((p, index) => { if (p.y + p.height < 0 || p.y > canvasHeight || p.x < 0 || p.x > canvasWidth || (p.life && p.life <= 0)) { arr.splice(index, 1); } else { p.update(); } }));
+            [obstacles, starDusts, gravityWells, powerUps, xpOrbs].forEach(arr => { arr.forEach((item, index) => { item.update(); if (item.y > canvasHeight + 100 || item.x < -100 || item.x > canvasWidth + 100) arr.splice(index, 1); }); });
+            explosions.forEach((exp, index) => { exp.update(); if (exp.life <= 0) explosions.splice(index, 1); });
+            handleSpawning(); handleCollisions();
         }
-
-        function calculateOfflineProgress() {
-            if (!gameState.lastSaveTime || gameState.autoWaterPerSecond === 0 && gameState.energyPerSecond === 0) return;
-            const now = Date.now();
-            let timeDiffSeconds = Math.floor((now - gameState.lastSaveTime) / 1000);
-            if (timeDiffSeconds <= 5) return;
-            const MAX_OFFLINE_SECONDS = 2 * 60 * 60;
-            const effectiveTime = Math.min(timeDiffSeconds, MAX_OFFLINE_SECONDS);
-            const waterGained = effectiveTime * gameState.autoWaterPerSecond;
-            const energyGained = effectiveTime * (gameState.energyPerSecond * (1 + gameState.starSeeds * 0.1));
-
-            if (waterGained > 0 || energyGained > 0) {
-                gameState.water += waterGained;
-                gameState.energy += energyGained;
-                document.getElementById('offline-water').textContent = Math.floor(waterGained).toLocaleString();
-                document.getElementById('offline-energy').textContent = Math.floor(energyGained).toLocaleString();
-                const modal = document.getElementById('offline-progress-modal');
-                modal.classList.remove('hidden');
-                document.getElementById('collect-offline-btn').onclick = () => {
-                    modal.classList.add('hidden');
-                    updateDisplay();
-                };
-            }
-        }
+        function draw() { ctx.save(); ctx.clearRect(0, 0, canvasWidth, canvasHeight); if(screenShake.duration > 0) { const dx = (Math.random() - 0.5) * screenShake.magnitude; const dy = (Math.random() - 0.5) * screenShake.magnitude; ctx.translate(dx, dy); screenShake.duration--; } stars.forEach(s => s.draw()); [obstacles, starDusts, gravityWells, powerUps, xpOrbs, enemyProjectiles].forEach(arr => arr.forEach(item => item.draw())); if(boss) boss.draw(); projectiles.forEach(p => p.draw()); player.draw(); particles.forEach(p => p.draw()); explosions.forEach(exp => exp.draw()); if (screenFlash.alpha > 0) { ctx.fillStyle = `rgba(255, 255, 255, ${screenFlash.alpha})`; ctx.fillRect(0, 0, canvasWidth, canvasHeight); screenFlash.alpha -= 0.04; } ctx.restore(); }
+        function gameLoop() { if (gameState !== 'playing') return; update(); draw(); if (isBoosting) { boostTimer--; if(boostTimer <= 0) isBoosting = false; } animationFrameId = requestAnimationFrame(gameLoop); }
+        function updateBoostBar() { const boostBar = document.getElementById('boost-bar'); if(boostBar && player) boostBar.style.width = `${(player.boostEnergy / BOOST_MAX_ENERGY) * 100}%`; }
+        function updateXpBar() { const xpBar = document.getElementById('xp-bar'); if(xpBar && player) xpBar.style.width = `${(player.xp / player.xpToNextLevel) * 100}%`; }
+        function updateLivesDisplay() { if (!livesContainer || !player) return; livesContainer.innerHTML = ''; for (let i = 0; i < player.lives; i++) { const heartIcon = document.createElement('div'); heartIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ff4f4f" style="filter: drop-shadow(0 0 3px #ff4f4f);"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>`; livesContainer.appendChild(heartIcon); } }
+        function gainXp(amount) { if (!player) return; player.xp += (amount * player.xpMultiplier); if (player.xp >= player.xpToNextLevel) levelUp(); updateXpBar(); }
+        function levelUp() { gameState = 'levelUp'; clearInterval(scoreInterval); player.level++; player.xp -= player.xpToNextLevel; player.xpToNextLevel = Math.floor(player.xpToNextLevel * 1.5); soundManager.play('levelUp'); populateUpgradeOptions(); levelUpMenu.classList.remove('hidden'); updateXpBar(); }
+        function populateUpgradeOptions() { upgradeOptionsContainer.innerHTML = ''; let chosenUpgrades = []; let tempUpgrades = [...availableUpgrades].filter(id => { const upgrade = UPGRADES[id]; if (!upgrade.maxLevel) return true; let currentLevel = 0; if(id === 'multiShot') currentLevel = player.weapon.multiShotLevel; else if(id === 'homingMissile') currentLevel = player.weapon.homingLevel; else if(id === 'grenadeLauncher') currentLevel = player.weapon.grenadeLevel; else if(id === 'sideCannons') currentLevel = player.weapon.sideCannonLevel; else if(id === 'piercingShot') currentLevel = player.weapon.pierceLevel; else if(id === 'orbitalDrone') currentLevel = player.drones.length; return currentLevel < upgrade.maxLevel; }); for (let i = 0; i < 3 && tempUpgrades.length > 0; i++) { const randomIndex = Math.floor(Math.random() * tempUpgrades.length); chosenUpgrades.push(tempUpgrades.splice(randomIndex, 1)[0]); } chosenUpgrades.forEach(upgradeId => { const upgrade = UPGRADES[upgradeId]; const button = document.createElement('button'); button.className = 'button'; let text = upgrade.name; if (!upgrade.isUnique) { let currentLevel = 0; if(upgradeId === 'multiShot') currentLevel = player.weapon.multiShotLevel - 1; else if(upgradeId === 'homingMissile') currentLevel = player.weapon.homingLevel; else if(upgradeId === 'grenadeLauncher') currentLevel = player.weapon.grenadeLevel; else if(upgradeId === 'sideCannons') currentLevel = player.weapon.sideCannonLevel; else if(upgradeId === 'piercingShot') currentLevel = player.weapon.pierceLevel; else if(upgradeId === 'orbitalDrone') currentLevel = player.drones.length; text = `${upgrade.name} Nv. ${currentLevel + 1}`; } button.textContent = text; button.onclick = () => selectUpgrade(upgradeId); upgradeOptionsContainer.appendChild(button); }); }
+        function selectUpgrade(upgradeId) { const upgrade = UPGRADES[upgradeId]; upgrade.apply(player); if (upgrade.isUnique && !upgrade.maxLevel) { const index = availableUpgrades.indexOf(upgradeId); if (index > -1) availableUpgrades.splice(index, 1); } levelUpMenu.classList.add('hidden'); gameState = 'playing'; scoreInterval = setInterval(() => { if(gameState === 'playing') { score++; scoreDisplay.textContent = `SCORE: ${score}`; missionsManager.updateProgress('reach_score');}}, 100); gameLoop(); }
+        function saveGameData() { localStorage.setItem('cosmicRaceData', JSON.stringify({ totalDust: totalDust, unlockedShips: unlockedShips, selectedShip: selectedShip, completedMissions: completedMissions })); }
+        function loadGameData() { const savedData = localStorage.getItem('cosmicRaceData'); if (savedData) { const gameData = JSON.parse(savedData); totalDust = gameData.totalDust || 0; unlockedShips = gameData.unlockedShips || ['default']; selectedShip = gameData.selectedShip || 'default'; completedMissions = gameData.completedMissions || []; } }
+        function openShop() { gameState = 'shop'; startMenu.classList.add('hidden'); shopMenu.classList.remove('hidden'); pauseButton.classList.add('hidden'); muteButton.classList.add('hidden'); populateShop(); }
+        function closeShop() { gameState = 'menu'; shopMenu.classList.add('hidden'); startMenu.classList.remove('hidden'); pauseButton.classList.remove('hidden'); muteButton.classList.remove('hidden'); }
+        function populateShop() { shipGrid.innerHTML = ''; totalDustDisplay.textContent = Math.floor(totalDust); for (const shipId in SHIPS) { const ship = SHIPS[shipId]; const isUnlocked = unlockedShips.includes(shipId); const isSelected = selectedShip === shipId; const shipCard = document.createElement('div'); shipCard.className = 'border-2 rounded-lg p-2 flex flex-col items-center justify-between'; shipCard.style.borderColor = isSelected ? '#ffff00' : '#00ffff'; let buttonHtml; if (isSelected) buttonHtml = `<button class="w-full mt-2 p-1 rounded bg-yellow-500 text-black text-sm font-bold" disabled>EQUIPADO</button>`; else if (isUnlocked) buttonHtml = `<button class="w-full mt-2 p-1 rounded bg-cyan-400 text-black text-sm font-bold" onclick="selectShip('${shipId}')">SELECIONAR</button>`; else buttonHtml = `<button class="w-full mt-2 p-1 rounded ${totalDust >= ship.price ? 'bg-green-500' : 'bg-gray-600'} text-black text-sm font-bold" onclick="buyShip('${shipId}')">${ship.price} Poeira</button>`; shipCard.innerHTML = `<p class="text-sm">${ship.name}</p><canvas width="80" height="80"></canvas>${buttonHtml}`; shipGrid.appendChild(shipCard); const previewCanvas = shipCard.querySelector('canvas'); const previewCtx = previewCanvas.getContext('2d'); previewCtx.clearRect(0, 0, 80, 80); ship.draw(previewCtx, 25, 20, 30, 45, '#00ffff'); } }
+        function buyShip(shipId) { const ship = SHIPS[shipId]; if (totalDust >= ship.price && !unlockedShips.includes(shipId)) { totalDust -= ship.price; unlockedShips.push(shipId); selectShip(shipId); saveGameData(); populateShop(); } }
+        function selectShip(shipId) { if (unlockedShips.includes(shipId)) { selectedShip = shipId; saveGameData(); populateShop(); } }
+        let targetPlayerX; let touchStartY = 0;
+        function getEventX(e) { const rect = canvas.getBoundingClientRect(); if (e.touches && e.touches.length > 0) return e.touches[0].clientX - rect.left; return e.clientX - rect.left; }
+        function handleMove(e) { if (gameState === 'playing' && player) targetPlayerX = getEventX(e); }
         
         // --- Event Listeners ---
-        startGameBtn.addEventListener('click', () => {
-            mainMenuEl.classList.add('menu-hiding');
-            setTimeout(() => {
-                mainMenuEl.style.display = 'none';
-            }, 700); // Corresponde à duração da animação
+        window.addEventListener('resize', init);
+        startButton.addEventListener('click', startGame);
+        restartButton.addEventListener('click', startGame);
+        shopButton.addEventListener('click', openShop);
+        backButton.addEventListener('click', closeShop);
+        muteButton.addEventListener('click', () => soundManager.toggleMute());
+        pauseButton.addEventListener('click', togglePause);
+        resumeButton.addEventListener('click', togglePause);
+        quitButton.addEventListener('click', () => { location.reload(); });
+        mainMenuButton.addEventListener('click', () => { location.reload(); });
+        noThanksButton.addEventListener('click', showFinalGameOver);
+        watchAdButton.addEventListener('click', () => {
+            console.log("Exibindo anúncio simulado...");
+            hasUsedExtraLife = true; player.lives = 1; updateLivesDisplay();
+            obstacles = obstacles.filter(obs => Math.hypot(player.x - obs.x, player.y - obs.y) > canvasWidth / 3);
+            gameOverMenu.classList.add('hidden'); hud.classList.remove('hidden'); pauseButton.classList.remove('hidden'); missionContainer.classList.remove('hidden'); gameState = 'playing';
+            if(!soundManager.isMuted) backgroundMusic.play();
+            scoreInterval = setInterval(() => { if(gameState === 'playing') {score++; scoreDisplay.textContent = `SCORE: ${score}`; missionsManager.updateProgress('reach_score');}}, 100); gameLoop();
         });
+        canvas.addEventListener('mousedown', (e) => handleMove(e));
+        canvas.addEventListener('mousemove', (e) => { if (e.buttons === 1) handleMove(e); });
+        canvas.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; handleMove(e); }, { passive: true });
+        canvas.addEventListener('touchmove', (e) => handleMove(e), { passive: true });
+        canvas.addEventListener('touchend', (e) => { if (!player) return; const touchEndY = e.changedTouches[0].clientY; if (touchStartY - touchEndY > 50) { if (player.useBoost()) { isBoosting = true; boostTimer = 60; createParticles(player.x + player.width/2, player.y + player.height, '#ffffff'); } } });
 
-        planetEl.addEventListener('mousedown', startDrag);
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('mouseup', endDrag);
-        planetEl.addEventListener('touchstart', startDrag, { passive: false });
-        document.addEventListener('touchmove', drag, { passive: false });
-        document.addEventListener('touchend', endDrag);
-
-        cloudEl.addEventListener('click', () => {
-            if (draggedItem.element) return;
-            collectWater(gameState.clickPower);
-            if (tutorialMessage.style.display !== 'none') {
-                tutorialMessage.style.display = 'none';
-            }
-        });
-
-        function collectWater(amount) {
-            let waterOnClick = amount;
-            if (gameState.weatherEvent && gameState.weatherEvent.type === 'rain') {
-                waterOnClick *= 2;
-            }
-            gameState.water += waterOnClick;
-            updateDisplay();
-            spawnFallingDrop();
-        }
-
-        buySaplingBtn.addEventListener('click', () => buyPlant('sapling', 1));
-        buyFlowerBtn.addEventListener('click', () => buyPlant('flower', 5));
-        buyBeeBtn.addEventListener('click', () => buyAnimal('bee', 10));
-        buySquirrelBtn.addEventListener('click', () => buyAnimal('squirrel', 0));
-        cleanupBtn.addEventListener('click', cleanupPollution);
-        upgradeClickBtn.addEventListener('click', upgradeClick);
-        upgradeAutoBtn.addEventListener('click', upgradeAuto);
-        
-        saveBtn.addEventListener('click', () => {
-            saveGame();
-            const originalText = saveBtn.innerHTML;
-            saveBtn.innerHTML = '<span>Salvo! ✅</span>';
-            saveBtn.disabled = true;
-            setTimeout(() => {
-                saveBtn.innerHTML = originalText;
-                saveBtn.disabled = false;
-            }, 1500);
-        });
-
-        resetBtn.addEventListener('click', () => {
-            resetModal.classList.remove('hidden');
-        });
-        cancelResetBtn.addEventListener('click', () => {
-            resetModal.classList.add('hidden');
-        });
-        confirmResetBtn.addEventListener('click', () => {
-            localStorage.removeItem('ecoPlanetaSave');
-            location.reload();
-        });
-        
-        encyclopediaBtn.addEventListener('click', () => {
-            encyclopediaBtn.classList.remove('reward-ready');
-            renderEncyclopedia();
-            encyclopediaModal.classList.remove('hidden');
-        });
-        closeEncyclopediaBtn.addEventListener('click', () => {
-            encyclopediaModal.classList.add('hidden');
-        });
-        
-        tipsBtn.addEventListener('click', () => {
-            currentTipIndex = Math.floor(Math.random() * tips.length);
-            tipTextEl.textContent = tips[currentTipIndex];
-            tipsModal.classList.remove('hidden');
-        });
-        nextTipBtn.addEventListener('click', () => {
-            currentTipIndex = (currentTipIndex + 1) % tips.length;
-            tipTextEl.textContent = tips[currentTipIndex];
-        });
-        closeTipsBtn.addEventListener('click', () => {
-            tipsModal.classList.add('hidden');
-        });
-        
-        howToPlayBtn.addEventListener('click', () => {
-            howToPlayModal.classList.remove('hidden');
-        });
-        closeHowToPlayBtn.addEventListener('click', () => {
-            howToPlayModal.classList.add('hidden');
-        });
-        
-        missionsBtn.addEventListener('click', () => {
-            renderMissions();
-            missionsModal.classList.remove('hidden');
-        });
-        closeMissionsBtn.addEventListener('click', () => {
-            missionsModal.classList.add('hidden');
-        });
-        
-        autoclickBonusBtn.addEventListener('click', () => {
-            if(gameState.bonuses.autoClickers > 0 && !gameState.activeBonuses.autoClicker.active) {
-                gameState.bonuses.autoClickers--;
-                gameState.activeBonuses.autoClicker = { active: true, timeLeft: 30 };
-                updateBonusUI();
-            }
-        });
-        energyBonusBtn.addEventListener('click', () => {
-             if(gameState.bonuses.energyBursts > 0) {
-                gameState.bonuses.energyBursts--;
-                const energyGained = (gameState.energyPerSecond * 60) + 100; // 1 min of production + 100
-                gameState.energy += energyGained;
-                showNotification(`BOOM! +${Math.floor(energyGained)}✨ energia!`, 'discovery');
-                updateBonusUI();
-            }
-        });
-        growthBonusBtn.addEventListener('click', () => {
-             if(gameState.bonuses.superGrowths > 0 && !gameState.activeBonuses.superGrowth.active) {
-                gameState.bonuses.superGrowths--;
-                gameState.activeBonuses.superGrowth = { active: true, timeLeft: 60 };
-                showNotification(`Super Crescimento ativado por 60s!`, 'discovery');
-                updateBonusUI();
-            }
-        });
-
-        plantStarSeedBtn.addEventListener('click', () => {
-            if (gameState.starSeeds > 0) {
-                const preservedSeeds = gameState.starSeeds;
-                const preservedMissions = gameState.completedMissions;
-                // Reset to default state
-                const defaultState = {
-                    water: 0, energy: 0, clickPower: 1, autoWaterPerSecond: 0, energyPerSecond: 0,
-                    plants: [], animals: [], pollutionCleaned: 0,
-                    costs: { sapling: 10, flower: 50, cleanup: 100, clickUpgrade: 25, autoUpgrade: 200, bee: 500, squirrel: 1000 },
-                    upgrades: { click: 0, auto: 0 },
-                    bonuses: { autoClickers: 0, energyBursts: 0, superGrowths: 0 },
-                    activeBonuses: { autoClicker: { active: false, timeLeft: 0 }, superGrowth: { active: false, timeLeft: 0 }, ecoFrenzy: { active: false, timeLeft: 0 } },
-                    activeEvent: null, weatherEvent: null, lastSaveTime: Date.now(),
-                    gameTime: 0, isPausedForRoulette: false, cometOffered: false,
-                    unlockedEntries: { sapling: false, adultTree: false, flower: false, cosmicFlower: false, cleanup: false, bee: false, squirrel: false, pollutionEvent: false, rainEvent: false, grass: false, river: false, mountains: false },
-                    starSeeds: preservedSeeds,
-                    completedMissions: preservedMissions,
-                };
-                 gameState = defaultState;
-                 fineGameTime = 0;
-                 saveGame();
-                 location.reload();
-            }
-        });
-
-        closeStarSeedBtn.addEventListener('click', () => starSeedModal.classList.add('hidden'));
-
-
-        // --- Lógica de Compra e Ações ---
-        function buyPlant(type, energyBonus) {
-            if (gameState.water >= gameState.costs[type]) {
-                gameState.water -= gameState.costs[type];
-                gameState.energyPerSecond += energyBonus;
-                gameState.costs[type] = Math.ceil(gameState.costs[type] * 1.2);
-                const data = { type, age: 0, position: { angle: Math.random() * 360, distance: Math.random() * 80 + 20 } };
-                gameState.plants.push(data);
-                unlockEntry(type);
-                renderAll(true);
-            }
-        }
-        
-        function buyAnimal(type, energyBonus) {
-            if (gameState.energy >= gameState.costs[type]) {
-                gameState.energy -= gameState.costs[type];
-                gameState.energyPerSecond += energyBonus;
-                gameState.costs[type] = Math.ceil(gameState.costs[type] * 1.8);
-                const data = { type, position: { angle: Math.random() * 360, distance: Math.random() * 80 + 20 } };
-                gameState.animals.push(data);
-                unlockEntry(type);
-                renderAll(true);
-            }
-        }
-
-        function cleanupPollution() {
-            if (gameState.energy >= gameState.costs.cleanup) {
-                gameState.energy -= gameState.costs.cleanup;
-                gameState.pollutionCleaned++;
-                
-                // --- ALTERAÇÃO APLICADA AQUI ---
-                // Se o jogador limpou 5 ou mais vezes, o custo para a próxima limpeza aumenta mais devagar.
-                const costMultiplier = gameState.pollutionCleaned >= 5 ? 1.8 : 2.5;
-                gameState.costs.cleanup = Math.ceil(gameState.costs.cleanup * costMultiplier);
-                
-                unlockEntry('cleanup');
-                if (gameState.pollutionCleaned >= 2) unlockEntry('grass');
-                if (gameState.pollutionCleaned >= 5) unlockEntry('river');
-                if (gameState.pollutionCleaned >= 10) unlockEntry('mountains');
-
-                updateDisplay();
-            }
-        }
-        function upgradeClick() {
-            if (gameState.water >= gameState.costs.clickUpgrade) {
-                gameState.water -= gameState.costs.clickUpgrade;
-                gameState.upgrades.click++;
-                gameState.clickPower = 1 + gameState.upgrades.click;
-                gameState.costs.clickUpgrade = Math.ceil(gameState.costs.clickUpgrade * 1.5);
-                updateDisplay();
-            }
-        }
-        function upgradeAuto() {
-             if (gameState.energy >= gameState.costs.autoUpgrade) {
-                gameState.energy -= gameState.costs.autoUpgrade;
-                gameState.upgrades.auto++;
-                gameState.autoWaterPerSecond += gameState.upgrades.auto;
-                gameState.costs.autoUpgrade = Math.ceil(gameState.costs.autoUpgrade * 2.2);
-                updateDisplay();
-            }
-        }
-        
-        // --- Drag and Drop Functions ---
-        function getEventCoords(e) { return e.touches ? e.touches[0] : e; }
-        function startDrag(e) {
-            if (e.target.closest('.planet-item')) {
-                const target = e.target.closest('.planet-item'); e.preventDefault();
-                draggedItem.element = target; draggedItem.type = target.dataset.type; draggedItem.index = parseInt(target.dataset.index);
-                document.body.style.cursor = 'grabbing'; draggedItem.element.style.zIndex = '100'; draggedItem.element.style.transition = 'none';
-            }
-        }
-        function drag(e) {
-            if (!draggedItem.element) return;
-            e.preventDefault();
-            const coords = getEventCoords(e); const planetRect = planetEl.getBoundingClientRect();
-            const planetCenterX = planetRect.left + planetRect.width / 2; const planetCenterY = planetRect.top + planetRect.height / 2;
-            const dx = coords.clientX - planetCenterX; const dy = coords.clientY - planetCenterY;
-            let newAngle = Math.atan2(dy, dx) * (180 / Math.PI) + 90; const distancePixels = Math.sqrt(dx*dx + dy*dy);
-            let newDistance = (distancePixels / (planetRect.width / 2)) * 100;
-            newDistance = Math.max(20, Math.min(newDistance, 100));
-            draggedItem.element.style.transform = `rotate(${newAngle}deg) translateY(-${newDistance}%) rotate(-${newAngle}deg)`;
-            draggedItem.newAngle = newAngle; draggedItem.newDistance = newDistance;
-        }
-        function endDrag() {
-            if (!draggedItem.element) return;
-            if (draggedItem.type && draggedItem.index > -1) {
-                const itemArray = (draggedItem.type === 'plant') ? gameState.plants : gameState.animals;
-                const itemData = itemArray[draggedItem.index];
-                if (itemData) {
-                    itemData.position.angle = draggedItem.newAngle;
-                    itemData.position.distance = draggedItem.newDistance;
-                }
-            }
-            document.body.style.cursor = 'default';
-            draggedItem.element.style.zIndex = '10';
-            draggedItem.element.style.transition = 'transform 0.2s ease-in-out';
-            draggedItem = { element: null, type: null, index: -1, newAngle: 0, newDistance: 0 };
-        }
-
-        // --- Funções de Renderização e UI ---
-        function updateDisplay() {
-            waterCountEl.textContent = Math.floor(gameState.water);
-            energyCountEl.textContent = Math.floor(gameState.energy);
-            
-            const starSeedBonus = 1 + (gameState.starSeeds * 0.1);
-            let effectiveEnergyPerSecond = gameState.energyPerSecond * starSeedBonus;
-            
-            if(gameState.activeEvent && gameState.activeEvent.type === 'pollution') {
-                effectiveEnergyPerSecond *= 0.5;
-            }
-            energyPerSecondEl.textContent = effectiveEnergyPerSecond.toFixed(1);
-
-            if(gameState.starSeeds > 0) {
-                starSeedDisplay.classList.remove('hidden');
-                starSeedDisplay.classList.add('flex');
-                starSeedCountEl.textContent = gameState.starSeeds;
-            }
-
-            saplingCostEl.textContent = gameState.costs.sapling;
-            flowerCostEl.textContent = gameState.costs.flower;
-            cleanupCostEl.textContent = gameState.costs.cleanup;
-            clickUpgradeCostEl.textContent = gameState.costs.clickUpgrade;
-            autoUpgradeCostEl.textContent = gameState.costs.autoUpgrade;
-            autoUpgradeBonusEl.textContent = gameState.upgrades.auto + 1;
-            beeCostEl.textContent = gameState.costs.bee;
-            squirrelCostEl.textContent = gameState.costs.squirrel;
-            clickUpgradeBonusEl.textContent = gameState.upgrades.click + 1;
-            buySaplingBtn.disabled = gameState.water < gameState.costs.sapling;
-            upgradeClickBtn.disabled = gameState.water < gameState.costs.clickUpgrade;
-            const canBuyFlower = gameState.energyPerSecond >= 10;
-            buyFlowerBtn.disabled = !canBuyFlower || gameState.water < gameState.costs.flower;
-            flowerHintEl.style.display = canBuyFlower ? 'none' : 'block';
-            const canCleanup = gameState.energyPerSecond >= 20;
-            cleanupBtn.disabled = !canCleanup || gameState.energy < gameState.costs.cleanup;
-            cleanupHintEl.style.display = canCleanup ? 'none' : 'block';
-            const canBuyAuto = gameState.pollutionCleaned >= 1;
-            upgradeAutoBtn.disabled = !canBuyAuto || gameState.energy < gameState.costs.autoUpgrade;
-            autoHintEl.style.display = canBuyAuto ? 'none' : 'block';
-            const canSeeAnimals = gameState.pollutionCleaned >= 2;
-            if (canSeeAnimals) { animalShopEl.classList.remove('hidden'); animalShopEl.classList.add('flex'); }
-            buyBeeBtn.disabled = !canSeeAnimals || gameState.energy < gameState.costs.bee;
-            beeHintEl.style.display = canSeeAnimals ? 'none' : 'block';
-            const hasBee = gameState.animals.some(animal => animal.type === 'bee');
-            buySquirrelBtn.disabled = !hasBee || gameState.energy < gameState.costs.squirrel;
-            squirrelHintEl.style.display = hasBee ? 'none' : 'block';
-            updatePlanetLook();
-            updateBonusUI();
-            checkMissions();
-        }
-        
-        function updatePlanetLook() {
-            const groundLayerEl = document.getElementById('ground-layer');
-            const grassLayerEl = document.getElementById('grass-layer');
-            const riverLayerEl = document.getElementById('river-layer');
-            const mountainLayerEl = document.getElementById('mountain-layer');
-            if (groundLayerEl) {
-                const circle = groundLayerEl.querySelector('circle');
-                if (gameState.pollutionCleaned === 0) { circle.setAttribute('fill', '#5c4033'); } 
-                else if (gameState.pollutionCleaned === 1) { circle.setAttribute('fill', '#8B4513'); }
-            }
-            if(grassLayerEl) grassLayerEl.style.opacity = gameState.pollutionCleaned >= 2 ? '1' : '0';
-            if(riverLayerEl) riverLayerEl.style.opacity = gameState.pollutionCleaned >= 5 ? '1' : '0';
-            if(mountainLayerEl) mountainLayerEl.style.opacity = gameState.pollutionCleaned >= 10 ? '1' : '0';
-
-            if (gameState.pollutionCleaned >= 10 && !gameState.cometOffered) {
-                triggerComet();
-                gameState.cometOffered = true;
-            }
-        }
-        
-        function renderAll(isNewItem = false) {
-            const oldItems = planetEl.querySelectorAll('.planet-item');
-            oldItems.forEach(item => item.remove());
-            const itemsToRender = [...gameState.plants, ...gameState.animals];
-            itemsToRender.forEach((data, index) => {
-                const isPlant = index < gameState.plants.length;
-                const itemType = isPlant ? 'plant' : 'animal';
-                const itemIndex = isPlant ? index : index - gameState.plants.length;
-                
-                let element = createElement(data, itemType, itemIndex);
-                if (element) {
-                    if (isNewItem && index === itemsToRender.length - 1) {
-                        element.classList.add('spawn-animation');
-                    }
-                    planetEl.appendChild(element);
-                }
-            });
-            updateDisplay();
-        }
-
-        function createElement(data, type, index) {
-            let innerHTML = ''; let fontSize = ''; let itemType = data.type;
-            switch(data.type) {
-                case 'sapling': innerHTML = '🌳'; fontSize = '2rem'; break;
-                case 'adultTree': innerHTML = '🌲'; fontSize = '3rem'; break;
-                case 'flower': innerHTML = '🌻'; fontSize = '1.75rem'; break;
-                case 'cosmicFlower': innerHTML = '🌠'; fontSize = '2.5rem'; break;
-                case 'bee': innerHTML = '🐝'; fontSize = '1.5rem'; break;
-                case 'squirrel': innerHTML = '🐿️'; fontSize = '1.75rem'; break;
-                default: return null;
-            }
-            const e = document.createElement('div');
-            e.className = 'planet-item clickable'; e.dataset.itemType = itemType;
-            e.innerHTML = `<span>${innerHTML}</span>`; e.style.fontSize = fontSize;
-            e.style.transform = `rotate(${data.position.angle}deg) translateY(-${data.position.distance}%) rotate(-${data.position.angle}deg)`;
-            e.dataset.type = type; e.dataset.index = index;
-            return e;
-        }
-
-        function spawnFallingDrop() { const e = document.createElement('div'); e.innerHTML = '💧'; e.className = 'falling-drop text-3xl'; e.style.left = `${Math.random()*80+10}%`; cloudEl.appendChild(e); setTimeout(()=>e.remove(),1000); }
-        function spawnFloatingText(text, colorClass) { const e=document.createElement('div');e.textContent=text;e.className=`floating-text ${colorClass}`;const a=Math.random()*Math.PI+Math.PI,r=150;e.style.left=`calc(50% + ${Math.cos(a)*r}px)`;e.style.top=`calc(50% + ${Math.sin(a)*r}px)`;gameContainerEl.appendChild(e);setTimeout(()=>e.remove(),1500);}
-        function spawnEnergyParticle(sourceElement) {
-            if (!sourceElement) return;
-            const particle = document.createElement('div'); particle.innerHTML = '✨'; particle.className = 'energy-particle';
-            const rect = sourceElement.getBoundingClientRect(); const gameRect = gameContainerEl.getBoundingClientRect();
-            particle.style.left = `${rect.left - gameRect.left + (rect.width / 2) - 8}px`; particle.style.top = `${rect.top - gameRect.top + (rect.height / 2) - 8}px`;
-            gameContainerEl.appendChild(particle); setTimeout(() => { particle.remove(); }, 2000);
-        }
-
-        function showNotification(message, type = 'info', isSticky = false) {
-            const notification = document.createElement('div');
-            let bgColor = 'bg-sky-500/90';
-            if (type === 'discovery') bgColor = 'bg-green-600/90'; if (type === 'event-start') bgColor = 'bg-red-800/90';
-            if (type === 'event-good') bgColor = 'bg-green-500/90'; if (type === 'event-bad') bgColor = 'bg-yellow-700/90';
-            notification.className = `p-3 rounded-lg shadow-lg text-white text-sm max-w-xs ${bgColor}`; notification.innerHTML = `<p>${message}</p>`;
-            if (isSticky) {
-                notification.id = 'active-event-notification'; notification.style.animation = 'slide-in-down 0.5s ease-out forwards';
-                 const timerBar = document.createElement('div'); timerBar.className = 'w-full bg-gray-200/50 rounded-full h-1.5 mt-2';
-                timerBar.innerHTML = `<div id="event-timer-progress-toast" class="bg-yellow-400 h-1.5 rounded-full transition-all duration-1000 ease-linear" style="width: 100%"></div>`;
-                notification.appendChild(timerBar);
-            } else {
-                notification.classList.add('toast-notification');
-                notification.addEventListener('animationend', (e) => { if (e.animationName === 'fade-out-up') { notification.remove(); } });
-            }
-            notificationAreaEl.appendChild(notification);
-        }
-
-        function updateBonusUI() {
-            const hasBonuses = gameState.bonuses.autoClickers > 0 || gameState.bonuses.energyBursts > 0 || gameState.bonuses.superGrowths > 0 || gameState.bonuses.ecoFrenzies > 0;
-            if (hasBonuses) { bonusSection.classList.remove('hidden'); bonusSection.classList.add('flex'); } else { bonusSection.classList.add('hidden'); }
-            
-            const autoClickBadge = autoclickBonusBtn.querySelector('.badge');
-            autoclickBonusBtn.disabled = gameState.bonuses.autoClickers === 0 || gameState.activeBonuses.autoClicker.active;
-            if (gameState.bonuses.autoClickers > 0) { autoClickBadge.textContent = gameState.bonuses.autoClickers; autoClickBadge.classList.remove('hidden'); } else { autoClickBadge.classList.add('hidden'); }
-            
-            const energyBadge = energyBonusBtn.querySelector('.badge');
-            energyBonusBtn.disabled = gameState.bonuses.energyBursts === 0;
-            if (gameState.bonuses.energyBursts > 0) { energyBadge.textContent = gameState.bonuses.energyBursts; energyBadge.classList.remove('hidden'); } else { energyBadge.classList.add('hidden'); }
-
-            const growthBadge = growthBonusBtn.querySelector('.badge');
-            growthBonusBtn.disabled = gameState.bonuses.superGrowths === 0 || gameState.activeBonuses.superGrowth.active;
-            if (gameState.bonuses.superGrowths > 0) { growthBadge.textContent = gameState.bonuses.superGrowths; growthBadge.classList.remove('hidden'); } else { growthBadge.classList.add('hidden'); }
-        }
-
-        function unlockEntry(entryKey) {
-            if (!gameState.unlockedEntries[entryKey]) {
-                gameState.unlockedEntries[entryKey] = true;
-                showNotification(`Nova descoberta: ${encyclopediaData[entryKey].name}! 📖`, 'discovery');
-                encyclopediaBtn.classList.add('reward-ready');
-            }
-        }
-        function renderEncyclopedia() {
-            encyclopediaGridEl.innerHTML = '';
-            for (const key in encyclopediaData) {
-                const entry = encyclopediaData[key]; const isUnlocked = gameState.unlockedEntries[key];
-                const entryEl = document.createElement('div');
-                entryEl.className = `encyclopedia-entry p-4 rounded-lg bg-white/50 border-2 border-yellow-700/50 ${!isUnlocked ? 'locked' : ''}`;
-                entryEl.innerHTML = isUnlocked ? `<div class="text-4xl mb-2">${entry.icon}</div><h4 class="text-xl font-bold">${entry.name}</h4><p class="text-sm mt-2">${entry.text}</p>` : `<div class="text-4xl mb-2">❓</div><h4 class="text-xl font-bold">Desconhecido</h4>`;
-                encyclopediaGridEl.appendChild(entryEl);
-            }
-        }
-
-        function updateDayNightCycle() {
-            const cycleTotalTime = DAY_DURATION_SECONDS + NIGHT_DURATION_SECONDS;
-            const timeInCycle = (fineGameTime / 1000) % cycleTotalTime;
-            
-            if (timeInCycle < DAY_DURATION_SECONDS) { // Dia
-                if(isNight) {
-                    isNight = false; document.body.style.backgroundColor = ''; sunEl.style.opacity = '1'; moonEl.style.opacity = '0'; removeStars();
-                    triggerShootingStar();
-                }
-                const dayProgress = timeInCycle / DAY_DURATION_SECONDS;
-                const sunAngle = dayProgress * Math.PI;
-                const sunX = (window.innerWidth + sunEl.offsetWidth + 100) * dayProgress - (sunEl.offsetWidth + 50);
-                const sunY = (window.innerHeight / 2.5) * Math.sin(sunAngle);
-                sunEl.style.transform = `translate(${sunX}px, ${-sunY}px)`;
-            } else { // Noite
-                if(!isNight) {
-                     isNight = true; document.body.style.backgroundColor = '#0c1425'; sunEl.style.opacity = '0'; moonEl.style.opacity = '1'; createStars(50);
-                }
-                const nightProgress = (timeInCycle - DAY_DURATION_SECONDS) / NIGHT_DURATION_SECONDS;
-                const moonAngle = nightProgress * Math.PI;
-                const moonX = (window.innerWidth + moonEl.offsetWidth + 100) * nightProgress - (moonEl.offsetWidth + 50);
-                const moonY = (window.innerHeight / 3) * Math.sin(moonAngle);
-                moonEl.style.transform = `translate(${moonX}px, ${-moonY}px)`;
-            }
-        }
-        function createStars(count) {
-            removeStars();
-            for (let i = 0; i < count; i++) {
-                const star = document.createElement('div'); const size = Math.random() * 2 + 1; star.classList.add('star'); star.style.width = `${size}px`; star.style.height = `${size}px`; star.style.top = `${Math.random() * 100}%`; star.style.left = `${Math.random() * 100}%`; star.style.animationDelay = `${Math.random() * 2}s`; starsContainerEl.appendChild(star);
-            }
-        }
-        function removeStars() { starsContainerEl.innerHTML = ''; }
-        
-        function triggerSpecialDrop() {
-            const roll = Math.random();
-            if (roll < 0.15) { // 15% de chance para um bónus
-                const bonusRoll = Math.random();
-                if (bonusRoll < 0.33) {
-                    gameState.bonuses.autoClickers++; showNotification(`Recompensa de evento: Você ganhou um bónus de Cliques Automáticos!`, 'discovery');
-                } else if (bonusRoll < 0.66) {
-                    gameState.bonuses.energyBursts++; showNotification(`Recompensa de evento: Você ganhou uma Explosão de Energia!`, 'discovery');
-                } else {
-                    gameState.bonuses.superGrowths++; showNotification(`Recompensa de evento: Você ganhou um Super Crescimento!`, 'discovery');
-                }
-            } else if (roll < 0.575) { // 42.5% de chance para Água
-                const waterGained = Math.floor(Math.random() * 100) + 1;
-                gameState.water += waterGained;
-                showNotification(`Recompensa de evento: +${waterGained}💧!`, 'info');
-            } else { // 42.5% de chance para Energia
-                const energyGained = Math.floor(Math.random() * 100) + 1;
-                gameState.energy += energyGained;
-                showNotification(`Recompensa de evento: +${energyGained}✨!`, 'info');
-            }
-            updateBonusUI();
-        }
-
-        function triggerPollutionEvent() {
-            unlockEntry('pollutionEvent');
-            const DURATION = 30; const CLICKS_TO_CLEAR = 10;
-            gameState.activeEvent = { type: 'pollution', timeLeft: DURATION, duration: DURATION, clicksLeft: CLICKS_TO_CLEAR };
-            showNotification("ALERTA: Nuvem de Poluição! A sua produção de energia está reduzida. Clique na nuvem escura para a limpar!", 'event-start', true);
-            const cloud = document.createElement('div'); cloud.id = 'pollution-cloud'; cloud.innerHTML = '☁️'; cloud.className = 'absolute text-6xl clickable pollution-cloud'; cloud.style.top = `${Math.random() * 40 + 20}%`; cloud.style.left = `${Math.random() * 40 + 20}%`;
-            cloud.addEventListener('click', () => { if (!gameState.activeEvent) return; gameState.activeEvent.clicksLeft--; cloud.style.opacity = gameState.activeEvent.clicksLeft / CLICKS_TO_CLEAR; if (gameState.activeEvent.clicksLeft <= 0) { solvePollutionEvent(); }});
-            document.getElementById('event-elements-container').appendChild(cloud);
-        }
-        function solvePollutionEvent() { 
-            showNotification("Ufa! A poluição foi limpa e as suas plantas respiram aliviadas.", 'event-good'); 
-            triggerSpecialDrop();
-            clearActiveEvent(); 
-        }
-        function failPollutionEvent() { showNotification("Oh não! A poluição dissipou-se, mas levou parte da sua energia.", 'event-bad'); gameState.energy *= 0.75; clearActiveEvent(); }
-        function clearActiveEvent() {
-            const activeNotif = document.getElementById('active-event-notification'); if(activeNotif) activeNotif.remove();
-            gameState.activeEvent = null; document.getElementById('event-elements-container').innerHTML = '';
-        }
-
-        function triggerRainEvent() {
-            unlockEntry('rainEvent');
-            const DURATION = 45; gameState.weatherEvent = { type: 'rain', timeLeft: DURATION, duration: DURATION };
-            showNotification("Começou uma Chuva Mágica! A coleta de água está mais forte!", 'info');
-            const rainContainer = document.createElement('div'); rainContainer.id = 'rain-container'; rainContainer.className = 'rain-container';
-            gameContainerEl.prepend(rainContainer); gameState.weatherEvent.rainInterval = setInterval(() => { for(let i = 0; i < 5; i++) createRaindrop(rainContainer); }, 200);
-        }
-        function createRaindrop(container) {
-            if (!container) return; const drop = document.createElement('div'); drop.innerHTML = '💧'; drop.className = 'raindrop'; drop.style.left = `${Math.random() * 100}vw`; drop.style.fontSize = `${Math.random() * 0.8 + 0.5}rem`;
-            const duration = Math.random() * 1 + 0.5; drop.style.animationDuration = `${duration}s`; drop.style.animationDelay = `${Math.random() * duration}s`;
-            container.appendChild(drop); setTimeout(() => drop.remove(), duration * 1000 + 500);
-        }
-        function clearWeatherEvent(wasInterrupted = false) {
-            if (!gameState.weatherEvent) return; clearInterval(gameState.weatherEvent.rainInterval);
-            const rainContainer = document.getElementById('rain-container'); if (rainContainer) rainContainer.remove();
-            if (!wasInterrupted) { 
-                showNotification("A chuva parou, mas deixou o planeta feliz e hidratado!", 'info');
-                triggerSpecialDrop();
-            }
-            gameState.weatherEvent = null;
-        }
-
-        function handleEvents(gameTimeInSeconds) {
-            if (gameState.activeEvent) {
-                gameState.activeEvent.timeLeft--; const progress = (gameState.activeEvent.timeLeft / gameState.activeEvent.duration) * 100;
-                const timerBar = document.getElementById('event-timer-progress-toast'); if (timerBar) timerBar.style.width = `${progress}%`;
-                if (gameState.activeEvent.timeLeft <= 0) failPollutionEvent();
-            } else { if (gameState.pollutionCleaned >= 2 && Math.random() < 0.005) { if(gameState.weatherEvent) clearWeatherEvent(true); triggerPollutionEvent(); }}
-            if (gameState.weatherEvent) { if (gameState.weatherEvent.timeLeft-- <= 0) clearWeatherEvent(); } 
-            else { if (!gameState.activeEvent && gameState.autoWaterPerSecond > 0 && Math.random() < 0.008) { triggerRainEvent(); }}
-        }
-        
-        // --- Game Loop ---
-        let lastTimestamp = 0;
-        function gameLoop(timestamp) {
-            if (lastTimestamp === 0) lastTimestamp = timestamp;
-            const deltaTime = timestamp - lastTimestamp;
-            lastTimestamp = timestamp;
-
-            const timeMultiplier = gameState.activeBonuses.ecoFrenzy.active ? 10 : 1;
-            
-            if (!gameState.isPausedForRoulette) {
-                fineGameTime += deltaTime * timeMultiplier;
-            
-                let currentAutoWater = gameState.autoWaterPerSecond;
-                if (gameState.weatherEvent && gameState.weatherEvent.type === 'rain') { currentAutoWater *= 2; }
-                const starSeedBonus = 1 + (gameState.starSeeds * 0.1);
-                let effectiveEnergyPerSecond = gameState.energyPerSecond * starSeedBonus;
-                if (gameState.activeEvent && gameState.activeEvent.type === 'pollution') { effectiveEnergyPerSecond *= 0.5; }
-                
-                gameState.water += currentAutoWater * (deltaTime / 1000) * timeMultiplier; 
-                gameState.energy += effectiveEnergyPerSecond * (deltaTime / 1000) * timeMultiplier;
-
-                if (gameState.activeBonuses.autoClicker.active) {
-                    collectWater(gameState.clickPower * 5 * (deltaTime / 1000) * timeMultiplier);
-                    gameState.activeBonuses.autoClicker.timeLeft -= (deltaTime / 1000);
-                    if (gameState.activeBonuses.autoClicker.timeLeft <= 0) {
-                        gameState.activeBonuses.autoClicker.active = false;
-                        showNotification("Bónus de Cliques Automáticos terminou!", 'info');
-                        updateBonusUI();
-                    }
-                }
-                if (gameState.activeBonuses.superGrowth.active) {
-                    gameState.activeBonuses.superGrowth.timeLeft -= (deltaTime / 1000);
-                     if (gameState.activeBonuses.superGrowth.timeLeft <= 0) {
-                        gameState.activeBonuses.superGrowth.active = false;
-                        showNotification("Super Crescimento terminou!", 'info');
-                        updateBonusUI();
-                    }
-                }
-                if(gameState.activeBonuses.ecoFrenzy.active) {
-                    gameState.activeBonuses.ecoFrenzy.timeLeft -= (deltaTime / 1000);
-                     if (gameState.activeBonuses.ecoFrenzy.timeLeft <= 0) {
-                        gameState.activeBonuses.ecoFrenzy.active = false;
-                        showNotification("Frenesi Ecológico terminou!", 'info');
-                        updateBonusUI();
-                    }
-                }
-            }
-            
-            updateDisplay();
-            updateDayNightCycle();
-            requestAnimationFrame(gameLoop);
-        }
-
-        let lastSecond = 0;
-        setInterval(() => {
-             const gameTimeInSeconds = Math.floor(fineGameTime / 1000);
-             if (gameTimeInSeconds === lastSecond) return;
-             lastSecond = gameTimeInSeconds;
-             
-            if (gameState.isPausedForRoulette) return;
-            
-            let needsRerender = false;
-            const growthRate = gameState.activeBonuses.superGrowth.active ? 5 : 1;
-            const frenzyRate = gameState.activeBonuses.ecoFrenzy.active ? 10 : 1;
-            
-            gameState.plants.forEach(plant => {
-                if (plant.type === 'sapling') {
-                    plant.age += growthRate * frenzyRate;
-                    if (plant.age >= 300) { // 300 segundos (5 minutos) para crescer
-                        plant.type = 'adultTree';
-                        gameState.energyPerSecond += 2; // Bónus de +2 (total 3)
-                        unlockEntry('adultTree');
-                        needsRerender = true;
-                    }
-                }
-            });
-            if (needsRerender) renderAll();
-
-            handleEvents(gameTimeInSeconds); 
-            checkMissions(true); // Check missions every second
-        }, 1000);
-        
-        setInterval(saveGame, 10000);
-        closeTutorialBtn.addEventListener('click', () => { tutorialMessage.style.display = 'none'; });
-
-        // --- Missões ---
-        const allMissions = [
-            { id: 1, text: "Comece a sua jornada: plante 5 mudas.", target: 5, type: 'count', item: 'sapling', reward: { water: 50 } },
-            { id: 3, text: "Primeiros passos: atinja 5 ✨/s.", target: 5, type: 'rate', item: 'energy', reward: { water: 100 } },
-            { id: 4, text: "Mundo mais limpo: limpe a poluição 1 vez.", target: 1, type: 'count', item: 'cleanup', reward: { water: 150, energy: 150 } },
-            { id: 2, text: "Pequena floresta: tenha 10 plantas no total.", target: 10, type: 'count', item: 'anyPlant', reward: { energy: 100 } },
-            { id: 5, text: "Floresça: plante 3 flores.", target: 3, type: 'count', item: 'flower', reward: { energy: 200 } },
-            { id: 6, text: "Ecossistema a crescer: atinja 25 ✨/s.", target: 25, type: 'rate', item: 'energy', reward: { bonus: { type: 'autoClickers', amount: 1 } } },
-            { id: 7, text: "Amigo das abelhas: atraia a sua primeira abelha.", target: 1, type: 'count', item: 'bee', reward: { energy: 500 } },
-            { id: 8, text: "Árvores sábias: faça crescer 3 árvores adultas.", target: 3, type: 'count', item: 'adultTree', reward: { water: 300 } },
-            { id: 9, text: "Guardião do Planeta: limpe a poluição 5 vezes.", target: 5, type: 'count', item: 'cleanup', reward: { bonus: { type: 'superGrowths', amount: 1 } } },
-            { id: 10, text: "Potência Máxima: atinja 75 ✨/s.", target: 75, type: 'rate', item: 'energy', reward: { bonus: { type: 'energyBursts', amount: 1 } } }
-        ];
-        
-        function getActiveMissions() {
-            const active = [];
-            for (const mission of allMissions) {
-                if (!gameState.completedMissions.includes(mission.id)) {
-                    active.push(mission);
-                    if (active.length >= 3) break;
-                }
-            }
-            return active;
-        }
-
-        function checkMissions(isIntervalCheck = false) {
-            const activeMissions = getActiveMissions();
-            let rewardIsReady = false;
-            for(const mission of activeMissions) {
-                 if(isMissionComplete(mission)) {
-                     rewardIsReady = true;
-                     break;
-                 }
-            }
-            if(rewardIsReady) {
-                missionsBtn.classList.add('reward-ready');
-            } else {
-                missionsBtn.classList.remove('reward-ready');
-            }
-             if (isIntervalCheck && missionsModal.classList.contains('hidden') === false) {
-                renderMissions();
-            }
-        }
-
-        function getCurrentProgress(mission) {
-            const starSeedBonus = 1 + (gameState.starSeeds * 0.1);
-            switch(mission.item) {
-                case 'sapling': return gameState.plants.filter(p => p.type === 'sapling').length;
-                case 'anyPlant': return gameState.plants.length;
-                case 'flower': return gameState.plants.filter(p => p.type === 'flower').length;
-                case 'adultTree': return gameState.plants.filter(p => p.type === 'adultTree').length;
-                case 'energy': return gameState.energyPerSecond * starSeedBonus;
-                case 'cleanup': return gameState.pollutionCleaned;
-                case 'bee': return gameState.animals.filter(a => a.type === 'bee').length;
-                default: return 0;
-            }
-        }
-        
-        function isMissionComplete(mission) {
-            return getCurrentProgress(mission) >= mission.target;
-        }
-
-        function renderMissions() {
-            missionsListEl.innerHTML = '';
-            const activeMissions = getActiveMissions();
-            if (activeMissions.length === 0) {
-                 missionsListEl.innerHTML = `<p class="text-center">Parabéns, você completou todas as missões disponíveis!</p>`;
-                 return;
-            }
-            activeMissions.forEach(mission => {
-                const progress = getCurrentProgress(mission);
-                const isComplete = progress >= mission.target;
-                const progressPercent = Math.min(100, (progress / mission.target) * 100);
-
-                const missionEl = document.createElement('div');
-                missionEl.className = 'bg-white/50 p-4 rounded-lg';
-                
-                let rewardText = '';
-                if(mission.reward.water) rewardText += `${mission.reward.water}💧 `;
-                if(mission.reward.energy) rewardText += `${mission.reward.energy}✨ `;
-                if(mission.reward.bonus) {
-                    let bonusName = '';
-                    if (mission.reward.bonus.type === 'autoClickers') bonusName = 'Cliques Automáticos';
-                    else if (mission.reward.bonus.type === 'energyBursts') bonusName = 'Explosão de Energia';
-                    else if (mission.reward.bonus.type === 'superGrowths') bonusName = 'Super Crescimento';
-                    rewardText += `1x ${bonusName}`;
-                }
-                
-                missionEl.innerHTML = `
-                    <p class="font-bold">${mission.text}</p>
-                    <div class="flex items-center gap-2 my-2">
-                        <div class="progress-bar flex-1">
-                            <div class="progress-bar-fill" style="width: ${progressPercent}%"></div>
-                        </div>
-                        <span class="text-sm">${Math.floor(progress)}/${mission.target}</span>
-                    </div>
-                    <p class="text-sm">Recompensa: ${rewardText}</p>
-                    <button class="collect-reward-btn w-full mt-2 p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed" 
-                            data-mission-id="${mission.id}" ${!isComplete ? 'disabled' : ''}>
-                        Coletar
-                    </button>
-                `;
-                missionsListEl.appendChild(missionEl);
-            });
-            
-            document.querySelectorAll('.collect-reward-btn').forEach(btn => {
-                btn.onclick = (e) => {
-                    const missionId = parseInt(e.target.dataset.missionId);
-                    const mission = allMissions.find(m => m.id === missionId);
-                    if (mission && !gameState.completedMissions.includes(missionId) && isMissionComplete(mission)) {
-                        if(mission.reward.water) gameState.water += mission.reward.water;
-                        if(mission.reward.energy) gameState.energy += mission.reward.energy;
-                        if(mission.reward.bonus) gameState.bonuses[mission.reward.bonus.type] += mission.reward.bonus.amount;
-                        
-                        gameState.completedMissions.push(missionId);
-                        showNotification("Missão concluída!", 'discovery');
-                        updateDisplay();
-                        renderMissions();
-                    }
-                };
-            });
-        }
-        
-        // --- Eventos Especiais (Estrela Cadente, Cometa) ---
-        function triggerShootingStar() {
-            const star = document.createElement('div');
-            star.id = 'shooting-star';
-            star.innerHTML = '💫';
-            star.className = 'absolute text-4xl';
-            specialEventsContainer.appendChild(star);
-
-            star.addEventListener('click', () => {
-                showNotification('Você pegou uma estrela cadente!', 'discovery');
-                star.remove();
-                dropGiftBox();
-            });
-
-            setTimeout(() => {
-                star.remove();
-            }, 4000);
-        }
-
-        function dropGiftBox() {
-            const gift = document.createElement('div');
-            gift.innerHTML = '🎁';
-            gift.className = 'planet-item clickable text-4xl spawn-animation';
-             const data = { position: { angle: Math.random() * 360, distance: Math.random() * 80 + 20 } };
-            gift.style.transform = `rotate(${data.position.angle}deg) translateY(-${data.position.distance}%) rotate(-${data.position.angle}deg)`;
-            
-            gift.addEventListener('click', () => {
-                gift.remove();
-                openGiftBox();
-            }, { once: true });
-            
-            planetEl.appendChild(gift);
-        }
-
-        function openGiftBox() {
-            triggerSpecialDrop();
-        }
-
-        function triggerComet() {
-            const comet = document.createElement('div');
-            comet.id = 'comet';
-            comet.innerHTML = '☄️';
-            comet.className = 'absolute text-6xl';
-            specialEventsContainer.appendChild(comet);
-            
-            comet.addEventListener('click', () => {
-                comet.remove();
-                gameState.starSeeds++;
-                starSeedModalCountEl.textContent = gameState.starSeeds;
-                starSeedModal.classList.remove('hidden');
-                updateDisplay();
-            }, { once: true });
-            
-            setTimeout(() => { comet.remove(); }, 10000);
-        }
-
-        // --- Iniciar Jogo ---
-        loadGame();
-        requestAnimationFrame(gameLoop);
+        loadGameData();
+        soundManager.loadSounds();
+        init();
     </script>
 </body>
 </html>
+
