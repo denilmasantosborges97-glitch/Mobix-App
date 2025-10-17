@@ -1,319 +1,307 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobix - Simulação de Apresentação</title>
+    <title>Simulação de App - Mobix</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827;
-            color: #f9fafb;
-            overscroll-behavior: none;
+            height: 100vh;
+            overflow: hidden;
         }
         .screen {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.5s ease-in-out, visibility 0s 0.5s;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #111827;
+            color: white;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
         }
         .screen.active {
-            opacity: 1; visibility: visible;
-            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+            visibility: visible;
         }
-        .modal-backdrop {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease-in-out;
-            z-index: 40;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
         }
-        .modal-backdrop.active { opacity: 1; visibility: visible; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
         .modal-content {
+            background-color: #1f2937;
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        .car-icon {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            z-index: 50;
-        }
-        .modal-backdrop.active .modal-content { transform: translateY(0); }
-
-        @keyframes car-move { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
-        #car-icon {
-            offset-path: path("M20 180 Q 150 150 280 180");
-            animation: car-move 8s linear forwards;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-        .pulse-animation { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-
-        @keyframes badge-reveal {
-            0% { transform: scale(0.5); opacity: 0; }
-            80% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .badge-reveal-animation { animation: badge-reveal 0.5s ease-out both; }
-        
-        .rating-stars svg { cursor: pointer; transition: color 0.2s; }
-        .rating-stars svg:hover, .rating-stars svg.selected { color: #FBBF24; }
-        
-        .heatmap-spot {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(239, 68, 68, 0.5) 0%, rgba(239, 68, 68, 0) 70%);
-            animation: pulse 4s infinite ease-in-out;
+            width: 40px;
+            height: 40px;
+            transition: all 4s linear;
         }
     </style>
 </head>
-<body class="overflow-hidden">
+<body class="bg-gray-900 flex items-center justify-center">
 
-    <div id="app-container" class="max-w-sm mx-auto h-screen bg-gray-900 shadow-2xl overflow-hidden relative flex flex-col">
-        
-        <header class="w-full p-4 bg-gray-900/80 backdrop-blur-sm z-30 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                 <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0Z" fill="url(#paint0_linear_101_2)"/>
-                    <path d="M68 32H32L44 68L56 44L68 32Z" fill="white" fill-opacity="0.9"/>
-                    <defs><linearGradient id="paint0_linear_101_2" x1="50" y1="0" x2="50" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#10B981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs>
+    <div class="relative w-full max-w-sm h-[800px] max-h-[90vh] bg-[#111827] rounded-3xl shadow-2xl overflow-hidden border-4 border-gray-700">
+
+        <!-- ===== SCREENS ===== -->
+        <div id="login-screen" class="screen active">
+            <div class="text-center mb-8">
+                 <svg class="w-16 h-16 text-green-500 mx-auto" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C16.97 2 21 6.03 21 11C21 15.05 18.23 19.33 13.41 21.69C12.54 22.11 11.46 22.11 10.59 21.69C5.77 19.33 3 15.05 3 11C3 6.03 7.03 2 12 2ZM12 4C8.13 4 5 7.13 5 11C5 14.07 7.03 17.23 12 19.35C16.97 17.23 19 14.07 19 11C19 7.13 15.87 4 12 4ZM12 11.5C12.83 11.5 13.5 10.83 13.5 10C13.5 9.17 12.83 8.5 12 8.5C11.17 8.5 10.5 9.17 10.5 10C10.5 10.83 11.17 11.5 12 11.5ZM7.5 14C8.33 14 9 13.33 9 12.5C9 11.67 8.33 11 7.5 11C6.67 11 6 11.67 6 12.5C6 13.33 6.67 14 7.5 14ZM16.5 14C17.33 14 18 13.33 18 12.5C18 11.67 17.33 11 16.5 11C15.67 11 15 11.67 15 12.5C15 13.33 15.67 14 16.5 14Z"/>
                 </svg>
-                <h1 class="text-xl font-bold text-white">Mobix</h1>
+                <h1 class="text-3xl font-bold mt-2">Bem-vindo ao Mobix</h1>
             </div>
-            <div id="user-info" class="text-right hidden">
-                <span id="user-name-display" class="font-semibold text-white"></span>
-                <div class="flex items-center justify-end space-x-1 text-yellow-400">
-                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
-                    <span id="points-display">0</span>
+            <button onclick="showScreen('passenger-map-screen')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg mb-4 transition">Entrar como Passageiro</button>
+            <button onclick="showScreen('driver-dashboard-screen')" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition">Entrar como Motorista</button>
+        </div>
+
+        <!-- Passenger Map Screen -->
+        <div id="passenger-map-screen" class="screen !justify-start">
+            <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center" style="background-image: url('https://placehold.co/400x800/1f2937/374151?text=Mapa+da+Cidade');"></div>
+            <div id="passenger-main-ui" class="absolute bottom-0 left-0 w-full bg-gray-900/80 backdrop-blur-sm p-6 rounded-t-2xl">
+                <h2 class="text-2xl font-bold mb-4">Onde vamos?</h2>
+                <input type="text" value="Avenida Castanheira, 123" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <button onclick="requestRide()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Pedir Mobix</button>
+            </div>
+        </div>
+        
+        <!-- Driver Dashboard Screen -->
+        <div id="driver-dashboard-screen" class="screen !justify-start !p-0">
+            <div class="w-full bg-gray-900 p-6 flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold">Painel do Motorista</h1>
+                    <p class="text-green-400 font-semibold">Online e pronto para corridas</p>
+                </div>
+                 <button onclick="showScreen('login-screen')" class="text-sm text-gray-400 hover:text-white">Sair</button>
+            </div>
+            <div class="p-6 w-full">
+                <div class="bg-gray-800 p-6 rounded-2xl mb-6">
+                    <h2 class="text-lg font-semibold text-gray-400 mb-2">Ganhos do Dia</h2>
+                    <p id="driver-earnings" class="text-4xl font-bold text-green-400">R$ 0,00</p>
+                </div>
+                <div class="bg-gray-800 p-6 rounded-2xl mb-6">
+                    <h2 class="text-lg font-semibold text-gray-400 mb-4">Detalhes da Última Corrida</h2>
+                    <div id="last-ride-details" class="text-gray-400">
+                        <p>Nenhuma corrida completada hoje.</p>
+                    </div>
+                </div>
+                 <div class="bg-gray-800 p-6 rounded-2xl">
+                    <h2 class="text-lg font-semibold text-gray-400 mb-4">O seu Nível e Recompensas</h2>
+                     <div class="text-center">
+                        <p class="text-yellow-400 text-xl font-bold">Nível Ouro ⭐</p>
+                        <p class="text-gray-300 mt-2">Você tem uma taxa de serviço reduzida de apenas <span class="font-bold text-white">10%</span>!</p>
+                        <p class="text-sm text-gray-400 mt-1">Continue assim para mais benefícios.</p>
+                    </div>
                 </div>
             </div>
-        </header>
+        </div>
 
-        <main class="flex-grow relative">
-
-            <!-- Ecrãs de Autenticação -->
-            <div id="register-screen" class="screen active p-8 space-y-6"><h2 class="text-3xl font-bold text-center">Crie sua conta Mobix</h2><div class="w-full space-y-4"><input type="text" placeholder="Seu Nome" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" value="Denilma"><input type="email" placeholder="Seu E-mail" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" value="demo@mobix.com"><input type="password" placeholder="Sua Senha" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" value="senha123"><button onclick="simulateRegister()" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Criar Conta</button></div><p class="text-center">Já tem uma conta? <button onclick="showScreen('login-screen')" class="text-emerald-400 hover:underline font-semibold">Entrar</button></p></div>
-            <div id="login-screen" class="screen p-8 space-y-6"><h2 class="text-3xl font-bold text-center">Bem-vindo de volta!</h2><div class="w-full space-y-4"><input type="email" placeholder="Seu E-mail" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" value="demo@mobix.com"><input type="password" placeholder="Sua Senha" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500" value="senha123"><button onclick="simulateLogin()" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Entrar</button></div><p class="text-center">Não tem uma conta? <button onclick="showScreen('register-screen')" class="text-emerald-400 hover:underline font-semibold">Registar</button></p></div>
-
-            <!-- Ecrã Principal (Mapa) -->
-            <div id="main-screen" class="screen">
-                <div class="w-full h-full bg-gray-800 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800"><svg class="absolute inset-0 w-full h-full text-gray-600/30" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><defs><pattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M0 50h100M50 0v100" stroke="currentColor" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#p)"/></svg></div>
-                    <div id="heatmap-container" class="absolute inset-0 hidden"><div class="heatmap-spot" style="width: 200px; height: 200px; top: 20%; left: 50%;"></div><div class="heatmap-spot" style="width: 150px; height: 150px; top: 60%; left: 20%; animation-delay: -2s;"></div></div>
-                    <div id="car-animation-container" class="absolute inset-0 w-full h-full hidden"><svg id="car-icon" class="text-emerald-400 absolute" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 16.5 12 18l-2-1.5M12 18V6.3c0-1.4 1.5-2.5 3-2.5s3 1.1 3 2.5V18M4 18h16M9 18V6.3c0-1.4 1.5-2.5 3-2.5S15 4.9 15 6.3V18"/></svg></div>
-                </div>
-                <div id="ride-request-panel" class="absolute bottom-0 left-0 right-0 bg-gray-900 p-6 rounded-t-2xl space-y-4"><h3 class="text-xl font-bold">Onde vamos?</h3><input id="destination-input" type="text" placeholder="Digite o seu destino" class="w-full p-3 bg-gray-800 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"><button onclick="simulateRequestRide()" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Pedir Mobix</button><div class="flex justify-around pt-2"><button onclick="showScreen('profile-screen')" class="text-gray-400 hover:text-white transition-colors">Perfil</button><button onclick="showScreen('history-screen')" class="text-gray-400 hover:text-white transition-colors">Histórico</button><button onclick="toggleDriverView()" class="text-gray-400 hover:text-white transition-colors">Visão do Motorista</button></div></div>
-                <div id="ride-status-panel" class="absolute bottom-0 left-0 right-0 bg-gray-900 p-6 rounded-t-2xl space-y-4 hidden"><div class="flex items-center justify-center space-x-3"><div class="w-4 h-4 rounded-full bg-emerald-500 pulse-animation"></div><h3 id="ride-status-text" class="text-xl font-bold text-center">Procurando motorista...</h3></div><p id="driver-info-text" class="text-center text-gray-400"></p><button onclick="resetApp()" class="w-full p-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-white transition-colors mt-4">Cancelar</button></div>
-            </div>
-
-            <!-- Ecrãs de Gamificação e Histórico -->
-            <div id="profile-screen" class="screen p-6"><div class="w-full max-w-sm mx-auto bg-gray-800 rounded-2xl p-6 space-y-6"><h2 class="text-2xl font-bold text-center">Meu Perfil</h2><div class="text-center"><div class="text-5xl font-bold text-yellow-400" id="profile-points">1250</div><div class="text-sm text-gray-400">Mobix Points</div></div><div><h3 class="font-bold mb-3">Minhas Medalhas</h3><div class="grid grid-cols-3 gap-4 text-center"><div id="badge-pioneer" class="p-2 bg-gray-700 rounded-lg opacity-30"><div class="text-4xl">🥇</div><div class="text-xs">Pioneiro</div></div><div id="badge-explorer" class="p-2 bg-gray-700 rounded-lg opacity-30"><div class="text-4xl">🌍</div><div class="text-xs">Explorador</div></div><div id="badge-night-owl" class="p-2 bg-gray-700 rounded-lg opacity-30"><div class="text-4xl">🦉</div><div class="text-xs">Coruja</div></div></div></div><button onclick="showScreen('main-screen')" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Voltar ao Mapa</button></div></div>
-            <div id="history-screen" class="screen p-6"><div class="w-full max-w-sm mx-auto bg-gray-800 rounded-2xl p-6 space-y-4"><h2 class="text-2xl font-bold text-center mb-4">Histórico de Corridas</h2><div id="history-list" class="space-y-3"><p class="text-center text-gray-400">Nenhuma corrida completada ainda.</p></div><button onclick="showScreen('main-screen')" class="w-full mt-4 p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Voltar ao Mapa</button></div></div>
-
-            <!-- Ecrã do Motorista -->
-            <div id="driver-screen" class="screen p-6"><div class="w-full max-w-sm mx-auto bg-gray-800 rounded-2xl p-6 space-y-6"><h2 class="text-2xl font-bold text-center">Portal do Motorista</h2><div class="grid grid-cols-2 gap-4 text-center"><div class="bg-gray-700 p-4 rounded-lg"><div class="text-sm text-gray-400">Ganhos do Dia</div><div class="text-3xl font-bold text-emerald-400" id="driver-earnings">R$ 0,00</div></div><div class="bg-gray-700 p-4 rounded-lg"><div class="text-sm text-gray-400">Seu Nível</div><div class="text-3xl font-bold text-cyan-400">🏆 Ouro</div></div></div><div><h3 class="font-bold mb-3">Desafio Semanal</h3><div class="bg-gray-700 p-4 rounded-lg"><p class="font-semibold">Rei da Madrugada</p><p class="text-sm text-gray-400">Complete 10 viagens entre 00h e 06h.</p><div class="w-full bg-gray-600 rounded-full h-2.5 mt-2"><div class="bg-cyan-500 h-2.5 rounded-full" style="width: 70%"></div></div><p class="text-right text-xs mt-1">7 / 10</p></div></div><button onclick="toggleDriverView()" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Voltar à Visão do Passageiro</button></div></div>
-        </main>
     </div>
 
-    <!-- Modais -->
-    <div id="ride-request-modal" class="modal-backdrop"><div class="modal-content bg-gray-800 p-6 rounded-t-2xl space-y-4 text-center"><h2 class="text-2xl font-bold text-cyan-400">Nova Solicitação de Corrida!</h2><div class="text-left space-y-2 py-4"><p><strong class="font-semibold text-gray-400">Distância:</strong> 9 km</p><p><strong class="font-semibold text-gray-400">Ganhos Estimados:</strong> R$ 17,50</p></div><div class="flex space-x-4"><button onclick="acceptRide()" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Aceitar</button><button onclick="declineRide()" class="w-full p-3 bg-gray-600 hover:bg-gray-700 rounded-lg font-bold text-white transition-colors">Recusar</button></div></div></div>
-    <div id="rating-modal" class="modal-backdrop"><div class="modal-content bg-gray-800 p-6 rounded-t-2xl space-y-4 text-center"><h2 class="text-2xl font-bold">Como foi a sua viagem?</h2><p class="text-gray-400">Avalie o seu motorista para nos ajudar a melhorar.</p><div class="flex justify-center text-4xl text-gray-600 rating-stars my-4" id="stars-container"><svg onclick="rate(1)" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg><svg onclick="rate(2)" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg><svg onclick="rate(3)" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg><svg onclick="rate(4)" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg><svg onclick="rate(5)" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg></div><button onclick="submitRating()" class="w-full p-3 bg-emerald-600 hover:bg-emerald-700 rounded-lg font-bold text-white transition-colors">Enviar Avaliação</button></div></div>
+    <!-- ===== MODALS ===== -->
+    <div id="loading-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+            <h2 class="text-xl font-bold">A procurar por um motorista...</h2>
+            <p id="loading-status" class="text-gray-400 mt-2">A encontrar o parceiro Mobix mais próximo de si.</p>
+        </div>
+    </div>
+
+    <div id="ride-request-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h2 class="text-xl font-bold mb-2">Nova Solicitação de Corrida!</h2>
+            <div class="bg-gray-800 p-4 rounded-lg my-4 text-left">
+                <p><strong class="text-gray-400">Distância:</strong> <span class="font-bold text-white">9 km</span></p>
+                <p><strong class="text-gray-400">Tempo Estimado:</strong> <span class="font-bold text-white">15 min</span></p>
+                <p><strong class="text-gray-400">Ganhos Estimados:</strong> <span class="font-bold text-green-400">R$ 22,50</span></p>
+            </div>
+            <button onclick="acceptRide()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Aceitar Corrida</button>
+            <button onclick="closeModal('ride-request-modal')" class="w-full mt-2 text-gray-400 hover:text-white font-bold py-2 rounded-lg transition">Recusar</button>
+        </div>
+    </div>
+    
+    <div id="ride-summary-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-bold mb-4">Viagem Concluída!</h2>
+            <div class="bg-gray-800 p-4 rounded-lg my-4 text-left space-y-2">
+                <p class="flex justify-between"><span>Tarifa Base:</span> <span class="font-bold">R$ 5,00</span></p>
+                <p class="flex justify-between"><span>Distância (9 km):</span> <span class="font-bold">R$ 13,50</span></p>
+                <p class="flex justify-between"><span>Tempo (15 min):</span> <span class="font-bold">R$ 3,75</span></p>
+                <hr class="border-gray-600 my-2">
+                <p class="flex justify-between text-xl"><span class="font-bold">Total:</span> <span class="font-bold text-green-400">R$ 22,25</span></p>
+            </div>
+            <div class="bg-yellow-500/20 border border-yellow-500 p-3 rounded-lg text-center mb-6">
+                <p class="font-bold text-yellow-400">+22 Mobix Points Adicionados!</p>
+            </div>
+            <h3 class="text-lg font-semibold mb-3">Avalie o seu motorista:</h3>
+            <div class="flex justify-center text-4xl text-gray-600 mb-6 space-x-2">
+                <span class="cursor-pointer star" onclick="rateDriver(1)">★</span>
+                <span class="cursor-pointer star" onclick="rateDriver(2)">★</span>
+                <span class="cursor-pointer star" onclick="rateDriver(3)">★</span>
+                <span class="cursor-pointer star" onclick="rateDriver(4)">★</span>
+                <span class="cursor-pointer star" onclick="rateDriver(5)">★</span>
+            </div>
+             <button onclick="finishRide()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Concluir</button>
+        </div>
+    </div>
 
     <script>
-        // --- Elementos da DOM ---
-        const screens = document.querySelectorAll('.screen');
-        const modals = document.querySelectorAll('.modal-backdrop');
+        let currentScreen = 'login-screen';
+        let driverEarnings = 0;
+        let lastRideDetails = null;
 
-        // --- Estado da Simulação ---
-        let currentScreen = 'register-screen';
-        let rideInterval;
-        let isDriverView = false;
-        const user = { name: 'Denilma', points: 1250, badges: ['pioneer'], rideHistory: [] };
-        const driver = { dailyEarnings: 0 };
-
-        // --- Funções de Navegação e UI ---
         function showScreen(screenId) {
-            screens.forEach(screen => screen.classList.remove('active'));
+            document.getElementById(currentScreen).classList.remove('active');
             document.getElementById(screenId).classList.add('active');
             currentScreen = screenId;
         }
 
-        function showModal(modalId) { document.getElementById(modalId).classList.add('active'); }
-        function hideModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
-
-        // --- Fluxo de Autenticação ---
-        function simulateRegister() { showScreen('login-screen'); }
-
-        function simulateLogin() {
-            document.getElementById('user-info').classList.remove('hidden');
-            document.getElementById('user-name-display').innerText = user.name;
-            document.getElementById('points-display').innerText = user.points;
-            showScreen('main-screen');
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
         }
 
-        // --- Fluxo da Corrida (Passageiro) ---
-        function simulateRequestRide() {
-            const destination = document.getElementById('destination-input').value;
-            if (!destination) { alert("Por favor, insira um destino."); return; }
-            showModal('ride-request-modal');
-        }
-        
-        function completeRide() {
-            const pointsEarned = 150;
-            const rideFare = 17.50;
-            const destination = document.getElementById('destination-input').value;
-
-            // Atualiza dados do motorista
-            updateDriverEarnings(rideFare);
-
-            // Atualiza dados do passageiro
-            const newTotalPoints = user.points + pointsEarned;
-            animatePoints(user.points, newTotalPoints);
-            user.points = newTotalPoints;
-            user.badges.push('explorer');
-            user.rideHistory.push({ destination: destination, fare: rideFare.toFixed(2) });
-            
-            updateProfileBadges();
-            updateHistoryList();
-
-            // Mostra a avaliação
-            showModal('rating-modal');
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
         }
 
-        function showRatingScreen() {
-             showModal('rating-modal');
-        }
-
-        function submitRating() {
-            hideModal('rating-modal');
-            resetApp();
-        }
-
-        function rate(stars) {
-            const starElements = document.querySelectorAll('#stars-container svg');
-            starElements.forEach((star, index) => {
-                star.classList.toggle('selected', index < stars);
-            });
+        function requestRide() {
+            showModal('loading-modal');
+            setTimeout(() => {
+                document.getElementById('loading-status').textContent = 'Motorista encontrado! A notificar...';
+                // Mostra a notificação para o "motorista"
+                setTimeout(() => {
+                     closeModal('loading-modal');
+                     showModal('ride-request-modal');
+                }, 2000);
+            }, 3000);
         }
         
-        // --- Fluxo da Corrida (Motorista) ---
         function acceptRide() {
-            hideModal('ride-request-modal');
-            document.getElementById('ride-request-panel').classList.add('hidden');
-            document.getElementById('ride-status-panel').classList.remove('hidden');
+            closeModal('ride-request-modal');
+            // Muda para a visão do passageiro para mostrar o andamento
+            showScreen('passenger-map-screen');
+            
+            const passengerUI = document.getElementById('passenger-main-ui');
+            passengerUI.innerHTML = `
+                <div class="text-center p-4 fade-in">
+                    <h2 class="text-xl font-bold">Motorista a caminho!</h2>
+                    <p class="text-gray-400">Carlos está a 5 minutos de distância.</p>
+                    <div class="w-full bg-gray-700 rounded-full h-2.5 mt-4">
+                      <div class="bg-green-600 h-2.5 rounded-full" style="width: 20%"></div>
+                    </div>
+                </div>
+            `;
 
-            const destination = document.getElementById('destination-input').value;
-            let step = 0;
-            const statuses = [
-                { status: "Procurando motorista...", driver: "" }, // Este estado é pulado
-                { status: "Motorista a caminho!", driver: "Carlos (Chevrolet Onix - ABC1234) está a 5 minutos." },
-                { status: "Em viagem...", driver: `A caminho de ${destination}.` },
-                { status: "Viagem Concluída!", driver: `Chegou ao seu destino.` }
-            ];
+            setTimeout(() => {
+                 passengerUI.innerHTML = `
+                    <div class="text-center p-4 fade-in">
+                        <h2 class="text-xl font-bold">Em viagem...</h2>
+                        <p class="text-gray-400">Destino: Avenida Castanheira, 123</p>
+                         <div class="w-full bg-gray-700 rounded-full h-2.5 mt-4">
+                           <div id="progress-bar" class="bg-green-600 h-2.5 rounded-full transition-all duration-1000" style="width: 20%"></div>
+                        </div>
+                    </div>
+                `;
+                // Animação da barra de progresso
+                setTimeout(() => document.getElementById('progress-bar').style.width = '100%', 100);
 
-            // Inicia o processo a partir do passo "Motorista a caminho"
-            step = 1; 
-            document.getElementById('ride-status-text').innerText = statuses[step].status;
-            document.getElementById('driver-info-text').innerText = statuses[step].driver;
+                setTimeout(() => {
+                    // Viagem concluída
+                    showModal('ride-summary-modal');
+                    updateDriverEarnings();
+                }, 4000);
 
-            rideInterval = setInterval(() => {
-                step++;
-                if (step < statuses.length) {
-                    document.getElementById('ride-status-text').innerText = statuses[step].status;
-                    document.getElementById('driver-info-text').innerText = statuses[step].driver;
-                    if (step === 2) {
-                        document.getElementById('car-animation-container').classList.remove('hidden');
-                    }
-                } else {
-                    clearInterval(rideInterval);
-                    completeRide();
-                }
             }, 5000);
         }
-
-        function declineRide() { hideModal('ride-request-modal'); }
-
-        // --- Funções Auxiliares e de UI ---
-        function toggleDriverView() {
-            isDriverView = !isDriverView;
-            document.getElementById('heatmap-container').classList.toggle('hidden', !isDriverView);
-            if (isDriverView) {
-                showScreen('driver-screen');
-            } else {
-                showScreen('main-screen');
-            }
-        }
-
-        function updateDriverEarnings(amount) {
-            driver.dailyEarnings += amount;
-            document.getElementById('driver-earnings').innerText = `R$ ${driver.dailyEarnings.toFixed(2)}`;
-        }
         
-        function updateHistoryList() {
-            const list = document.getElementById('history-list');
-            list.innerHTML = ''; // Limpa a lista
-            if (user.rideHistory.length === 0) {
-                 list.innerHTML = '<p class="text-center text-gray-400">Nenhuma corrida completada ainda.</p>';
-                 return;
-            }
-            user.rideHistory.slice().reverse().forEach(ride => {
-                const rideEl = document.createElement('div');
-                rideEl.className = 'bg-gray-700 p-3 rounded-lg flex justify-between items-center';
-                rideEl.innerHTML = `
-                    <div>
-                        <p class="font-semibold">Viagem para ${ride.destination}</p>
-                        <p class="text-xs text-gray-400">Ontem</p>
-                    </div>
-                    <p class="font-bold text-emerald-400">R$ ${ride.fare}</p>`;
-                list.appendChild(rideEl);
+        function rateDriver(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('text-yellow-400');
+                    star.classList.remove('text-gray-600');
+                } else {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-600');
+                }
             });
         }
         
-        function animatePoints(start, end) {
-            const pointsEl = document.getElementById('points-display');
-            const profilePointsEl = document.getElementById('profile-points');
-            const duration = 1500;
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const currentVal = Math.floor(progress * (end - start) + start);
-                pointsEl.innerText = currentVal;
-                profilePointsEl.innerText = currentVal;
-                if (progress < 1) { window.requestAnimationFrame(step); }
-            };
-            window.requestAnimationFrame(step);
+        function updateDriverEarnings() {
+            const ridePrice = 22.25;
+            const commission = 0.10; // Nível Ouro
+            const rideEarning = ridePrice * (1 - commission);
+            driverEarnings += rideEarning;
+            
+            lastRideDetails = `
+                <p class="flex justify-between"><span>Total da Corrida:</span> <span class="font-bold text-white">R$ ${ridePrice.toFixed(2).replace('.',',')}</span></p>
+                <p class="flex justify-between"><span>Taxa Mobix (Ouro 10%):</span> <span class="font-bold text-red-400">- R$ ${(ridePrice * commission).toFixed(2).replace('.',',')}</span></p>
+                <hr class="border-gray-600 my-1">
+                <p class="flex justify-between text-lg"><span>Seu Ganho:</span> <span class="font-bold text-green-400">R$ ${rideEarning.toFixed(2).replace('.',',')}</span></p>
+            `;
+
+            document.getElementById('driver-earnings').textContent = `R$ ${driverEarnings.toFixed(2).replace('.',',')}`;
+            document.getElementById('last-ride-details').innerHTML = lastRideDetails;
         }
 
-        function updateProfileBadges() {
-             user.badges.forEach(badgeId => {
-                const el = document.getElementById(`badge-${badgeId}`);
-                if (el) el.classList.remove('opacity-30');
+        function finishRide() {
+            closeModal('ride-summary-modal');
+            showScreen('passenger-map-screen');
+             const passengerUI = document.getElementById('passenger-main-ui');
+             passengerUI.innerHTML = `
+                <h2 class="text-2xl font-bold mb-4">Onde vamos?</h2>
+                <input type="text" value="Avenida Castanheira, 123" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-green-500">
+                <button onclick="requestRide()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition">Pedir Mobix</button>
+            `;
+             // Reset stars
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.classList.remove('text-yellow-400');
+                star.classList.add('text-gray-600');
             });
         }
-        
-        function resetApp() {
-            clearInterval(rideInterval);
-            document.getElementById('ride-request-panel').classList.remove('hidden');
-            document.getElementById('ride-status-panel').classList.add('hidden');
-            document.getElementById('car-animation-container').classList.add('hidden');
-            document.getElementById('ride-status-text').innerText = "Procurando motorista...";
-            document.getElementById('driver-info-text').innerText = "";
-            document.getElementById('destination-input').value = "";
-            rate(0); // Limpa as estrelas
-        }
-        
-        // --- Inicialização ---
-        document.addEventListener('DOMContentLoaded', () => {
-             updateProfileBadges();
-             document.getElementById('profile-points').innerText = user.points;
-             updateHistoryList();
-        });
+
     </script>
-
 </body>
 </html>
 
