@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,239 +7,332 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #030712;
-            color: #f9fafb;
+            background-color: #111827;
+            color: #E5E7EB;
         }
-        .gradient-text {
-            background: linear-gradient(to right, #10B981, #34D399, #A7F3D0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 0%, rgba(22, 163, 74, 0.4), rgba(17, 24, 39, 0) 40%);
         }
-        .section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        .section-gradient {
+            background: radial-gradient(circle at 50% 100%, rgba(22, 163, 74, 0.15), rgba(17, 24, 39, 0) 50%);
         }
-        .section.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .brand-text {
+            color: #22c55e; /* green-500 */
         }
-        .roadmap-item::before {
-            content: '';
-            position: absolute;
-            left: 19px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: #374151;
-            z-index: -1;
+        .brand-bg {
+            background-color: #22c55e;
         }
-        .roadmap-item:last-child::before {
-            display: none;
+        .brand-border {
+            border-color: #22c55e;
         }
-        .roadmap-dot {
-            position: absolute;
-            left: 0;
-            top: 5px;
-            height: 40px;
-            width: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: #1f2937;
-            border: 2px solid #374151;
+        html {
+            scroll-behavior: smooth;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .number-counter {
+            animation: count-up 2s ease-out;
+            animation-fill-mode: forwards;
+        }
+        @keyframes count-up {
+            from { --num: 0; }
+            to { --num: var(--target-number); }
+        }
+        .counter-value::after {
+            content: counter(num);
+            counter-reset: num var(--num);
         }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100">
+<body class="antialiased">
 
     <!-- Header -->
-    <header class="bg-gray-900/80 backdrop-blur-lg sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-gray-900/80 backdrop-blur-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 0C22.3858 0 0 22.3858 0 50C0 77.6142 22.3858 100 50 100C77.6142 100 100 77.6142 100 50C100 22.3858 77.6142 0 50 0Z" fill="url(#logo_gradient)"/><path d="M68 32H32L44 68L56 44L68 32Z" fill="white" fill-opacity="0.9"/><defs><linearGradient id="logo_gradient" x1="50" y1="0" x2="50" y2="100" gradientUnits="userSpaceOnUse"><stop stop-color="#10B981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs></svg>
+                <svg class="w-8 h-8 text-green-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C16.97 2 21 6.03 21 11C21 15.05 18.23 19.33 13.41 21.69C12.54 22.11 11.46 22.11 10.59 21.69C5.77 19.33 3 15.05 3 11C3 6.03 7.03 2 12 2ZM12 4C8.13 4 5 7.13 5 11C5 14.07 7.03 17.23 12 19.35C16.97 17.23 19 14.07 19 11C19 7.13 15.87 4 12 4ZM12 11.5C12.83 11.5 13.5 10.83 13.5 10C13.5 9.17 12.83 8.5 12 8.5C11.17 8.5 10.5 9.17 10.5 10C10.5 10.83 11.17 11.5 12 11.5ZM7.5 14C8.33 14 9 13.33 9 12.5C9 11.67 8.33 11 7.5 11C6.67 11 6 11.67 6 12.5C6 13.33 6.67 14 7.5 14ZM16.5 14C17.33 14 18 13.33 18 12.5C18 11.67 17.33 11 16.5 11C15.67 11 15 11.67 15 12.5C15 13.33 15.67 14 16.5 14Z"/>
+                </svg>
                 <span class="text-2xl font-bold text-white">Mobix</span>
             </div>
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="#benefits" class="hover:text-emerald-400 transition-colors">Benefícios</a>
-                <a href="#gamification" class="hover:text-emerald-400 transition-colors">Gamificação</a>
-                <a href="#roadmap" class="hover:text-emerald-400 transition-colors">Futuro</a>
-            </div>
-            <a href="#cta" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">Junte-se a Nós</a>
-        </nav>
+            <nav class="hidden md:flex space-x-8 text-gray-300">
+                <a href="#benefits" class="hover:text-green-400 transition-colors">Benefícios</a>
+                <a href="#pricing" class="hover:text-green-400 transition-colors">Preços e Ganhos</a>
+                <a href="#gamification" class="hover:text-green-400 transition-colors">Diferencial</a>
+                <a href="#roadmap" class="hover:text-green-400 transition-colors">Futuro</a>
+                <a href="#faq" class="hover:text-green-400 transition-colors">FAQ</a>
+            </nav>
+            <a href="#" class="hidden md:inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition-transform hover:scale-105">Pré-Registo</a>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="py-20 md:py-32 text-center relative overflow-hidden">
-        <div class="absolute inset-0 bg-grid-gray-700/20 [mask-image:linear-gradient(to_bottom,white_5%,transparent_90%)]"></div>
-        <div class="container mx-auto px-6 relative">
-            <h1 class="text-4xl md:text-6xl font-black mb-4 leading-tight">A <span class="gradient-text">Revolução</span> da Mobilidade Urbana</h1>
-            <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">Mais do que um aplicativo de transporte. Uma comunidade onde cada viagem recompensa passageiros e motoristas.</p>
-            <div class="flex justify-center space-x-4">
-                <a href="#cta" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg">Seja um Passageiro</a>
-                <a href="#cta" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-8 rounded-lg transition-colors text-lg">Seja um Motorista</a>
+    <main>
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center justify-center hero-gradient pt-20">
+            <div class="container mx-auto px-6 text-center fade-in">
+                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight">
+                    A Revolução da Mobilidade Urbana. <br>
+                    <span class="brand-text">Mais inteligente, mais divertida.</span>
+                </h1>
+                <p class="mt-6 text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">
+                    Mobix transforma cada viagem numa experiência de recompensas. Para passageiros e motoristas, cada quilómetro conta.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#" class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-10 rounded-lg transition-transform hover:scale-105">Quero ser Passageiro</a>
+                    <a href="#" class="w-full sm:w-auto bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-10 rounded-lg transition-transform hover:scale-105">Quero ser Motorista</a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Como Funciona -->
-    <section class="py-20 bg-gray-900 section">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-2">Simples, Rápido e Intuitivo</h2>
-            <p class="text-gray-400 mb-12">Chegue ao seu destino em 3 passos fáceis.</p>
-            <div class="grid md:grid-cols-3 gap-12">
-                <div class="flex flex-col items-center">
-                    <div class="bg-gray-800 p-6 rounded-full mb-4 border-2 border-emerald-500/50">
-                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">1. Peça sua Viagem</h3>
-                    <p class="text-gray-400">Digite o seu destino e veja o preço estimado na hora.</p>
+        <!-- Benefits Section -->
+        <section id="benefits" class="py-20 section-gradient">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-4xl font-black text-white">Uma Plataforma, Múltiplos Benefícios</h2>
+                    <p class="mt-4 text-lg text-gray-400">Desenvolvido a pensar em quem mais importa: você.</p>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="bg-gray-800 p-6 rounded-full mb-4 border-2 border-emerald-500/50">
-                         <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h6m-6 4h6m-6 4h6"></path></svg>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <h3 class="text-3xl font-bold text-white mb-6">Para <span class="brand-text">Passageiros</span></h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start space-x-4">
+                                <span class="brand-bg rounded-full p-2 mt-1">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </span>
+                                <div>
+                                    <h4 class="font-bold text-xl text-white">Viagens que Recompensam</h4>
+                                    <p class="text-gray-400">Acumule "Mobix Points" em cada viagem e troque por descontos, vouchers e mais.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start space-x-4">
+                                <span class="brand-bg rounded-full p-2 mt-1">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                </span>
+                                <div>
+                                    <h4 class="font-bold text-xl text-white">Segurança em Primeiro Lugar</h4>
+                                    <p class="text-gray-400">Motoristas verificados, partilha de rota em tempo real e um suporte sempre disponível.</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">2. Encontre seu Motorista</h3>
-                    <p class="text-gray-400">O nosso sistema inteligente conecta-o ao motorista mais próximo.</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="bg-gray-800 p-6 rounded-full mb-4 border-2 border-emerald-500/50">
-                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="fade-in">
+                        <h3 class="text-3xl font-bold text-white mb-6">Para <span class="brand-text">Motoristas</span></h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start space-x-4">
+                                <span class="brand-bg rounded-full p-2 mt-1">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                </span>
+                                <div>
+                                    <h4 class="font-bold text-xl text-white">Ganhos Otimizados</h4>
+                                    <p class="text-gray-400">Receba mais com as nossas taxas competitivas, que diminuem à medida que o seu nível aumenta.</p>
+                                </div>
+                            </li>
+                             <li class="flex items-start space-x-4">
+                                <span class="brand-bg rounded-full p-2 mt-1">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                                </span>
+                                <div>
+                                    <h4 class="font-bold text-xl text-white">Reconhecimento e Progresso</h4>
+                                    <p class="text-gray-400">Suba de nível, complete desafios semanais e seja recompensado pelo seu excelente serviço.</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">3. Chegue com Segurança</h3>
-                    <p class="text-gray-400">Relaxe e aproveite a viagem. Avalie no final para melhorar a comunidade.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Benefícios Section -->
-    <section id="benefits" class="py-20 section">
-        <div class="container mx-auto px-6">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-3xl font-bold mb-4">Para Passageiros: Uma Nova Experiência de Viagem</h2>
-                    <p class="text-gray-400 mb-8">Com o Mobix, cada viagem é mais do que um simples trajeto. É uma oportunidade de ganhar pontos, desbloquear recompensas e fazer parte de algo maior.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start"><span class="text-emerald-400 mr-3 mt-1">✓</span><span><strong class="font-semibold">Viagens que Recompensam:</strong> Acumule Mobix Points e troque por descontos ou prémios.</span></li>
-                        <li class="flex items-start"><span class="text-emerald-400 mr-3 mt-1">✓</span><span><strong class="font-semibold">Preços Justos e Transparentes:</strong> Sem surpresas. Saiba o valor da sua corrida antes de confirmar.</span></li>
-                        <li class="flex items-start"><span class="text-emerald-400 mr-3 mt-1">✓</span><span><strong class="font-semibold">Segurança em Primeiro Lugar:</strong> Motoristas verificados e partilha de rota em tempo real.</span></li>
-                    </ul>
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-4xl font-black text-white">Transparência Total: Entenda os Nossos Preços</h2>
+                    <p class="mt-4 text-lg text-gray-400">Sem surpresas. Simples, justo e claro para todos.</p>
                 </div>
-                 <div class="bg-gray-800 rounded-lg p-8">
-                     <h2 class="text-3xl font-bold mb-4">Para Motoristas: O Parceiro que Valoriza o seu Trabalho</h2>
-                    <p class="text-gray-400 mb-8">Acreditamos que motoristas felizes resultam em passageiros felizes. Oferecemos as melhores ferramentas e incentivos para o seu sucesso.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start"><span class="text-emerald-400 mr-3 mt-1">✓</span><span><strong class="font-semibold">Ganhos Otimizados:</strong> Com o nosso "mapa de calor", dirija para as áreas de maior procura e aumente os seus rendimentos.</span></li>
-                        <li class="flex items-start"><span class="text-emerald-400 mr-3 mt-1">✓</span><span><strong class="font-semibold">Seja um Motorista Lendário:</strong> Suba de nível, complete desafios e ganhe bónus exclusivos.</span></li>
-                        <li class="flex items-start"><span class="text-emerald-400 mr-3 mt-1">✓</span><span><strong class="font-semibold">Flexibilidade Total:</strong> Dirija quando quiser, como quiser. Seja o seu próprio chefe com o suporte Mobix.</span></li>
-                    </ul>
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <div class="bg-gray-800 p-8 rounded-2xl fade-in">
+                        <h3 class="text-2xl font-bold text-white mb-4">Como o <span class="brand-text">Passageiro</span> Paga</h3>
+                        <p class="text-gray-400 mb-6">O preço final da sua viagem é uma soma simples de três componentes:</p>
+                        <div class="space-y-4">
+                            <p><strong class="brand-text">Tarifa Base:</strong> Um valor fixo inicial para cada corrida.</p>
+                            <p><strong class="brand-text">Por Distância (km):</strong> Um valor justo por cada quilómetro percorrido.</p>
+                            <p><strong class="brand-text">Por Tempo (min):</strong> Um valor pelo tempo que a viagem demorar.</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-2xl fade-in">
+                        <h3 class="text-2xl font-bold text-white mb-4">Como o <span class="brand-text">Motorista</span> Ganha</h3>
+                        <p class="text-gray-400 mb-6">O seu ganho é o preço da corrida menos a nossa taxa de serviço. O melhor? A nossa taxa diminui à medida que o seu nível aumenta!</p>
+                        <div class="space-y-2 mb-6">
+                            <p><strong>Nível Bronze:</strong> Taxa de 15%</p>
+                            <p><strong>Nível Prata:</strong> Taxa de 12%</p>
+                            <p><strong>Nível Ouro:</strong> Taxa de 10%</p>
+                        </div>
+                        <h4 class="font-bold text-lg text-white mb-4">Simule os seus ganhos semanais:</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="rides" class="block text-sm font-medium text-gray-300">Número de corridas por semana</label>
+                                <input type="range" id="rides" name="rides" min="10" max="200" value="80" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer brand-accent">
+                                <div class="text-center text-white font-bold mt-2"><span id="rides-value">80</span> corridas</div>
+                            </div>
+                            <div class="text-center bg-gray-900 p-4 rounded-lg">
+                                <p class="text-gray-400">Ganhos estimados (Nível Bronze):</p>
+                                <p class="text-2xl font-bold brand-text" id="earnings-value">R$ 1.020,00</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Gamificação Section -->
-    <section id="gamification" class="py-20 bg-gray-900 section">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">O Nosso Grande Diferencial: <span class="gradient-text">Gamificação</span></h2>
-            <p class="text-gray-400 max-w-3xl mx-auto mb-12">Transformamos a mobilidade numa jornada divertida e recompensadora.</p>
-            <div class="bg-gray-800 rounded-xl p-8 md:p-12 shadow-2xl">
-                <div class="grid md:grid-cols-3 gap-10">
-                    <div class="text-center">
-                        <div class="text-6xl mb-2">🏆</div>
-                        <h3 class="text-xl font-bold">Níveis de Motorista</h3>
-                        <p class="text-gray-400 text-sm">De Bronze a Diamante. Quanto mais você dirige, mais benefícios desbloqueia, como taxas reduzidas e bónus especiais.</p>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-6xl mb-2">🎯</div>
-                        <h3 class="text-xl font-bold">Desafios Semanais</h3>
-                        <p class="text-gray-400 text-sm">Complete metas, como "Rei da Madrugada" ou "Explorador da Cidade", e ganhe pontos e dinheiro extra.</p>
-                    </div>
-                    <div class="text-center">
-                         <div class="text-6xl mb-2">🥇</div>
-                        <h3 class="text-xl font-bold">Medalhas para Passageiros</h3>
-                        <p class="text-gray-400 text-sm">Seja um "Pioneiro" ou um "Explorador". Colecione medalhas por usar o Mobix e mostre o seu status na comunidade.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Roadmap Section -->
-    <section id="roadmap" class="py-20 section">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">O Futuro do <span class="gradient-text">Mobix</span></h2>
-            <div class="max-w-2xl mx-auto">
-                <div class="relative">
-                    <div class="roadmap-item relative pl-16 pb-12">
-                        <div class="roadmap-dot"><span>🚀</span></div>
-                        <h3 class="text-xl font-bold">Fase 1: Lançamento (Q1 2026)</h3>
-                        <p class="text-gray-400">Lançamento beta na cidade de São Paulo. Foco em construir a base de utilizadores e otimizar o sistema de matchmaking.</p>
+        <!-- Gamification Section -->
+        <section id="gamification" class="py-20 section-gradient">
+             <div class="container mx-auto px-6 text-center fade-in">
+                <h2 class="text-4xl font-black text-white">O Nosso Grande Diferencial: <span class="brand-text">Gamificação</span></h2>
+                <p class="mt-4 text-lg text-gray-400 max-w-3xl mx-auto">Transformamos a mobilidade numa jornada de recompensas, reconhecimento e diversão.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-gray-800 p-8 rounded-2xl">
+                        <h3 class="text-2xl font-bold brand-text mb-4">Mobix Points</h3>
+                        <p class="text-gray-400">Passageiros acumulam pontos em cada viagem, que podem ser trocados por descontos, viagens grátis ou vouchers em parceiros.</p>
                     </div>
-                    <div class="roadmap-item relative pl-16 pb-12">
-                        <div class="roadmap-dot"><span>📦</span></div>
-                        <h3 class="text-xl font-bold">Fase 2: Expansão de Serviços (Q3 2026)</h3>
-                        <p class="text-gray-400">Introdução do **Mobix Entregas** para pacotes e do **Mobix Corp** para contas empresariais.</p>
+                    <div class="bg-gray-800 p-8 rounded-2xl">
+                        <h3 class="text-2xl font-bold brand-text mb-4">Níveis de Motorista</h3>
+                        <p class="text-gray-400">Motoristas progridem através de níveis (Bronze, Prata, Ouro) ao completarem viagens e receberem boas avaliações, diminuindo as taxas e desbloqueando benefícios.</p>
                     </div>
-                     <div class="roadmap-item relative pl-16 pb-12">
-                        <div class="roadmap-dot"><span>🚌</span></div>
-                        <h3 class="text-xl font-bold">Fase 3: Integração (2027)</h3>
-                        <p class="text-gray-400">Integração com o transporte público, permitindo o planeamento de rotas multimodais dentro do aplicativo.</p>
-                    </div>
-                    <div class="roadmap-item relative pl-16">
-                        <div class="roadmap-dot"><span>⚡️</span></div>
-                        <h3 class="text-xl font-bold">Visão de Futuro: Sustentabilidade</h3>
-                        <p class="text-gray-400">Incentivos para motoristas com veículos elétricos e introdução de uma frota de **Mobix Elétricos**.</p>
+                    <div class="bg-gray-800 p-8 rounded-2xl">
+                        <h3 class="text-2xl font-bold brand-text mb-4">Desafios e Medalhas</h3>
+                        <p class="text-gray-400">Tanto passageiros como motoristas podem completar desafios (ex: "Faça 5 viagens no fim de semana") para ganhar pontos extra e medalhas exclusivas no perfil.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <!-- CTA Section -->
-    <section id="cta" class="py-20 bg-gray-900 section">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-4">Pronto para Mudar a Forma como se Move?</h2>
-            <p class="text-gray-400 mb-8 max-w-2xl mx-auto">Seja um dos primeiros a saber do nosso lançamento. Deixe o seu e-mail e junte-se à revolução Mobix.</p>
-            <form class="max-w-md mx-auto flex">
-                <input type="email" placeholder="O seu melhor e-mail" class="w-full py-3 px-4 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
-                <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-r-lg transition-colors">Notifique-me</button>
-            </form>
-        </div>
-    </section>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6 text-center fade-in">
+                <h2 class="text-4xl font-black text-white">O Futuro do <span class="brand-text">Mobix</span></h2>
+                <p class="mt-4 text-lg text-gray-400">O nosso caminho está traçado. E estamos apenas a começar.</p>
+                <div class="mt-12 relative">
+                    <!-- The line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-700 -translate-y-1/2"></div>
+                    <!-- The items -->
+                    <div class="grid md:grid-cols-4 gap-12">
+                        <div class="relative p-6 bg-gray-800 rounded-2xl text-center">
+                            <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full brand-bg border-4 border-gray-900 flex items-center justify-center font-bold text-white">1</div>
+                            <h3 class="font-bold text-xl mt-8 mb-2 text-white">Lançamento (Q1 2026)</h3>
+                            <p class="text-gray-400">Lançamento inicial em cidades selecionadas com as funcionalidades principais.</p>
+                        </div>
+                        <div class="relative p-6 bg-gray-800 rounded-2xl text-center">
+                           <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full brand-bg border-4 border-gray-900 flex items-center justify-center font-bold text-white">2</div>
+                            <h3 class="font-bold text-xl mt-8 mb-2 text-white">Expansão (Q3 2026)</h3>
+                            <p class="text-gray-400">Introdução de categorias de veículos (Executivo, XL) e expansão nacional.</p>
+                        </div>
+                        <div class="relative p-6 bg-gray-800 rounded-2xl text-center">
+                            <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full brand-bg border-4 border-gray-900 flex items-center justify-center font-bold text-white">3</div>
+                            <h3 class="font-bold text-xl mt-8 mb-2 text-white">Mobix Entregas (2027)</h3>
+                            <p class="text-gray-400">Lançamento do nosso serviço de entregas rápidas para objetos e comida.</p>
+                        </div>
+                         <div class="relative p-6 bg-gray-800 rounded-2xl text-center">
+                             <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full brand-bg border-4 border-gray-900 flex items-center justify-center font-bold text-white">4</div>
+                            <h3 class="font-bold text-xl mt-8 mb-2 text-white">Mobilidade Verde (2028)</h3>
+                            <p class="text-gray-400">Introdução de veículos elétricos na frota e opções de partilha de viagens.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section id="faq" class="py-20 section-gradient">
+            <div class="container mx-auto px-6 max-w-4xl fade-in">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-black text-white">Perguntas Frequentes</h2>
+                    <p class="mt-4 text-lg text-gray-400">Tudo o que precisa de saber sobre o Mobix.</p>
+                </div>
+                <div class="space-y-6">
+                    <details class="bg-gray-800 p-6 rounded-lg group cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-white text-lg">
+                            Como é garantida a segurança dos passageiros?
+                            <span class="transform transition-transform duration-300 group-open:rotate-180">+</span>
+                        </summary>
+                        <p class="text-gray-400 mt-4">Todos os nossos motoristas passam por um rigoroso processo de verificação de antecedentes e documentos. Além disso, o aplicativo oferece funcionalidades como partilha de rota em tempo real e um botão de emergência para garantir a sua tranquilidade.</p>
+                    </details>
+                     <details class="bg-gray-800 p-6 rounded-lg group cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-white text-lg">
+                            Como funcionam os pagamentos?
+                            <span class="transform transition-transform duration-300 group-open:rotate-180">+</span>
+                        </summary>
+                        <p class="text-gray-400 mt-4">Os pagamentos são processados de forma segura através do aplicativo, via cartão de crédito. Os motoristas recebem os seus ganhos semanalmente, diretamente na sua conta bancária.</p>
+                    </details>
+                     <details class="bg-gray-800 p-6 rounded-lg group cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-white text-lg">
+                            A gamificação realmente afeta os ganhos dos motoristas?
+                            <span class="transform transition-transform duration-300 group-open:rotate-180">+</span>
+                        </summary>
+                        <p class="text-gray-400 mt-4">Sim! O nosso modelo foi desenhado para recompensar o bom serviço e a dedicação. Ao subir de nível, a taxa de serviço do Mobix diminui, o que significa que uma maior percentagem do valor da corrida vai diretamente para o motorista.</p>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-900 border-t border-gray-800">
-        <div class="container mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-            <p class="text-gray-400">&copy; 2025 Mobix. Todos os direitos reservados.</p>
-            <div class="flex space-x-4 mt-4 md:mt-0">
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">Termos de Serviço</a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacidade</a>
+        <div class="container mx-auto px-6 py-12 text-center text-gray-400">
+            <div class="flex justify-center items-center space-x-2 mb-6">
+                 <svg class="w-8 h-8 text-green-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C16.97 2 21 6.03 21 11C21 15.05 18.23 19.33 13.41 21.69C12.54 22.11 11.46 22.11 10.59 21.69C5.77 19.33 3 15.05 3 11C3 6.03 7.03 2 12 2ZM12 4C8.13 4 5 7.13 5 11C5 14.07 7.03 17.23 12 19.35C16.97 17.23 19 14.07 19 11C19 7.13 15.87 4 12 4ZM12 11.5C12.83 11.5 13.5 10.83 13.5 10C13.5 9.17 12.83 8.5 12 8.5C11.17 8.5 10.5 9.17 10.5 10C10.5 10.83 11.17 11.5 12 11.5ZM7.5 14C8.33 14 9 13.33 9 12.5C9 11.67 8.33 11 7.5 11C6.67 11 6 11.67 6 12.5C6 13.33 6.67 14 7.5 14ZM16.5 14C17.33 14 18 13.33 18 12.5C18 11.67 17.33 11 16.5 11C15.67 11 15 11.67 15 12.5C15 13.33 15.67 14 16.5 14Z"/>
+                </svg>
+                <span class="text-2xl font-bold text-white">Mobix</span>
             </div>
+            <p>&copy; 2025 Mobix. Todos os direitos reservados. Uma nova era na mobilidade urbana.</p>
         </div>
     </footer>
 
     <script>
-        const sections = document.querySelectorAll('.section');
+        // Script para a calculadora de ganhos
+        const ridesSlider = document.getElementById('rides');
+        const ridesValue = document.getElementById('rides-value');
+        const earningsValue = document.getElementById('earnings-value');
+
+        ridesSlider.addEventListener('input', () => {
+            const rides = parseInt(ridesSlider.value);
+            ridesValue.textContent = rides;
+
+            // Lógica de cálculo (exemplo: R$ 15 por corrida * 85% de ganho)
+            const averageFare = 15;
+            const commission = 0.85; // Nível Bronze (15% taxa)
+            const earnings = rides * averageFare * commission;
+            
+            earningsValue.textContent = `R$ ${earnings.toFixed(2).replace('.', ',')}`;
+        });
+
+        // Efeito de fade-in nas secções ao rolar a página
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+                    entry.target.classList.add('fade-in');
                 }
             });
-        }, { threshold: 0.1 });
+        }, {
+            threshold: 0.1
+        });
 
-        sections.forEach(section => {
+        document.querySelectorAll('section > div').forEach(section => {
             observer.observe(section);
         });
-    </script>
 
+    </script>
 </body>
 </html>
+
