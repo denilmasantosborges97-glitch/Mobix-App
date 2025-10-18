@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobix - Acesso Antecipado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-color: #111827;
+            background-image: radial-gradient(#10B98133 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .tab.active {
+            border-color: #10B981;
+            background-color: #1f2937;
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div class="container mx-auto px-6 py-12">
+        <header class="text-center mb-16">
+            <div class="flex items-center justify-center space-x-3 mb-4">
+                <img src="logo.png" alt="Mobix Logo" class="h-12 w-auto rounded-full">
+                <h1 class="text-4xl font-bold">Mobix</h1>
+            </div>
+            <h2 class="text-5xl font-black text-white">Garanta o seu Acesso Antecipado</h2>
+            <p class="text-lg text-gray-400 mt-4 max-w-3xl mx-auto">O nosso lançamento está próximo. Inscreva-se na lista de acesso antecipado e receba benefícios exclusivos por ser um dos primeiros a fazer parte da nossa comunidade.</p>
+        </header>
+
+        <main id="main-content">
+            <!-- Exclusive Benefits Section -->
+            <section class="mb-16">
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 text-center">
+                    <div class="bg-gray-800 p-8 rounded-lg border border-green-500/50">
+                        <p class="text-4xl mb-4">👤</p>
+                        <h3 class="text-2xl font-bold mb-2">Benefício para Passageiros</h3>
+                        <p class="text-gray-400">Receba um <strong class="text-green-400">pack de 5 vouchers com 20% de desconto</strong> para usar nas suas primeiras viagens. Comece a sua experiência na Mobix a poupar!</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-lg border border-green-500/50">
+                        <p class="text-4xl mb-4">🚀</p>
+                        <h3 class="text-2xl font-bold mb-2">Lançamento com Taxa Zero!</h3>
+                        <p class="text-gray-400">Garanta o seu lugar e desfrute de <strong class="text-green-400">100% dos ganhos das suas corridas</strong> no dia do lançamento. É isso mesmo: <strong class="text-green-400">TAXA ZERO</strong> para os nossos parceiros pioneiros!</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- After Launch Section -->
+            <section class="mb-16 max-w-3xl mx-auto text-center bg-gray-800 p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-4">E Depois do Lançamento?</h3>
+                <p class="text-gray-400">Após o dia de Taxa Zero, a nossa estrutura de taxas entra em vigor, mas com o diferencial Mobix. A taxa padrão para o nível iniciante (Bronze) é de 20%. No entanto, através do nosso sistema de gamificação, o seu bom desempenho permite que você suba de nível e <strong class="text-green-400">reduza a sua taxa para até 10%</strong>. Na Mobix, o seu esforço é sempre recompensado.</p>
+            </section>
+
+            <!-- Registration Form Section -->
+            <section id="registration-section" class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-2xl">
+                <div x-data="{ tab: 'passenger' }">
+                    <div class="flex border-b border-gray-700 mb-6">
+                        <button @click="tab = 'passenger'" :class="{ 'active': tab === 'passenger' }" class="tab flex-1 py-3 text-lg font-semibold border-b-4 border-transparent transition text-gray-400 hover:text-white">
+                            Sou Passageiro
+                        </button>
+                        <button @click="tab = 'driver'" :class="{ 'active': tab === 'driver' }" class="tab flex-1 py-3 text-lg font-semibold border-b-4 border-transparent transition text-gray-400 hover:text-white">
+                            Sou Motorista
+                        </button>
+                    </div>
+
+                    <!-- Passenger Form -->
+                    <div id="passenger-form-container" x-show="tab === 'passenger'">
+                        <form onsubmit="handleFormSubmit(event, 'passenger')">
+                            <h3 class="text-2xl font-bold mb-4">Inscreva-se na Lista</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="p-name" class="block text-sm font-medium text-gray-400">Nome Completo</label>
+                                    <input type="text" id="p-name" required class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+                                <div>
+                                    <label for="p-email" class="block text-sm font-medium text-gray-400">E-mail</label>
+                                    <input type="email" id="p-email" required class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+                                <div>
+                                    <label for="p-city" class="block text-sm font-medium text-gray-400">Sua Cidade</label>
+                                    <input type="text" id="p-city" required class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+                                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition !mt-6">Garantir meu lugar!</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Driver Form -->
+                    <div id="driver-form-container" x-show="tab === 'driver'" x-cloak>
+                        <form onsubmit="handleFormSubmit(event, 'driver')">
+                            <h3 class="text-2xl font-bold mb-4">Inscreva-se na Lista</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="d-name" class="block text-sm font-medium text-gray-400">Nome Completo</label>
+                                    <input type="text" id="d-name" required class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+                                <div>
+                                    <label for="d-email" class="block text-sm font-medium text-gray-400">E-mail</label>
+                                    <input type="email" id="d-email" required class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+                                <div>
+                                    <label for="d-city" class="block text-sm font-medium text-gray-400">Sua Cidade</label>
+                                    <input type="text" id="d-city" required class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                </div>
+                                 <div>
+                                    <label for="d-vehicle" class="block text-sm font-medium text-gray-400">Tipo de Veículo</label>
+                                    <select id="d-vehicle" required class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                        <option>Carro</option>
+                                        <option>Moto</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition !mt-6">Garantir meu lugar!</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+             <!-- Why Section -->
+            <section class="text-center mt-16 max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold mb-4">Por que o seu registo é importante?</h3>
+                <p class="text-gray-400">Ao inscrever-se hoje, você não garante apenas os seus benefícios. Você ajuda-nos a construir uma base sólida de utilizadores para o dia do lançamento. Isto é crucial para provar a força da nossa comunidade a investidores e parceiros, permitindo-nos começar com uma rede forte e oferecer o melhor serviço possível desde o primeiro dia.</p>
+            </section>
+        </main>
+    </div>
+    
+    <script src="//unpkg.com/alpinejs" defer></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnYy-awTOD6LBALDt5jI0qcz8YzI3iRus",
+            authDomain: "mobix-29829.firebaseapp.com",
+            projectId: "mobix-29829",
+            storageBucket: "mobix-29829.appspot.com",
+            messagingSenderId: "322562734005",
+            appId: "1:322562734005:web:e03a04fe49818450edcbfc"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function handleFormSubmit(event, userType) {
+            event.preventDefault();
+            const button = event.target.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.textContent = 'Aguarde...';
+
+            let dataToSave = {};
+            let collectionName = '';
+            let email = '';
+
+            if (userType === 'passenger') {
+                email = document.getElementById('p-email').value;
+                dataToSave = {
+                    name: document.getElementById('p-name').value, email,
+                    city: document.getElementById('p-city').value,
+                    registeredAt: new Date().toISOString()
+                };
+                collectionName = 'pre_registrations_passengers';
+            } else {
+                email = document.getElementById('d-email').value;
+                dataToSave = {
+                    name: document.getElementById('d-name').value, email,
+                    city: document.getElementById('d-city').value,
+                    vehicle: document.getElementById('d-vehicle').value,
+                    registeredAt: new Date().toISOString()
+                };
+                collectionName = 'pre_registrations_drivers';
+            }
+
+            const q = query(collection(db, collectionName), where("email", "==", email));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                alert("Este e-mail já foi registado. Obrigado pelo seu interesse!");
+                localStorage.setItem('mobixUserEmail', email);
+                window.location.href = 'dashboard_pioneiro.html';
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, collectionName), dataToSave);
+                localStorage.setItem('mobixUserEmail', email);
+                window.location.href = 'dashboard_pioneiro.html';
+            } catch (error) {
+                console.error("Erro ao guardar o registo: ", error);
+                alert("Ocorreu um erro. Por favor, tente novamente.");
+                button.disabled = false;
+                button.textContent = 'Garantir meu lugar!';
+            }
+        }
+        
+        window.handleFormSubmit = handleFormSubmit;
+    </script>
+</body>
+</html>
+
