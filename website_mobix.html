@@ -26,27 +26,42 @@
     <!-- Header -->
     <header class="p-6 flex justify-between items-center sticky top-0 bg-gray-900/80 backdrop-blur-sm z-50">
         <div class="flex items-center space-x-3">
-            <svg class="w-10 h-10 text-green-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C16.97 2 21 6.03 21 11C21 15.05 18.23 19.33 13.41 21.69C12.54 22.11 11.46 22.11 10.59 21.69C5.77 19.33 3 15.05 3 11C3 6.03 7.03 2 12 2ZM12 4C8.13 4 5 7.13 5 11C5 14.07 7.03 17.23 12 19.35C16.97 17.23 19 14.07 19 11C19 7.13 15.87 4 12 4ZM12 11.5C12.83 11.5 13.5 10.83 13.5 10C13.5 9.17 12.83 8.5 12 8.5C11.17 8.5 10.5 9.17 10.5 10C10.5 10.83 11.17 11.5 12 11.5ZM7.5 14C8.33 14 9 13.33 9 12.5C9 11.67 8.33 11 7.5 11C6.67 11 6 11.67 6 12.5C6 13.33 6.67 14 7.5 14ZM16.5 14C17.33 14 18 13.33 18 12.5C18 11.67 17.33 11 16.5 11C15.67 11 15 11.67 15 12.5C15 13.33 15.67 14 16.5 14Z"/></svg>
+            <img src="logo.png" alt="Mobix Logo" class="h-10 w-auto rounded-full">
             <h1 class="text-2xl font-bold">Mobix</h1>
         </div>
         <nav class="hidden md:flex space-x-6 items-center">
             <a href="#benefits" class="hover:text-green-400 transition">Benefícios</a>
-            <a href="#passenger-experience" class="hover:text-green-400 transition">Passageiros</a>
-            <a href="#freedom" class="hover:text-green-400 transition">Motoristas</a>
+            <a href="#solution" class="hover:text-green-400 transition">Soluções</a>
+            <a href="#referral" class="hover:text-green-400 transition">Indique e Ganhe</a>
             <a href="#calculator" class="hover:text-green-400 transition">Simulador</a>
         </nav>
-        <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">Inscreva-se</button>
+        <a href="pre_registo.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">Acesso Antecipado</a>
     </header>
 
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
         <section class="hero-bg text-center py-24 px-6">
-            <h2 class="text-5xl md:text-6xl font-black mb-4 leading-tight">Mobilidade que <span class="text-green-400">respeita</span> e <span class="text-green-400">recompensa</span>.</h2>
-            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-8">Repensamos o transporte por aplicativo. Criamos um ecossistema justo onde a sua liberdade e dedicação, seja como passageiro ou motorista, são os nossos maiores valores.</p>
-            <div class="flex justify-center space-x-4">
-                <a href="#" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition text-lg">Quero ser Passageiro</a>
-                <a href="#" class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition text-lg">Quero ser Motorista</a>
+            <h2 class="text-5xl md:text-6xl font-black mb-4 leading-tight">A Revolução da Mobilidade Chega em <span class="text-green-400">Janeiro de 2026</span>.</h2>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-10">Repensamos o transporte por aplicativo para criar um ecossistema justo, onde a sua liberdade e dedicação, seja como passageiro ou motorista, são os nossos maiores valores.</p>
+
+            <!-- Pre-registration CTA -->
+            <div class="max-w-3xl mx-auto bg-gray-800/50 backdrop-blur-sm border border-green-500/50 rounded-2xl p-8 mb-8">
+                <h3 class="text-3xl font-bold mb-6">Inscreva-se para o Acesso Antecipado e Garanta Benefícios Exclusivos!</h3>
+                <div class="grid md:grid-cols-2 gap-6 text-left">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <p class="font-bold text-green-400">🚀 Motoristas Pioneiros:</p>
+                        <p>Ganhe 100% do valor das suas corridas com <strong class="text-white">TAXA ZERO</strong> no dia do lançamento!</p>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <p class="font-bold text-green-400">👤 Passageiros Pioneiros:</p>
+                        <p>Receba um pack com <strong class="text-white">3 vouchers de desconto</strong> para usar quando quiser.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <a href="pre_registo.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition text-xl animate-pulse">Quero Meus Benefícios!</a>
             </div>
         </section>
 
@@ -60,57 +75,18 @@
                         <ul class="space-y-4 text-lg">
                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Viagens que Valem Pontos:</strong> Acumule "Mobix Points" em cada corrida e troque por descontos.</span></li>
                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Preços Transparentes:</strong> Saiba exatamente quanto vai pagar antes de pedir. Sem surpresas.</span></li>
-                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Motoristas Focados e Satisfeitos:</strong> Nossas políticas justas garantem motoristas mais motivados e 100% dedicados à sua viagem.</span></li>
+                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Motoristas Focados:</strong> O nosso sistema de Fila Inteligente garante que o seu motorista está 100% dedicado à sua viagem.</span></li>
                         </ul>
                     </div>
                     <div class="bg-gray-800 p-8 rounded-2xl">
                         <h4 class="text-3xl font-bold mb-6 text-green-400">Para Motoristas</h4>
                         <ul class="space-y-4 text-lg">
-                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Liberdade Total:</strong> Sem taxas de aceitação ou cancelamento. Você no controle, sem punições.</span></li>
                              <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Taxas Menores, Ganhos Maiores:</strong> Suba de nível e reduza a sua taxa de serviço.</span></li>
                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Seu Tempo Respeitado:</strong> Compensação justa por cancelamentos e tempo de espera.</span></li>
-                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Pagamento 100% Garantido:</strong> Com nosso sistema de validação e fundo de garantia, o risco de calote é zero.</span></li>
+                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Pagamento 100% Garantido:</strong> Com o nosso sistema de validação e fundo de garantia, o risco de calote é zero.</span></li>
                         </ul>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Passenger Experience Section -->
-        <section id="passenger-experience" class="py-20 px-6 bg-gray-800">
-            <div class="max-w-4xl mx-auto text-center">
-                 <h3 class="text-3xl font-bold text-center mb-6">💖 Uma Experiência Superior para o Passageiro</h3>
-                 <p class="text-lg text-gray-400 mb-8">As nossas políticas foram desenhadas para criar um serviço mais fiável, seguro e recompensador para si.</p>
-                <div class="grid md:grid-cols-2 gap-8 items-start text-left mt-12">
-                    <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Mais Fiabilidade e Respeito</h5>
-                        <p class="text-gray-300">A nossa política de **taxa de cancelamento justo** para passageiros (após o motorista se deslocar) garante que os motoristas levem cada aceite a sério. O resultado para si? Menos cancelamentos por parte dos motoristas e a certeza de que a sua viagem é a prioridade.</p>
-                    </div>
-                    <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Recompensas que Valem a Pena</h5>
-                        <p class="text-gray-300">Cada real gasto em viagens na Mobix converte-se em **Mobix Points**. Use os seus pontos para obter descontos significativos em corridas futuras ou troque por vouchers na nossa rede de parceiros. A sua lealdade é a nossa maior recompensa.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        
-        <!-- Freedom Section -->
-        <section id="freedom" class="py-20 px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                 <h3 class="text-3xl font-bold text-center mb-6">🤝 Liberdade e Confiança: O Fim das Taxas Punitivas</h3>
-                 <p class="text-lg text-gray-400 mb-8">Acreditamos que a autonomia é a chave para uma parceria de sucesso. Nos modelos tradicionais, os motoristas são penalizados se não aceitam ou se cancelam corridas, gerando estresse e a obrigação de aceitar viagens não lucrativas. **Na Mobix, essa prática não existe.**</p>
-                <div class="grid md:grid-cols-2 gap-8 items-center text-left mt-12">
-                    <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Sem Taxa de Aceitação</h5>
-                        <p class="text-gray-300">Você é livre para aceitar apenas as corridas que fazem sentido para você, no momento que quiser, sem qualquer tipo de punição. A sua segurança e estratégia de trabalho vêm em primeiro lugar.</p>
-                    </div>
-                     <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Sem Taxa de Cancelamento</h5>
-                        <p class="text-gray-300">Imprevistos acontecem. Você pode cancelar uma corrida quando necessário, sem medo de penalizações. A sua autonomia como parceiro independente é respeitada.</p>
-                    </div>
-                </div>
-                <p class="text-center text-green-400 mt-8 font-semibold">Em vez de punir, recompensamos o bom desempenho através do nosso sistema de níveis e gamificação.</p>
             </div>
         </section>
         
@@ -118,36 +94,35 @@
         <section id="solution" class="py-20 px-6 bg-gray-800">
             <div class="max-w-4xl mx-auto text-center">
                  <h3 class="text-3xl font-bold text-center mb-6">🧠 Foco Total na Sua Viagem: O Fim da "Corrida Seguinte"</h3>
-                 <p class="text-lg text-gray-400 mb-8">Já pediu uma corrida e viu que o seu motorista ainda estava finalizando outra viagem? Essa experiência frustrante, que gera insegurança e atrasos, acaba aqui. A Mobix introduz a **Fila Inteligente**.</p>
+                 <p class="text-lg text-gray-400 mb-8">Já pediu uma corrida e viu que o seu motorista ainda estava a finalizar outra viagem? Essa experiência frustrante, que gera insegurança e atrasos, acaba aqui. A Mobix introduz a **Fila Inteligente**.</p>
                 <div class="grid md:grid-cols-2 gap-8 items-center text-left mt-12">
                     <div>
                         <h5 class="text-xl font-bold mb-3 text-white">Para o Passageiro</h5>
-                        <p class="text-gray-300">Nosso sistema só aloca um motorista que está **prestes a ficar livre**. Isso significa que o motorista está 100% focado em você desde o momento do aceite. O resultado é um tempo de espera mais preciso, mais segurança e a tranquilidade de saber que você é a prioridade.</p>
+                        <p class="text-gray-300">O nosso sistema só aloca um motorista que está **prestes a ficar livre**. Isto significa que o motorista está 100% focado em si desde o momento do aceite. O resultado é um tempo de espera mais preciso e mais segurança.</p>
                     </div>
                      <div>
                         <h5 class="text-xl font-bold mb-3 text-white">Para o Motorista</h5>
-                        <p class="text-gray-300">Diga adeus ao estresse de ter de aceitar a próxima corrida enquanto conduz. A Fila Inteligente oferece a próxima viagem automaticamente quando está chegando ao destino atual. Isso **elimina o tempo ocioso não remunerado** e permite que você foque na estrada.</p>
+                        <p class="text-gray-300">Diga adeus ao stress de ter de aceitar a próxima corrida enquanto conduz. A Fila Inteligente oferece-lhe a próxima viagem automaticamente, **eliminando o tempo ocioso não remunerado** e permitindo-lhe focar na estrada.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Cancellations Section -->
-        <section id="cancellations" class="py-20 px-6">
+        <!-- Referral Section -->
+        <section id="referral" class="py-20 px-6">
             <div class="max-w-4xl mx-auto text-center">
-                 <h3 class="text-3xl font-bold text-center mb-6">🚫 Respeito ao Seu Tempo: Fim dos Cancelamentos e Esperas</h3>
-                 <p class="text-lg text-gray-400 mb-8">Seu tempo e seu combustível são valiosos. Na Mobix, seu trabalho é protegido por políticas justas que compensam seu esforço.</p>
+                 <h3 class="text-3xl font-bold text-center mb-6">🚀 Cresça Conosco: O Nosso Programa de Indicação</h3>
+                 <p class="text-lg text-gray-400 mb-8">Acreditamos que a nossa comunidade é a nossa maior força. Por isso, recompensamos quem nos ajuda a crescer.</p>
                 <div class="grid md:grid-cols-2 gap-8 items-start text-left mt-12 bg-gray-800 p-8 rounded-2xl">
                     <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Taxa por Deslocamento</h5>
-                        <p class="text-gray-300">Se um passageiro cancelar *após o motorista ter iniciado o deslocamento* em sua direção, uma **taxa de deslocamento** é aplicada. Essa compensação cobre seu gasto inicial e valoriza sua prontidão.</p>
+                        <h5 class="text-xl font-bold mb-3 text-white">Indique um Passageiro</h5>
+                        <p class="text-gray-300">Quando um novo passageiro se inscreve com o seu código e completa a primeira viagem, ambos ganham um <strong class="text-green-400">voucher de 50% de desconto</strong> para a próxima corrida. É uma vitória para todos!</p>
                     </div>
                      <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Taxa por Tempo de Espera</h5>
-                        <p class="text-gray-300">Após 3 minutos de cortesia no local de embarque, uma **taxa por minuto de espera** é adicionada automaticamente à corrida. Seu tempo de espera é remunerado, como deve ser.</p>
+                        <h5 class="text-xl font-bold mb-3 text-white">Indique um Motorista</h5>
+                        <p class="text-gray-300">Quando um novo motorista parceiro se inscreve com o seu código e completa as suas primeiras 50 viagens, ambos recebem um <strong class="text-green-400">bónus de R$ 200 em dinheiro</strong>. Ajudar a nossa rede a crescer compensa.</p>
                     </div>
                 </div>
-                 <p class="text-center text-green-400 mt-8 font-semibold">100% de todas as taxas de cancelamento e espera são repassadas diretamente para você. Na Mobix, seu tempo é dinheiro.</p>
             </div>
         </section>
 
@@ -163,7 +138,7 @@
                     </div>
                      <div>
                         <h5 class="text-xl font-bold mb-3 text-white">Adequação da Viagem</h5>
-                        <p class="text-gray-300">Para garantir uma viagem segura, especialmente em motocicletas, o serviço destina-se ao transporte de um passageiro com bagagem de mão leve. Em situações que possam comprometer a segurança ou a capacidade técnica do veículo, o motorista tem o direito de cancelar a viagem, apoiado pela plataforma.</p>
+                        <p class="text-gray-300">Para garantir uma viagem segura, especialmente em motocicletas, o serviço destina-se ao transporte de um passageiro com bagagem de mão leve. Em situações que possam comprometer a segurança, o motorista tem o direito de cancelar a viagem, apoiado pela plataforma.</p>
                     </div>
                 </div>
             </div>
@@ -177,14 +152,14 @@
                 <div class="grid md:grid-cols-2 gap-8 items-center text-left mt-12 bg-gray-800 p-8 rounded-2xl">
                     <div>
                         <h5 class="text-xl font-bold mb-3 text-white">Validação Prévia Obrigatória</h5>
-                        <p class="text-gray-300">Nenhuma viagem pode ser solicitada sem um método de pagamento digital válido e verificado na conta do passageiro. Isso elimina a possibilidade de pedir uma corrida sem ter como pagar.</p>
+                        <p class="text-gray-300">Nenhuma viagem pode ser solicitada sem um método de pagamento digital válido e verificado na conta do passageiro.</p>
                     </div>
                      <div>
                         <h5 class="text-xl font-bold mb-3 text-white">Fundo de Garantia Mobix</h5>
-                        <p class="text-gray-300">No raro caso de uma falha na cobrança, nosso **Fundo de Garantia Mobix** cobre o valor total para você imediatamente. Você sempre recebe. Nossa equipe resolve a pendência diretamente com o passageiro.</p>
+                        <p class="text-gray-300">No raro caso de uma falha na cobrança, o nosso **Fundo de Garantia Mobix** cobre o valor total para si imediatamente. Você sempre recebe.</p>
                     </div>
                 </div>
-                <p class="text-center text-green-400 mt-8 font-semibold">Com a Mobix, seu trabalho é 100% garantido.</p>
+                <p class="text-center text-green-400 mt-8 font-semibold">Com a Mobix, o seu trabalho é 100% garantido.</p>
             </div>
         </section>
 
@@ -192,7 +167,7 @@
         <section id="calculator" class="py-20 px-6 bg-gray-800">
             <div class="max-w-4xl mx-auto text-center">
                 <h3 class="text-4xl font-bold mb-4">Simule e Comprove a Vantagem</h3>
-                <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-12">Veja na prática como nosso modelo de preços transparente funciona.</p>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-12">Veja na prática como o nosso modelo de preços transparente funciona.</p>
                 <div class="bg-gray-900 p-8 rounded-2xl">
                     <div class="grid md:grid-cols-2 gap-8 items-center">
                         <div>
@@ -218,45 +193,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Comparison Section -->
-        <section id="comparison" class="py-20 px-6">
-            <div class="max-w-6xl mx-auto text-center">
-                <h3 class="text-4xl font-bold mb-4">Por que dirigir com a Mobix vale mais a pena?</h3>
-                <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-12">Analisamos o mercado para criar um modelo superior.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-gray-700 p-8 rounded-2xl border border-red-500/50">
-                        <h4 class="text-2xl font-bold mb-4">O Modelo Tradicional</h4>
-                        <p class="text-gray-400">Taxas de serviço altas e fixas (20% a 30%) que não reconhecem sua dedicação.</p>
-                        <p class="text-4xl font-bold mt-6">Você Fica com ~75%</p>
-                    </div>
-                    <div class="bg-gray-900 p-8 rounded-2xl border-2 border-green-500">
-                        <h4 class="text-2xl font-bold mb-4">O Modelo Mobix</h4>
-                        <p class="text-gray-400">Taxas que começam mais baixas e diminuem com seu desempenho (a partir de 10%).</p>
-                        <p class="text-4xl font-bold mt-6 text-green-400">Você Fica com até 90%</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Night Fare Details -->
-        <section id="pricing-details" class="py-20 px-6 bg-gray-800">
-            <div class="max-w-4xl mx-auto text-center">
-                 <h3 class="text-3xl font-bold text-center mb-6">🌙 Segurança e Valorização: A Nossa Tarifa Noturna</h3>
-                 <p class="text-lg text-gray-400 mb-8">Entendemos que a segurança é uma prioridade, especialmente à noite.</p>
-                <div class="grid md:grid-cols-2 gap-8 items-center text-left">
-                    <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Para o Passageiro</h5>
-                        <p class="text-gray-300">Entre as **22:00 e as 05:00**, é aplicado um **Adicional Noturno** transparente ao valor da sua viagem, garantindo maior disponibilidade de motoristas.</p>
-                    </div>
-                     <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Para o Motorista</h5>
-                        <p class="text-gray-300">**90% do Adicional Noturno é repassado diretamente para você**. É a nossa forma de valorizar sua dedicação e garantir que seu esforço extra seja devidamente recompensado.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
 
         <!-- Roadmap Section -->
         <section id="roadmap" class="py-20 px-6">
