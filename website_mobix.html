@@ -9,6 +9,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
         }
         .hero-bg {
             background-color: #111827;
@@ -19,6 +20,11 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1), 0 4px 6px -2px rgba(16, 185, 129, 0.05);
         }
+        .tab.active {
+            border-color: #10B981;
+            background-color: #1f2937;
+        }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -32,20 +38,19 @@
         <nav class="hidden md:flex space-x-6 items-center">
             <a href="#benefits" class="hover:text-green-400 transition">Benefícios</a>
             <a href="#solution" class="hover:text-green-400 transition">Soluções</a>
-            <a href="#referral" class="hover:text-green-400 transition">Indique e Ganhe</a>
             <a href="#calculator" class="hover:text-green-400 transition">Simulador</a>
+            <a href="#comparison" class="hover:text-green-400 transition">Ganhos</a>
         </nav>
-        <a href="pre_registo.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">Acesso Antecipado</a>
+        <a href="#registration" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">Inscreva-se Já</a>
     </header>
 
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
         <section class="hero-bg text-center py-24 px-6">
-            <h2 class="text-5xl md:text-6xl font-black mb-4 leading-tight">A Revolução da Mobilidade Chega em <span class="text-green-400">Janeiro de 2026</span>.</h2>
-            <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-10">Repensamos o transporte por aplicativo para criar um ecossistema justo, onde a sua liberdade e dedicação, seja como passageiro ou motorista, são os nossos maiores valores.</p>
+            <h2 class="text-5xl md:text-6xl font-black mb-4 leading-tight">A Revolução da Mobilidade Chega <span class="text-green-400">Em Breve</span>.</h2>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-10">O nosso aplicativo está em desenvolvimento. Repensamos o transporte para criar um ecossistema justo, onde a sua liberdade e dedicação, seja como passageiro ou motorista, são os nossos maiores valores.</p>
 
-            <!-- Pre-registration CTA -->
             <div class="max-w-3xl mx-auto bg-gray-800/50 backdrop-blur-sm border border-green-500/50 rounded-2xl p-8 mb-8">
                 <h3 class="text-3xl font-bold mb-6">Inscreva-se para o Acesso Antecipado e Garanta Benefícios Exclusivos!</h3>
                 <div class="grid md:grid-cols-2 gap-6 text-left">
@@ -61,7 +66,7 @@
             </div>
 
             <div class="flex justify-center">
-                <a href="pre_registo.html" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition text-xl animate-pulse">Quero Meus Benefícios!</a>
+                <a href="#registration" class="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition text-xl animate-pulse">Quero Meus Benefícios!</a>
             </div>
         </section>
 
@@ -81,6 +86,7 @@
                     <div class="bg-gray-800 p-8 rounded-2xl">
                         <h4 class="text-3xl font-bold mb-6 text-green-400">Para Motoristas</h4>
                         <ul class="space-y-4 text-lg">
+                            <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Liberdade Total:</strong> Sem taxas de aceitação ou cancelamento. Você no controle, sem punições.</span></li>
                              <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Taxas Menores, Ganhos Maiores:</strong> Suba de nível e reduza a sua taxa de serviço.</span></li>
                             <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Seu Tempo Respeitado:</strong> Compensação justa por cancelamentos e tempo de espera.</span></li>
                              <li class="flex items-start"><span class="text-green-500 mr-3 mt-1">✓</span><span><strong class="text-white">Pagamento 100% Garantido:</strong> Com o nosso sistema de validação e fundo de garantia, o risco de calote é zero.</span></li>
@@ -94,8 +100,8 @@
         <section id="solution" class="py-20 px-6 bg-gray-800">
             <div class="max-w-4xl mx-auto text-center">
                  <h3 class="text-3xl font-bold text-center mb-6">🧠 Foco Total na Sua Viagem: O Fim da "Corrida Seguinte"</h3>
-                 <p class="text-lg text-gray-400 mb-8">Já pediu uma corrida e viu que o seu motorista ainda estava a finalizar outra viagem? Essa experiência frustrante, que gera insegurança e atrasos, acaba aqui. A Mobix introduz a **Fila Inteligente**.</p>
-                <div class="grid md:grid-cols-2 gap-8 items-center text-left mt-12">
+                 <p class="text-lg text-gray-400 mb-8">Já pediu uma corrida e viu que o seu motorista ainda estava a finalizar outra viagem? Essa experiência frustrante acaba aqui. A Mobix introduz a **Fila Inteligente**.</p>
+                 <div class="grid md:grid-cols-2 gap-8 items-center text-left mt-12">
                     <div>
                         <h5 class="text-xl font-bold mb-3 text-white">Para o Passageiro</h5>
                         <p class="text-gray-300">O nosso sistema só aloca um motorista que está **prestes a ficar livre**. Isto significa que o motorista está 100% focado em si desde o momento do aceite. O resultado é um tempo de espera mais preciso e mais segurança.</p>
@@ -108,32 +114,231 @@
             </div>
         </section>
 
-        <!-- Referral Section -->
-        <section id="referral" class="py-20 px-6">
+        <!-- Payment Guarantee Section -->
+        <section id="payment-guarantee" class="py-20 px-6">
             <div class="max-w-4xl mx-auto text-center">
-                 <h3 class="text-3xl font-bold text-center mb-6">🚀 Cresça Conosco: O Nosso Programa de Indicação</h3>
-                 <p class="text-lg text-gray-400 mb-8">Acreditamos que a nossa comunidade é a nossa maior força. Por isso, recompensamos quem nos ajuda a crescer.</p>
-                <div class="grid md:grid-cols-2 gap-8 items-start text-left mt-12 bg-gray-800 p-8 rounded-2xl">
+                 <h3 class="text-3xl font-bold text-center mb-6">✅ Pagamento Garantido: O Fim do Calote</h3>
+                 <p class="text-lg text-gray-400 mb-8">Sabemos que uma das maiores preocupações dos motoristas é o risco de não receber por uma viagem. Na Mobix, este problema não existe.</p>
+                <div class="grid md:grid-cols-2 gap-8 items-center text-left mt-12 bg-gray-800 p-8 rounded-2xl">
                     <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Indique um Passageiro</h5>
-                        <p class="text-gray-300">Quando um novo passageiro se inscreve com o seu código e completa a primeira viagem, ambos ganham um <strong class="text-green-400">voucher de 50% de desconto</strong> para a próxima corrida. É uma vitória para todos!</p>
+                        <h5 class="text-xl font-bold mb-3 text-white">Validação Prévia Obrigatória</h5>
+                        <p class="text-gray-300">Nenhuma viagem pode ser solicitada sem um método de pagamento digital válido e verificado na conta do passageiro.</p>
                     </div>
                      <div>
-                        <h5 class="text-xl font-bold mb-3 text-white">Indique um Motorista</h5>
-                        <p class="text-gray-300">Quando um novo motorista parceiro se inscreve com o seu código e completa as suas primeiras 50 viagens, ambos recebem um <strong class="text-green-400">bónus de R$ 200 em dinheiro</strong>. Ajudar a nossa rede a crescer compensa.</p>
+                        <h5 class="text-xl font-bold mb-3 text-white">Fundo de Garantia Mobix</h5>
+                        <p class="text-gray-300">No raro caso de uma falha na cobrança, o nosso **Fundo de Garantia Mobix** cobre o valor total para si imediatamente. Você sempre recebe.</p>
+                    </div>
+                </div>
+                <p class="text-center text-green-400 mt-8 font-semibold">Com a Mobix, o seu trabalho é 100% garantido.</p>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section id="comparison" class="py-20 px-6 bg-gray-800">
+            <div class="max-w-6xl mx-auto text-center">
+                <h3 class="text-4xl font-bold mb-4">Por que dirigir com a Mobix vale mais a pena?</h3>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-12">Analisamos o mercado para criar um modelo superior.</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gray-700 p-8 rounded-2xl border border-red-500/50">
+                        <h4 class="text-2xl font-bold mb-4">O Modelo Tradicional</h4>
+                        <p class="text-gray-400">Taxas de serviço altas e fixas (20% a 30%) que não reconhecem sua dedicação.</p>
+                        <p class="text-4xl font-bold mt-6">Você Fica com ~75%</p>
+                    </div>
+                    <div class="bg-gray-900 p-8 rounded-2xl border-2 border-green-500">
+                        <h4 class="text-2xl font-bold mb-4">O Modelo Mobix</h4>
+                        <p class="text-gray-400">Taxas que começam mais baixas e diminuem com seu desempenho (a partir de 10%).</p>
+                        <p class="text-4xl font-bold mt-6 text-green-400">Você Fica com até 90%</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ... (Restante do código igual ao anterior) ... -->
+        <!-- Calculator Section -->
+        <section id="calculator" class="py-20 px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="text-4xl font-bold mb-4">Simule e Comprove a Vantagem</h3>
+                <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-12">Veja na prática como nosso modelo de preços transparente funciona.</p>
+                <div class="bg-gray-800 p-8 rounded-2xl">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <label for="distance" class="block text-lg font-semibold text-left mb-2">Distância da Viagem (em KM)</label>
+                            <input type="number" id="distance" value="10" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white text-xl focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <div class="flex items-center mt-4">
+                                <input id="night-fare-toggle" type="checkbox" class="w-5 h-5 text-green-600 bg-gray-700 border-gray-600 rounded focus:ring-green-500">
+                                <label for="night-fare-toggle" class="ml-3 text-lg">Aplicar Tarifa Noturna (22h - 05h)</label>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <h4 class="text-2xl font-bold mb-4">Resultado da Simulação:</h4>
+                            <div id="passenger-price-card" class="bg-gray-700 p-4 rounded-lg mb-4">
+                                <p class="text-gray-400 text-sm">Valor para o Passageiro</p>
+                                <p id="passenger-price" class="text-3xl font-bold text-green-400">R$ --,--</p>
+                            </div>
+                            <div id="driver-earning-card" class="bg-gray-700 p-4 rounded-lg">
+                                <p class="text-gray-400 text-sm">Seu Ganho (Motorista Ouro)</p>
+                                <p id="driver-earning" class="text-3xl font-bold text-white">R$ --,--</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Registration Form Section -->
+        <section id="registration" class="py-20 px-6 bg-gray-800">
+            <div id="registration-container" class="max-w-2xl mx-auto">
+                <h3 class="text-4xl font-bold text-center mb-12">Faça Parte do Lançamento</h3>
+                <div class="bg-gray-900 p-8 rounded-2xl">
+                    <div x-data="{ tab: 'passenger' }">
+                        <div class="flex border-b border-gray-700 mb-6">
+                            <button @click="tab = 'passenger'" :class="{ 'active': tab === 'passenger' }" class="tab flex-1 py-3 text-lg font-semibold border-b-4 border-transparent transition text-gray-400 hover:text-white">
+                                Quero ser Passageiro
+                            </button>
+                            <button @click="tab = 'driver'" :class="{ 'active': tab === 'driver' }" class="tab flex-1 py-3 text-lg font-semibold border-b-4 border-transparent transition text-gray-400 hover:text-white">
+                                Quero ser Motorista
+                            </button>
+                        </div>
+    
+                        <!-- Passenger Form -->
+                        <div x-show="tab === 'passenger'">
+                            <form onsubmit="handleFormSubmit(event, 'passenger')">
+                                <h4 class="text-2xl font-bold mb-4">Inscreva-se para Acesso Antecipado</h4>
+                                <div class="space-y-4">
+                                    <input type="text" id="p-name" required placeholder="Nome Completo" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <input type="email" id="p-email" required placeholder="Seu melhor e-mail" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <input type="text" id="p-city" required placeholder="Sua Cidade" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition !mt-6">Garantir meus benefícios!</button>
+                                </div>
+                            </form>
+                        </div>
+    
+                        <!-- Driver Form -->
+                        <div x-show="tab === 'driver'" x-cloak>
+                            <form onsubmit="handleFormSubmit(event, 'driver')">
+                                <h4 class="text-2xl font-bold mb-4">Inscreva-se para Acesso Antecipado</h4>
+                                <div class="space-y-4">
+                                     <input type="text" id="d-name" required placeholder="Nome Completo" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <input type="email" id="d-email" required placeholder="Seu melhor e-mail" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <input type="text" id="d-city" required placeholder="Sua Cidade" class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <select id="d-vehicle" required class="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500">
+                                        <option disabled selected>Selecione seu tipo de veículo</option>
+                                        <option>Carro</option>
+                                        <option>Moto</option>
+                                    </select>
+                                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition !mt-6">Garantir meus benefícios!</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-center py-12 px-6">
+            <p class="text-gray-400">&copy; 2025 Mobix. Todos os direitos reservados.</p>
+        </footer>
     </main>
     
-    <script>
-        // ... (JavaScript igual ao anterior) ...
-    </script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-firestore.js";
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnYy-awTOD6LBALDt5jI0qcz8YzI3iRus",
+            authDomain: "mobix-29829.firebaseapp.com",
+            projectId: "mobix-29829",
+            storageBucket: "mobix-29829.appspot.com",
+            messagingSenderId: "322562734005",
+            appId: "1:322562734005:web:e03a04fe49818450edcbfc"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function handleFormSubmit(event, userType) {
+            event.preventDefault();
+            const button = event.target.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.textContent = 'Aguarde...';
+
+            let dataToSave = {};
+            let collectionName = '';
+
+            if (userType === 'passenger') {
+                dataToSave = {
+                    name: document.getElementById('p-name').value,
+                    email: document.getElementById('p-email').value,
+                    city: document.getElementById('p-city').value,
+                    registeredAt: new Date()
+                };
+                collectionName = 'pre_registrations_passengers';
+            } else {
+                dataToSave = {
+                    name: document.getElementById('d-name').value,
+                    email: document.getElementById('d-email').value,
+                    city: document.getElementById('d-city').value,
+                    vehicle: document.getElementById('d-vehicle').value,
+                    registeredAt: new Date()
+                };
+                collectionName = 'pre_registrations_drivers';
+            }
+
+            try {
+                await addDoc(collection(db, collectionName), dataToSave);
+                
+                const registrationContainer = document.getElementById('registration-container');
+                registrationContainer.innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">🎉</div>
+                        <h2 class="text-4xl font-bold text-green-400 mb-4">Inscrição Recebida!</h2>
+                        <p class="text-lg text-gray-300 max-w-xl mx-auto">Obrigado por se juntar à revolução Mobix! Você está na nossa lista de acesso antecipado e será informado por e-mail sobre o lançamento e os seus benefícios.</p>
+                    </div>
+                `;
+            } catch (error) {
+                console.error("Erro ao guardar o registo: ", error);
+                alert("Ocorreu um erro ao processar a sua inscrição. Por favor, tente novamente.");
+                button.disabled = false;
+                button.textContent = 'Garantir meus benefícios!';
+            }
+        }
+        
+        window.handleFormSubmit = handleFormSubmit;
+
+        const distanceInput = document.getElementById('distance');
+        const nightFareToggle = document.getElementById('night-fare-toggle');
+        const passengerPriceEl = document.getElementById('passenger-price');
+        const driverEarningEl = document.getElementById('driver-earning');
+
+        const BASE_FARE = 3.00;
+        const PRICE_PER_KM = 1.40;
+        const NIGHT_FARE_ADDITIONAL = 4.00;
+        const DRIVER_COMMISSION = 0.10;
+
+        function calculatePrices() {
+            const distance = parseFloat(distanceInput.value) || 0;
+            const isNight = nightFareToggle.checked;
+
+            let passengerPrice = BASE_FARE + (distance * PRICE_PER_KM);
+            
+            if (isNight) {
+                passengerPrice += NIGHT_FARE_ADDITIONAL;
+            }
+
+            const nightBonusForDriver = isNight ? NIGHT_FARE_ADDITIONAL * 0.9 : 0;
+            const rideValueForCommission = passengerPrice - nightBonusForDriver;
+            const driverEarning = (rideValueForCommission * (1 - DRIVER_COMMISSION)) + nightBonusForDriver;
+
+            passengerPriceEl.textContent = `R$ ${passengerPrice.toFixed(2).replace('.', ',')}`;
+            driverEarningEl.textContent = `R$ ${driverEarning.toFixed(2).replace('.', ',')}`;
+        }
+
+        distanceInput.addEventListener('input', calculatePrices);
+        nightFareToggle.addEventListener('change', calculatePrices);
+
+        calculatePrices();
+    </script>
 </body>
 </html>
 
